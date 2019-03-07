@@ -1,7 +1,6 @@
 #include <iostream>
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include "Includes/GLFW/glfw3.h"
 #include "windowControl.hpp"
 
 int main()
@@ -9,7 +8,8 @@ int main()
     GLFWwindow* window = SNUCG::initGlfwEnviornment(1280, 960, "Hello World!");
 
     glClearColor (0.0, 0.0, 0.0, 0.0);
-    glClear (GL_COLOR_BUFFER_BIT);
+    glClearDepth(1.0);
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glColor3f (1.0, 1.0, 1.0);
     glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
     glBegin(GL_POLYGON);
