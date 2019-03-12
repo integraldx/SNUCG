@@ -1,2 +1,2 @@
-main: main.cpp
-	g++ main.cpp -lglut -lGL -o main
+main: main.cpp Display.hpp Display.cpp
+	g++ main.cpp Display.cpp Input.cpp -lglut -lGL -o main
