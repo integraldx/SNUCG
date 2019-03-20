@@ -21,4 +21,4 @@ public:
     void setPosition(Vec3);
     void setRotation(float, Vec3);
     void setScale(Vec3);
-}
+};

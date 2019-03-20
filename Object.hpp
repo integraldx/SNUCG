@@ -28,4 +28,4 @@ public:
     void setScale(Vec3);
     void setColor(Vec3);
     void addChild(std::unique_ptr<Object>);
-}
+};
