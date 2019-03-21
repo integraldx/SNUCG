@@ -19,3 +19,15 @@ struct Mat4x4
         {0, 0, 0, 1}
     };
 };
+
+Vec3 normalizeVec3(Vec3 v);
+
+Vec3 crossProduct(Vec3 left, Vec3 right);
+
+Vec3 operator + (Vec3 v, float add);
+
+Vec3 operator - (Vec3 v, float sub);
+
+Vec3 operator * (Vec3 v, float mul);
+
+Vec3 operator / (Vec3 v, float div);

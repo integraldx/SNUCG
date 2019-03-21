@@ -1,7 +1,6 @@
 #include <GL/gl.h>
 #include <GL/glut.h>
 
-#include "Input.hpp"
 #include "SceneManager.hpp"
 
 
@@ -30,12 +29,56 @@ int main(int argc, char** argv)
     glutCreateWindow ("HW#1");
     init ();
 
-    std::unique_ptr<Object> obj(std::make_unique<Object>());
-    std::shared_ptr<Model> model(std::make_shared<Model>(move(obj)));
+    std::vector<Vec3> v;
+
+    std::unique_ptr<Object> center(std::make_unique<Object>(v));
+
+    std::vector<Vec3> redV;
+    redV.push_back({1.0, 1.0, 0});
+    redV.push_back({1.0, 0.0, 0});
+    redV.push_back({0.0, 0.0, 0});
+    redV.push_back({0.0, 1.0, 0});
+
+    std::vector<Vec3> blueV;
+    blueV.push_back({1.0, -1.0, 0});
+    blueV.push_back({1.0, 0.0, 0});
+    blueV.push_back({0.0, 0.0, 0});
+    blueV.push_back({0.0, -1.0, 0});
+    
+
+    std::vector<Vec3> yellowV;
+    yellowV.push_back({-1.0, -1.0, 0});
+    yellowV.push_back({-1.0, 0.0, 0});
+    yellowV.push_back({0.0, 0.0, 0});
+    yellowV.push_back({0.0, -1.0, 0});
+
+
+    std::vector<Vec3> greenV;
+    greenV.push_back({-1.0, 1.0, 0});
+    greenV.push_back({-1.0, 0.0, 0});
+    greenV.push_back({0.0, 0.0, 0});
+    greenV.push_back({0.0, 1.0, 0});
+
+
+    std::unique_ptr<Object> red(std::make_unique<Object>(redV));
+    red->setColor({1.0, 0, 0});
+    std::unique_ptr<Object> blue(std::make_unique<Object>(blueV));
+    blue->setColor({0, 0, 1});
+    std::unique_ptr<Object> yellow(std::make_unique<Object>(yellowV));
+    yellow->setColor({1, 1, 0});
+    std::unique_ptr<Object> green(std::make_unique<Object>(greenV));
+    green->setColor({0, 1, 0});
+
+    center->addChild(std::move(red));
+    center->addChild(std::move(blue));
+    center->addChild(std::move(yellow));
+    center->addChild(std::move(green));
+
+    std::shared_ptr<Model> model(std::make_shared<Model>(move(center)));
     SceneManager::addRenderModel(model);
 
     glutDisplayFunc(SceneManager::displayCallback); 
-    glutKeyboardFunc(keyboardFunc);
+    glutKeyboardFunc(SceneManager::keyboardCallback);
     glutMainLoop();
     return 0;  
 }
