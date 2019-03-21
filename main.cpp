@@ -1,8 +1,8 @@
 #include <GL/gl.h>
 #include <GL/glut.h>
 
-#include "Display.hpp"
 #include "Input.hpp"
+#include "SceneManager.hpp"
 
 
 void init (void) 
@@ -25,12 +25,17 @@ int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB);
-    glutInitWindowSize (1000, 1000); 
+    glutInitWindowSize (1280, 720); 
     glutInitWindowPosition (100, 100);
-    glutCreateWindow ("hello");
+    glutCreateWindow ("HW#1");
     init ();
-    glutDisplayFunc(displayFunc); 
+
+    std::unique_ptr<Object> obj(std::make_unique<Object>());
+    std::shared_ptr<Model> model(std::make_shared<Model>(move(obj)));
+    SceneManager::addRenderModel(model);
+
+    glutDisplayFunc(SceneManager::displayCallback); 
     glutKeyboardFunc(keyboardFunc);
     glutMainLoop();
-    return 0;   /* ISO C requires main to return int. */
+    return 0;  
 }
