@@ -11,6 +11,7 @@ class Object
 private:
     std::vector<Vec3> vertices;
     Vec3 position = {0, 0, 0};
+    Vec3 rotationCenter = {0, 0, 0};
     Vec3 rotationAxis = {0, 0, 0};
     float rotationAngle = 0;
     Vec3 scale = {1, 1, 1};
@@ -24,6 +25,7 @@ public:
     ~Object();
     void draw();
     void setPosition(Vec3);
+    void setRotationCenter(Vec3);
     void setRotation(float, Vec3);
     void setScale(Vec3);
     void setColor(Vec3);

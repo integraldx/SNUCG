@@ -25,8 +25,10 @@ void Object::draw()
 {
     glPushMatrix();
     {
-        glRotatef(rotationAngle, rotationAxis.x, rotationAxis.y, rotationAxis.z);
         glTranslatef(position.x, position.y, position.z);
+        glTranslatef(rotationCenter.x, rotationCenter.y, rotationCenter.z);
+        glRotatef(rotationAngle, rotationAxis.x, rotationAxis.y, rotationAxis.z);
+        glTranslatef(-rotationCenter.x, -rotationCenter.y, -rotationCenter.z);
         glColor3f(color.x, color.y, color.z);
         glBegin(GL_POLYGON);
         {
@@ -48,6 +50,11 @@ void Object::draw()
 void Object::setPosition(Vec3 v)
 {
     position = v;
+}
+
+void Object::setRotationCenter(Vec3 v)
+{
+    rotationCenter = v;
 }
 
 void Object::setRotation(float f, Vec3 v)
