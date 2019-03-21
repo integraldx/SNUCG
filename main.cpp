@@ -45,20 +45,17 @@ int main(int argc, char** argv)
     blueV.push_back({0.0, 0.0, 0});
     blueV.push_back({0.0, -1.0, 0});
     
-
     std::vector<Vec3> yellowV;
     yellowV.push_back({-1.0, -1.0, 0});
     yellowV.push_back({-1.0, 0.0, 0});
     yellowV.push_back({0.0, 0.0, 0});
     yellowV.push_back({0.0, -1.0, 0});
 
-
     std::vector<Vec3> greenV;
     greenV.push_back({-1.0, 1.0, 0});
     greenV.push_back({-1.0, 0.0, 0});
     greenV.push_back({0.0, 0.0, 0});
     greenV.push_back({0.0, 1.0, 0});
-
 
     std::unique_ptr<Object> red(std::make_unique<Object>(redV));
     red->setColor({1.0, 0, 0});
