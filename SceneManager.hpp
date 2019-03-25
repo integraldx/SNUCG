@@ -15,4 +15,5 @@ public:
     static void addRenderModel(std::shared_ptr<Model>);
     static void displayCallback();
     static void keyboardCallback(unsigned char, int, int);
+    static void timerCallback(int);
 };

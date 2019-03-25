@@ -65,3 +65,9 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
     }
 
 }
+
+void SceneManager::timerCallback(int value)
+{
+    glutPostRedisplay();
+    glutTimerFunc(1000/60, timerCallback, 0);
+}
