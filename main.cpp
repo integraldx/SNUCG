@@ -2,6 +2,7 @@
 #include <GL/glut.h>
 
 #include "SceneManager.hpp"
+#include "Pod.hpp"
 
 
 void init (void) 
@@ -32,8 +33,7 @@ int main(int argc, char** argv)
     glutInit(&argc, argv);
     init ();
 
-    auto center = std::make_unique<Object>();
-    std::shared_ptr<Model> model(std::make_shared<Model>(move(center)));
+    std::shared_ptr<Model> model = Pod::getPod();
     SceneManager::addRenderModel(model);
 
     glutMainLoop();
