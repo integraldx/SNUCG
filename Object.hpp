@@ -8,7 +8,8 @@
 
 class Object
 {
-private:
+protected:
+    friend class Model;
     std::vector<Vec3> vertices;
     Vec3 position = {0, 0, 0};
     Vec3 rotationCenter = {0, 0, 0};
@@ -17,7 +18,7 @@ private:
     Vec3 scale = {1, 1, 1};
 
     Vec3 color = {1, 1, 1};
-    std::vector<std::unique_ptr<Object>> childs;
+    std::vector<std::shared_ptr<Object>> childs;
 
 public:
     Object();
@@ -29,5 +30,5 @@ public:
     void setRotation(float, Vec3);
     void setScale(Vec3);
     void setColor(Vec3);
-    void addChild(std::unique_ptr<Object>);
+    void addChild(std::shared_ptr<Object>);
 };

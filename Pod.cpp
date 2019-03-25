@@ -5,7 +5,7 @@ using namespace std;
 shared_ptr<Pod> Pod::getPod()
 {
     vector<Vec3> dummy;
-    unique_ptr<Object> head = std::make_unique<Object>(dummy);
+    shared_ptr<Object> head = std::make_shared<Object>(dummy);
     {
         {
             vector<Vec3> headUpV;
@@ -14,7 +14,7 @@ shared_ptr<Pod> Pod::getPod()
             headUpV.push_back({-0.4, 0.6, -0.4});
             headUpV.push_back({-0.4, 0.6, 0.4});
 
-            unique_ptr<Object> headUp = std::make_unique<Object>(headUpV);
+            shared_ptr<Object> headUp = std::make_shared<Object>(headUpV);
             headUp->setColor({0.8, 0.8, 0.8});
             head->addChild(move(headUp));
         }
@@ -26,7 +26,7 @@ shared_ptr<Pod> Pod::getPod()
             headUpLeftV.push_back({-0.5, 0.5, -0.4});
             headUpLeftV.push_back({-0.5, 0.5, 0.4});
 
-            unique_ptr<Object> headUpLeft = std::make_unique<Object>(headUpLeftV);
+            shared_ptr<Object> headUpLeft = std::make_shared<Object>(headUpLeftV);
             headUpLeft->setColor({0.8, 0.8, 0.8});
             head->addChild(move(headUpLeft));
         }
@@ -38,7 +38,7 @@ shared_ptr<Pod> Pod::getPod()
             headDownV.push_back({-0.4, -0.6, -0.4});
             headDownV.push_back({-0.4, -0.6, 0.4});
 
-            unique_ptr<Object> headDown = std::make_unique<Object>(headDownV);
+            shared_ptr<Object> headDown = std::make_shared<Object>(headDownV);
             headDown->setColor({0.8, 0.8, 0.8});
             head->addChild(move(headDown));
         }
@@ -50,7 +50,7 @@ shared_ptr<Pod> Pod::getPod()
             headUpRightV.push_back({0.5, 0.5, -0.4});
             headUpRightV.push_back({0.5, 0.5, 0.4});
 
-            unique_ptr<Object> headUpRight = std::make_unique<Object>(headUpRightV);
+            shared_ptr<Object> headUpRight = std::make_shared<Object>(headUpRightV);
             headUpRight->setColor({0.8, 0.8, 0.8});
             head->addChild(move(headUpRight));
         }
@@ -62,7 +62,7 @@ shared_ptr<Pod> Pod::getPod()
             headLeftV.push_back({-0.5, -0.5, -0.4});
             headLeftV.push_back({-0.5, -0.5, 0.4});
 
-            unique_ptr<Object> headLeft = std::make_unique<Object>(headLeftV);
+            shared_ptr<Object> headLeft = std::make_shared<Object>(headLeftV);
             headLeft->setColor({0.8, 0.8, 0.8});
             head->addChild(move(headLeft));
         }
@@ -74,7 +74,7 @@ shared_ptr<Pod> Pod::getPod()
             headDownRightV.push_back({0.5, -0.5, -0.4});
             headDownRightV.push_back({0.5, -0.5, 0.4});
 
-            unique_ptr<Object> headDownRight = std::make_unique<Object>(headDownRightV);
+            shared_ptr<Object> headDownRight = std::make_shared<Object>(headDownRightV);
             headDownRight->setColor({0.8, 0.8, 0.8});
             head->addChild(move(headDownRight));
         }
@@ -86,7 +86,7 @@ shared_ptr<Pod> Pod::getPod()
             headRightV.push_back({0.5, -0.5, -0.4});
             headRightV.push_back({0.5, -0.5, 0.4});
 
-            unique_ptr<Object> headRight = std::make_unique<Object>(headRightV);
+            shared_ptr<Object> headRight = std::make_shared<Object>(headRightV);
             headRight->setColor({0.8, 0.8, 0.8});
             head->addChild(move(headRight));
         }
@@ -98,7 +98,7 @@ shared_ptr<Pod> Pod::getPod()
             headDownLeftV.push_back({-0.5, -0.5, -0.4});
             headDownLeftV.push_back({-0.5, -0.5, 0.4});
 
-            unique_ptr<Object> headDownLeft = std::make_unique<Object>(headDownLeftV);
+            shared_ptr<Object> headDownLeft = std::make_shared<Object>(headDownLeftV);
             headDownLeft->setColor({0.8, 0.8, 0.8});
             head->addChild(move(headDownLeft));
         }
@@ -115,7 +115,7 @@ shared_ptr<Pod> Pod::getPod()
             headFrontV.push_back({0.5, 0.5, 0.4});
             headFrontV.push_back({0.4, 0.6, 0.4});
 
-            unique_ptr<Object> headFront = std::make_unique<Object>(headFrontV);
+            shared_ptr<Object> headFront = std::make_shared<Object>(headFrontV);
             headFront->setColor({0.8, 0.8, 0.8});
             head->addChild(move(headFront));
         }
@@ -132,21 +132,21 @@ shared_ptr<Pod> Pod::getPod()
             headBackV.push_back({0.5, 0.5, -0.4});
             headBackV.push_back({0.4, 0.6, -0.4});
 
-            unique_ptr<Object> headBack = std::make_unique<Object>(headBackV);
+            shared_ptr<Object> headBack = std::make_shared<Object>(headBackV);
             headBack->setColor({0.8, 0.8, 0.8});
             head->addChild(move(headBack));
         }
     }
 
     {
-        unique_ptr<Object> leftLeg = make_unique<Object>(dummy);
+        shared_ptr<Object> leftLeg = make_shared<Object>(dummy);
         {
             vector<Vec3> leftLegUpV;
             for(int i = 0; i < 10; i++)
             {
                 leftLegUpV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), 0, (float)(0.1 * sin(i * 2 * M_PI / 10))});
             }
-            unique_ptr<Object> leftLegUp = make_unique<Object>(leftLegUpV);
+            shared_ptr<Object> leftLegUp = make_shared<Object>(leftLegUpV);
             leftLeg->addChild(move(leftLegUp));
         }
 
@@ -156,7 +156,7 @@ shared_ptr<Pod> Pod::getPod()
             {
                 leftLegDownV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), -1, (float)(0.1 * sin(i * 2 * M_PI / 10))});
             }
-            unique_ptr<Object> leftLegDown = make_unique<Object>(leftLegDownV);
+            shared_ptr<Object> leftLegDown = make_shared<Object>(leftLegDownV);
             leftLeg->addChild(move(leftLegDown));
         }
 
@@ -170,20 +170,20 @@ shared_ptr<Pod> Pod::getPod()
                 leftLegSideV.push_back({(float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), 0, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
 
                 
-                leftLeg->addChild(move(make_unique<Object>(leftLegSideV)));
+                leftLeg->addChild(move(make_shared<Object>(leftLegSideV)));
             }
         }
         leftLeg->setPosition({0.2, -0.7, 0});
         
         {
-            unique_ptr<Object> secondLeftLeg = make_unique<Object>(dummy);
+            shared_ptr<Object> secondLeftLeg = make_shared<Object>(dummy);
             {
                 vector<Vec3> leftLegUpV;
                 for(int i = 0; i < 10; i++)
                 {
                     leftLegUpV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), 0, (float)(0.1 * sin(i * 2 * M_PI / 10))});
                 }
-                unique_ptr<Object> leftLegUp = make_unique<Object>(leftLegUpV);
+                shared_ptr<Object> leftLegUp = make_shared<Object>(leftLegUpV);
                 secondLeftLeg->addChild(move(leftLegUp));
             }
 
@@ -193,7 +193,7 @@ shared_ptr<Pod> Pod::getPod()
                 {
                     leftLegDownV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), -1, (float)(0.1 * sin(i * 2 * M_PI / 10))});
                 }
-                unique_ptr<Object> leftLegDown = make_unique<Object>(leftLegDownV);
+                shared_ptr<Object> leftLegDown = make_shared<Object>(leftLegDownV);
                 secondLeftLeg->addChild(move(leftLegDown));
             }
 
@@ -206,7 +206,7 @@ shared_ptr<Pod> Pod::getPod()
                     leftLegSideV.push_back({(float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), -1, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
                     leftLegSideV.push_back({(float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), 0, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
                     
-                    secondLeftLeg->addChild(move(make_unique<Object>(leftLegSideV)));
+                    secondLeftLeg->addChild(move(make_shared<Object>(leftLegSideV)));
                 }
             }
             secondLeftLeg->setPosition({0, -1.1, 0});
@@ -219,14 +219,14 @@ shared_ptr<Pod> Pod::getPod()
 
 
     {
-        unique_ptr<Object> leftLeg = make_unique<Object>(dummy);
+        shared_ptr<Object> leftLeg = make_shared<Object>(dummy);
         {
             vector<Vec3> leftLegUpV;
             for(int i = 0; i < 10; i++)
             {
                 leftLegUpV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), 0, (float)(0.1 * sin(i * 2 * M_PI / 10))});
             }
-            unique_ptr<Object> leftLegUp = make_unique<Object>(leftLegUpV);
+            shared_ptr<Object> leftLegUp = make_shared<Object>(leftLegUpV);
             leftLeg->addChild(move(leftLegUp));
         }
 
@@ -236,7 +236,7 @@ shared_ptr<Pod> Pod::getPod()
             {
                 leftLegDownV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), -1, (float)(0.1 * sin(i * 2 * M_PI / 10))});
             }
-            unique_ptr<Object> leftLegDown = make_unique<Object>(leftLegDownV);
+            shared_ptr<Object> leftLegDown = make_shared<Object>(leftLegDownV);
             leftLeg->addChild(move(leftLegDown));
         }
 
@@ -250,20 +250,20 @@ shared_ptr<Pod> Pod::getPod()
                 leftLegSideV.push_back({(float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), 0, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
 
                 
-                leftLeg->addChild(move(make_unique<Object>(leftLegSideV)));
+                leftLeg->addChild(move(make_shared<Object>(leftLegSideV)));
             }
         }
         leftLeg->setPosition({-0.2, -0.7, 0});
 
         {
-            unique_ptr<Object> secondLeftLeg = make_unique<Object>(dummy);
+            shared_ptr<Object> secondLeftLeg = make_shared<Object>(dummy);
             {
                 vector<Vec3> leftLegUpV;
                 for(int i = 0; i < 10; i++)
                 {
                     leftLegUpV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), 0, (float)(0.1 * sin(i * 2 * M_PI / 10))});
                 }
-                unique_ptr<Object> leftLegUp = make_unique<Object>(leftLegUpV);
+                shared_ptr<Object> leftLegUp = make_shared<Object>(leftLegUpV);
                 secondLeftLeg->addChild(move(leftLegUp));
             }
 
@@ -273,7 +273,7 @@ shared_ptr<Pod> Pod::getPod()
                 {
                     leftLegDownV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), -1, (float)(0.1 * sin(i * 2 * M_PI / 10))});
                 }
-                unique_ptr<Object> leftLegDown = make_unique<Object>(leftLegDownV);
+                shared_ptr<Object> leftLegDown = make_shared<Object>(leftLegDownV);
                 secondLeftLeg->addChild(move(leftLegDown));
             }
 
@@ -286,7 +286,7 @@ shared_ptr<Pod> Pod::getPod()
                     leftLegSideV.push_back({(float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), -1, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
                     leftLegSideV.push_back({(float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), 0, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
                     
-                    secondLeftLeg->addChild(move(make_unique<Object>(leftLegSideV)));
+                    secondLeftLeg->addChild(move(make_shared<Object>(leftLegSideV)));
                 }
             }
             secondLeftLeg->setPosition({0, -1.1, 0});
@@ -296,7 +296,7 @@ shared_ptr<Pod> Pod::getPod()
         head->addChild(move(leftLeg));
     }
 
-    return make_shared<Pod>(make_shared<Model>(move(head)));
+    return make_shared<Pod>(make_shared<Model>(head));
 
 }
 
@@ -308,4 +308,8 @@ shared_ptr<Model> Pod::getModel()
 Pod::Pod(shared_ptr<Model> m)
 {
     podModel = move(m);
+}
+
+void Pod::rotateLeftFirst(Vec3 delta)
+{
 }

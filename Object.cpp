@@ -73,7 +73,7 @@ void Object::setColor(Vec3 v)
     color = v;
 }
 
-void Object::addChild(std::unique_ptr<Object> obj)
+void Object::addChild(std::shared_ptr<Object> obj)
 {
     childs.push_back(std::move(obj));
 }

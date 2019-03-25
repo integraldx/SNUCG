@@ -7,15 +7,15 @@
 
 class Model
 {
-private:
+protected:
     Vec3 position = {0, 0, 0};
     Vec3 rotationAxis = {0, 0, 0};
     float rotationAngle = 0;
     Vec3 scale = {1, 1, 1};
-    std::unique_ptr<Object> root;
+    std::shared_ptr<Object> root;
 
 public:
-    Model(std::unique_ptr<Object>);
+    Model(std::shared_ptr<Object>);
     ~Model();
     void draw();
     void setPosition(Vec3);

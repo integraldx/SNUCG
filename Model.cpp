@@ -1,6 +1,6 @@
 #include "Model.hpp"
 
-Model::Model(std::unique_ptr<Object> o)
+Model::Model(std::shared_ptr<Object> o)
 {
     root = std::move(o);
 }
