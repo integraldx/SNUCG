@@ -174,7 +174,125 @@ shared_ptr<Pod> Pod::getPod()
             }
         }
         leftLeg->setPosition({0.2, -0.7, 0});
+        
+        {
+            unique_ptr<Object> secondLeftLeg = make_unique<Object>(dummy);
+            {
+                vector<Vec3> leftLegUpV;
+                for(int i = 0; i < 10; i++)
+                {
+                    leftLegUpV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), 0, (float)(0.1 * sin(i * 2 * M_PI / 10))});
+                }
+                unique_ptr<Object> leftLegUp = make_unique<Object>(leftLegUpV);
+                secondLeftLeg->addChild(move(leftLegUp));
+            }
 
+            {
+                vector<Vec3> leftLegDownV;
+                for(int i = 0; i < 10; i++)
+                {
+                    leftLegDownV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), -1, (float)(0.1 * sin(i * 2 * M_PI / 10))});
+                }
+                unique_ptr<Object> leftLegDown = make_unique<Object>(leftLegDownV);
+                secondLeftLeg->addChild(move(leftLegDown));
+            }
+
+            {
+                for(int i = 0; i < 10; i++)
+                {
+                    vector<Vec3> leftLegSideV;
+                    leftLegSideV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), 0, (float)(0.1 * sin(i * 2 * M_PI / 10))});
+                    leftLegSideV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), -1, (float)(0.1 * sin(i * 2 * M_PI / 10))});
+                    leftLegSideV.push_back({(float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), -1, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
+                    leftLegSideV.push_back({(float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), 0, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
+                    
+                    secondLeftLeg->addChild(move(make_unique<Object>(leftLegSideV)));
+                }
+            }
+            secondLeftLeg->setPosition({0, -1.1, 0});
+
+            leftLeg->addChild(move(secondLeftLeg));
+        }
+
+        head->addChild(move(leftLeg));
+    }
+
+
+    {
+        unique_ptr<Object> leftLeg = make_unique<Object>(dummy);
+        {
+            vector<Vec3> leftLegUpV;
+            for(int i = 0; i < 10; i++)
+            {
+                leftLegUpV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), 0, (float)(0.1 * sin(i * 2 * M_PI / 10))});
+            }
+            unique_ptr<Object> leftLegUp = make_unique<Object>(leftLegUpV);
+            leftLeg->addChild(move(leftLegUp));
+        }
+
+        {
+            vector<Vec3> leftLegDownV;
+            for(int i = 0; i < 10; i++)
+            {
+                leftLegDownV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), -1, (float)(0.1 * sin(i * 2 * M_PI / 10))});
+            }
+            unique_ptr<Object> leftLegDown = make_unique<Object>(leftLegDownV);
+            leftLeg->addChild(move(leftLegDown));
+        }
+
+        {
+            for(int i = 0; i < 10; i++)
+            {
+                vector<Vec3> leftLegSideV;
+                leftLegSideV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), 0, (float)(0.1 * sin(i * 2 * M_PI / 10))});
+                leftLegSideV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), -1, (float)(0.1 * sin(i * 2 * M_PI / 10))});
+                leftLegSideV.push_back({(float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), -1, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
+                leftLegSideV.push_back({(float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), 0, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
+
+                
+                leftLeg->addChild(move(make_unique<Object>(leftLegSideV)));
+            }
+        }
+        leftLeg->setPosition({-0.2, -0.7, 0});
+
+        {
+            unique_ptr<Object> secondLeftLeg = make_unique<Object>(dummy);
+            {
+                vector<Vec3> leftLegUpV;
+                for(int i = 0; i < 10; i++)
+                {
+                    leftLegUpV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), 0, (float)(0.1 * sin(i * 2 * M_PI / 10))});
+                }
+                unique_ptr<Object> leftLegUp = make_unique<Object>(leftLegUpV);
+                secondLeftLeg->addChild(move(leftLegUp));
+            }
+
+            {
+                vector<Vec3> leftLegDownV;
+                for(int i = 0; i < 10; i++)
+                {
+                    leftLegDownV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), -1, (float)(0.1 * sin(i * 2 * M_PI / 10))});
+                }
+                unique_ptr<Object> leftLegDown = make_unique<Object>(leftLegDownV);
+                secondLeftLeg->addChild(move(leftLegDown));
+            }
+
+            {
+                for(int i = 0; i < 10; i++)
+                {
+                    vector<Vec3> leftLegSideV;
+                    leftLegSideV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), 0, (float)(0.1 * sin(i * 2 * M_PI / 10))});
+                    leftLegSideV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), -1, (float)(0.1 * sin(i * 2 * M_PI / 10))});
+                    leftLegSideV.push_back({(float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), -1, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
+                    leftLegSideV.push_back({(float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), 0, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
+                    
+                    secondLeftLeg->addChild(move(make_unique<Object>(leftLegSideV)));
+                }
+            }
+            secondLeftLeg->setPosition({0, -1.1, 0});
+
+            leftLeg->addChild(move(secondLeftLeg));
+        }
         head->addChild(move(leftLeg));
     }
 
