@@ -4,12 +4,14 @@
 #include <memory>
 #include "Model.hpp"
 #include "Camera.hpp"
+#include "Pod.hpp"
 
 class SceneManager
 {
 private:
     static std::vector<std::shared_ptr<Model>> toRender;
     static Camera cam;
+    static Pod pod;
 
 public:
     static void addRenderModel(std::shared_ptr<Model>);

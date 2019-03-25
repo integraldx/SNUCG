@@ -28,6 +28,8 @@ public:
     void setPosition(Vec3);
     void setRotationCenter(Vec3);
     void setRotation(float, Vec3);
+    void setRotationAngle(float);
+    float getRotationAngle();
     void setScale(Vec3);
     void setColor(Vec3);
     void addChild(std::shared_ptr<Object>);

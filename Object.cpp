@@ -77,3 +77,13 @@ void Object::addChild(std::shared_ptr<Object> obj)
 {
     childs.push_back(std::move(obj));
 }
+
+float Object::getRotationAngle()
+{
+    return rotationAngle;
+}
+
+void Object::setRotationAngle(float f)
+{
+    rotationAngle = f;
+}

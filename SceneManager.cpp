@@ -2,6 +2,7 @@
 
 std::vector<std::shared_ptr<Model>> SceneManager::toRender;
 Camera SceneManager::cam;
+Pod SceneManager::pod;
 
 void SceneManager::addRenderModel(std::shared_ptr<Model> m)
 {
