@@ -7,12 +7,14 @@
 
 void init (void) 
 {
-    glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB);
+    glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize (1280, 720); 
     glutInitWindowPosition (100, 100);
     glutCreateWindow ("HW#1");
 /*  select clearing (background) color       */
     glClearColor (0.0, 0.0, 0.0, 0.0);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
 /*  initialize viewing values  */
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -33,8 +35,8 @@ int main(int argc, char** argv)
     glutInit(&argc, argv);
     init ();
 
-    std::shared_ptr<Model> model = Pod::getPod();
-    SceneManager::addRenderModel(model);
+    std::shared_ptr<Pod> model = Pod::getPod();
+    SceneManager::addRenderModel(model->getModel());
 
     glutMainLoop();
     return 0;  

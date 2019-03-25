@@ -1,10 +1,11 @@
 #include "Pod.hpp"
 
 using namespace std;
-shared_ptr<Model> Pod::getPod()
+
+shared_ptr<Pod> Pod::getPod()
 {
     vector<Vec3> dummy;
-    std::unique_ptr<Object> head = std::make_unique<Object>(dummy);
+    unique_ptr<Object> head = std::make_unique<Object>(dummy);
     {
         {
             vector<Vec3> headUpV;
@@ -137,5 +138,56 @@ shared_ptr<Model> Pod::getPod()
         }
     }
 
-    return make_shared<Model>(move(head));
+    {
+        unique_ptr<Object> leftLeg = make_unique<Object>(dummy);
+        {
+            vector<Vec3> leftLegUpV;
+            for(int i = 0; i < 10; i++)
+            {
+                leftLegUpV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), 0, (float)(0.1 * sin(i * 2 * M_PI / 10))});
+            }
+            unique_ptr<Object> leftLegUp = make_unique<Object>(leftLegUpV);
+            leftLeg->addChild(move(leftLegUp));
+        }
+
+        {
+            vector<Vec3> leftLegDownV;
+            for(int i = 0; i < 10; i++)
+            {
+                leftLegDownV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), -1, (float)(0.1 * sin(i * 2 * M_PI / 10))});
+            }
+            unique_ptr<Object> leftLegDown = make_unique<Object>(leftLegDownV);
+            leftLeg->addChild(move(leftLegDown));
+        }
+
+        {
+            for(int i = 0; i < 10; i++)
+            {
+                vector<Vec3> leftLegSideV;
+                leftLegSideV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), 0, (float)(0.1 * sin(i * 2 * M_PI / 10))});
+                leftLegSideV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), -1, (float)(0.1 * sin(i * 2 * M_PI / 10))});
+                leftLegSideV.push_back({(float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), -1, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
+                leftLegSideV.push_back({(float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), 0, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
+
+                
+                leftLeg->addChild(move(make_unique<Object>(leftLegSideV)));
+            }
+        }
+        leftLeg->setPosition({0.2, -0.7, 0});
+
+        head->addChild(move(leftLeg));
+    }
+
+    return make_shared<Pod>(make_shared<Model>(move(head)));
+
+}
+
+shared_ptr<Model> Pod::getModel()
+{
+    return podModel;
+}
+
+Pod::Pod(shared_ptr<Model> m)
+{
+    podModel = move(m);
 }

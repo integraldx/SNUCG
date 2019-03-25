@@ -2,12 +2,19 @@
 
 #include "Model.hpp"
 #include <memory>
+#include <math.h>
 
-class Pod : Model
+class Pod
 {
 
-public:
+private:
+    std::shared_ptr<Model> podModel;
 
-    static std::shared_ptr<Model> getPod();
+public:
+    Pod(std::shared_ptr<Model>);
+
+    static std::shared_ptr<Pod> getPod();
+
+    std::shared_ptr<Model> getModel();
 
 };

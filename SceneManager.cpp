@@ -11,7 +11,7 @@ void SceneManager::addRenderModel(std::shared_ptr<Model> m)
 void SceneManager::displayCallback()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
+
     glLoadIdentity();
     gluPerspective(60.0, 16.0f/9.0f, 0.1f, 100.0f);
     Vec3 camPosition = cam.getPosition();
