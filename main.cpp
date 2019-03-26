@@ -20,7 +20,6 @@ void init (void)
     glLoadIdentity();
     glutDisplayFunc(SceneManager::displayCallback); 
     glutKeyboardFunc(SceneManager::keyboardCallback);
-    SceneManager::timerCallback(0);
 }
 
 /* 
@@ -37,7 +36,9 @@ int main(int argc, char** argv)
 
     std::shared_ptr<Pod> model = Pod::getPod();
     SceneManager::addRenderModel(model->getModel());
+    SceneManager::setPod(model);
 
+    SceneManager::timerCallback(0);
     glutMainLoop();
     return 0;  
 }

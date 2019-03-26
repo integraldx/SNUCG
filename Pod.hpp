@@ -2,16 +2,14 @@
 
 #include "Model.hpp"
 #include <memory>
+#include <vector>
 #include <math.h>
 
 class Pod
 {
 private:
     std::shared_ptr<Model> podModel;
-    std::shared_ptr<Object> leftThigh;
-    std::shared_ptr<Object> rightThigh;
-    std::shared_ptr<Object> leftLeg;
-    std::shared_ptr<Object> rightLeg;
+    std::vector<std::shared_ptr<Object>> legs;
 public:
     Pod(std::shared_ptr<Model>);
     void rotateLeftThigh(float deltaAngle);

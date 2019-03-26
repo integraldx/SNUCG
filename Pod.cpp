@@ -176,7 +176,8 @@ shared_ptr<Pod> Pod::getPod()
         }
         leftLeg->setPosition({0.2, -0.7, 0});
         leftLeg->setRotation(60, {-1, 0, 0});
-        returnPod->leftThigh = leftLeg;
+
+        returnPod->legs.push_back(leftLeg);
         
         {
             shared_ptr<Object> secondLeftLeg = make_shared<Object>(dummy);
@@ -214,7 +215,7 @@ shared_ptr<Pod> Pod::getPod()
             }
             secondLeftLeg->setPosition({0, -1.1, 0});
             secondLeftLeg->setRotation(-150, {-1, 0, 0});
-            returnPod->leftLeg = secondLeftLeg;
+            returnPod->legs.push_back(shared_ptr<Object>(secondLeftLeg));
 
             leftLeg->addChild(move(secondLeftLeg));
         }
@@ -260,8 +261,8 @@ shared_ptr<Pod> Pod::getPod()
         }
         rightLeg->setPosition({-0.2, -0.7, 0});
         rightLeg->setRotation(60, {-1, 0, 0});
-        returnPod->rightThigh = rightLeg;
 
+        returnPod->legs.push_back(rightLeg);
         {
             shared_ptr<Object> secondRightLeg = make_shared<Object>(dummy);
             {
@@ -298,14 +299,14 @@ shared_ptr<Pod> Pod::getPod()
             }
             secondRightLeg->setPosition({0, -1.1, 0});
             secondRightLeg->setRotation(-150, {-1, 0, 0});
-            returnPod->rightLeg = secondRightLeg;
 
+            returnPod->legs.push_back(secondRightLeg);
             rightLeg->addChild(move(secondRightLeg));
         }
         head->addChild(move(rightLeg));
     }
 
-    return make_shared<Pod>(make_shared<Model>(head));
+    return returnPod;
 
 }
 
@@ -321,19 +322,24 @@ Pod::Pod(shared_ptr<Model> m)
 
 void Pod::rotateLeftThigh(float deltaAngle)
 {
-    leftThigh->setRotationAngle(leftThigh->getRotationAngle() + deltaAngle);
+    legs[0]->setRotationAngle(legs[0]->getRotationAngle() + deltaAngle);
 }
 
 void Pod::rotateLeftLeg(float deltaAngle)
 {
-    leftLeg->setRotationAngle(leftLeg->getRotationAngle() + deltaAngle);
+    if(legs[1].get() == nullptr)
+    {
+        printf("Null\n");
+        return;
+    }
+    legs[1]->setRotationAngle(legs[1]->getRotationAngle() + deltaAngle);
 }
 
 void Pod::rotateRightThigh(float deltaAngle)
 {
-    rightThigh->setRotationAngle(rightThigh->getRotationAngle() + deltaAngle);
+    legs[2]->setRotationAngle(legs[2]->getRotationAngle() + deltaAngle);
 }
 void Pod::rotateRightLeg(float deltaAngle)
 {
-    rightLeg->setRotationAngle(rightLeg->getRotationAngle() + deltaAngle);
+    legs[3]->setRotationAngle(legs[3]->getRotationAngle() + deltaAngle);
 }

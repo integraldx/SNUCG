@@ -2,7 +2,7 @@
 
 std::vector<std::shared_ptr<Model>> SceneManager::toRender;
 Camera SceneManager::cam;
-Pod SceneManager::pod;
+std::shared_ptr<Pod> SceneManager::pod(nullptr);
 
 void SceneManager::addRenderModel(std::shared_ptr<Model> m)
 {
@@ -61,6 +61,10 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
             cam.rotateLookDirection(-0.5);
             break;
 
+        case 'p':
+        case 'P':
+            pod->rotateLeftLeg(10);
+            break;
         default:
             break;
     }
@@ -69,6 +73,13 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
 
 void SceneManager::timerCallback(int value)
 {
+
+    pod->rotateLeftLeg(10);
     glutPostRedisplay();
     glutTimerFunc(1000/60, timerCallback, 0);
+}
+
+void SceneManager::setPod(std::shared_ptr<Pod> p)
+{
+    pod.swap(p);
 }
