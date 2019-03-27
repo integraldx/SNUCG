@@ -3,6 +3,7 @@
 std::vector<std::shared_ptr<Model>> SceneManager::toRender;
 Camera SceneManager::cam;
 std::shared_ptr<Pod> SceneManager::pod(nullptr);
+int SceneManager::window;
 
 void SceneManager::addRenderModel(std::shared_ptr<Model> m)
 {
@@ -29,7 +30,6 @@ void SceneManager::displayCallback()
     }
 
     glFlush();
-    glutPostRedisplay();
 }
 
 void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
@@ -68,6 +68,9 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
         case 'K':
             cam.applyDeltaPosition({0, -0.05, 0});
             break;
+        case 'x':
+        case 'X':
+            glutDestroyWindow(window);
         default:
             break;
     }
@@ -81,7 +84,7 @@ void SceneManager::animatePod(int cycleTime = 1500)
     double angle = (double)frac / cycleTime * M_PI * 2;
     pod->setPosition({0, 0.3 * sin(angle), 0});
     pod->rotateLeftThigh(1 * sin(angle));
-    pod->rotateLeftLeg(0.5 * cos(angle - 30));
+    pod->rotateLeftLeg(0.6 * cos(angle-10));
     pod->rotateRightThigh(1 * sin(angle + 30));
     pod->rotateRightLeg(0.5 * cos(angle - 30));
 }
@@ -96,4 +99,9 @@ void SceneManager::timerCallback(int value)
 void SceneManager::setPod(std::shared_ptr<Pod> p)
 {
     pod.swap(p);
+}
+
+void SceneManager::setWindow(int newWindow)
+{
+    window = newWindow;
 }

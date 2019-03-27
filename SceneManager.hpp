@@ -14,6 +14,7 @@ private:
     static std::vector<std::shared_ptr<Model>> toRender;
     static Camera cam;
     static std::shared_ptr<Pod> pod;
+    static int window;
 
 public:
     static void addRenderModel(std::shared_ptr<Model>);
@@ -22,4 +23,5 @@ public:
     static void timerCallback(int);
     static void setPod(std::shared_ptr<Pod> p);
     static void animatePod(int);
+    static void setWindow(int);
 };

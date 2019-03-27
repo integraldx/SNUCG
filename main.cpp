@@ -10,7 +10,7 @@ void init (void)
     glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize (1280, 720); 
     glutInitWindowPosition (100, 100);
-    glutCreateWindow ("HW#1");
+    SceneManager::setWindow(glutCreateWindow ("HW#1"));
 /*  select clearing (background) color       */
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glEnable(GL_DEPTH_TEST);
