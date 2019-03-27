@@ -66,8 +66,21 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
 
 }
 
+void SceneManager::animatePod(int cycleTime = 1500)
+{
+    auto t = std::chrono::duration_cast<std::chrono::duration<long, std::milli>>(std::chrono::system_clock::now().time_since_epoch());
+    int frac = t.count() % cycleTime;
+    double angle = (double)frac / cycleTime * M_PI * 2;
+    pod->setPosition({0, 0.3 * sin(angle), 0});
+    pod->rotateLeftThigh(1 * sin(angle));
+    pod->rotateLeftLeg(0.5 * cos(angle));
+    pod->rotateRightThigh(1 * sin(angle + 30));
+    pod->rotateRightLeg(0.5 * cos(angle - 30));
+}
+
 void SceneManager::timerCallback(int value)
 {
+    animatePod();
     glutPostRedisplay();
     glutTimerFunc(1000/60, timerCallback, 0);
 }

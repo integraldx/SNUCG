@@ -12,6 +12,9 @@ private:
     std::vector<std::shared_ptr<Object>> legs;
 public:
     Pod(std::shared_ptr<Model>);
+    void setPosition(Vec3);
+    void setRotation(float, Vec3);
+    void setScale(Vec3);
     void rotateLeftThigh(float deltaAngle);
     void rotateLeftLeg(float deltaAngle);
     void rotateRightThigh(float deltaAngle);

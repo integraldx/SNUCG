@@ -5,6 +5,8 @@
 #include "Model.hpp"
 #include "Camera.hpp"
 #include "Pod.hpp"
+#include <time.h>
+#include <chrono>
 
 class SceneManager
 {
@@ -19,4 +21,5 @@ public:
     static void keyboardCallback(unsigned char, int, int);
     static void timerCallback(int);
     static void setPod(std::shared_ptr<Pod> p);
+    static void animatePod(int);
 };

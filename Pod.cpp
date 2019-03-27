@@ -334,7 +334,24 @@ void Pod::rotateRightThigh(float deltaAngle)
 {
     legs[2]->setRotationAngle(legs[2]->getRotationAngle() + deltaAngle);
 }
+
 void Pod::rotateRightLeg(float deltaAngle)
 {
     legs[3]->setRotationAngle(legs[3]->getRotationAngle() + deltaAngle);
 }
+
+void Pod::setPosition(Vec3 v)
+{
+    podModel->setPosition(v);
+}
+
+void Pod::setRotation(float f, Vec3 v)
+{
+    podModel->setRotation(f, v);
+}
+
+void Pod::setScale(Vec3 v)
+{
+    podModel->setScale(v);
+}
+
