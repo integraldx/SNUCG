@@ -4,6 +4,7 @@ std::vector<std::shared_ptr<Model>> SceneManager::toRender;
 Camera SceneManager::cam;
 std::shared_ptr<Pod> SceneManager::pod(nullptr);
 int SceneManager::window;
+std::chrono::duration<long, std::milli> SceneManager::startTime;
 
 void SceneManager::addRenderModel(std::shared_ptr<Model> m)
 {
@@ -80,13 +81,13 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
 void SceneManager::animatePod(int cycleTime = 1500)
 {
     auto t = std::chrono::duration_cast<std::chrono::duration<long, std::milli>>(std::chrono::system_clock::now().time_since_epoch());
-    int frac = t.count() % cycleTime;
+    int frac = (startTime.count() - t.count()) % cycleTime;
     double angle = (double)frac / cycleTime * M_PI * 2;
     pod->setPosition({0, 0.3 * sin(angle), 0});
-    pod->rotateLeftThigh(1 * sin(angle));
-    pod->rotateLeftLeg(0.6 * sin(angle-10));
-    pod->rotateRightThigh(1 * sin(angle + 60));
-    pod->rotateRightLeg(0.5 * sin(angle));
+    pod->rotateLeftThigh(10 * cos(angle) + 30);
+    pod->rotateLeftLeg(10 * sin(angle) - 120);
+    pod->rotateRightThigh(-10 * sin(angle) + 30);
+    pod->rotateRightLeg(-10 * cos(angle) - 120);
 }
 
 void SceneManager::timerCallback(int value)
@@ -104,4 +105,9 @@ void SceneManager::setPod(std::shared_ptr<Pod> p)
 void SceneManager::setWindow(int newWindow)
 {
     window = newWindow;
+}
+
+void SceneManager::initTime()
+{
+    startTime = std::chrono::duration_cast<std::chrono::duration<long, std::milli>>(std::chrono::system_clock::now().time_since_epoch());
 }

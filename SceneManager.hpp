@@ -15,6 +15,7 @@ private:
     static Camera cam;
     static std::shared_ptr<Pod> pod;
     static int window;
+    static std::chrono::duration<long, std::milli> startTime;
 
 public:
     static void addRenderModel(std::shared_ptr<Model>);
@@ -24,4 +25,5 @@ public:
     static void setPod(std::shared_ptr<Pod> p);
     static void animatePod(int);
     static void setWindow(int);
+    static void initTime();
 };

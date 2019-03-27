@@ -20,6 +20,7 @@ void init (void)
     glLoadIdentity();
     glutDisplayFunc(SceneManager::displayCallback); 
     glutKeyboardFunc(SceneManager::keyboardCallback);
+    SceneManager::initTime();
 }
 
 /* 

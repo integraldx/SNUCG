@@ -356,24 +356,24 @@ Pod::Pod(shared_ptr<Model> m)
     podModel = move(m);
 }
 
-void Pod::rotateLeftThigh(float deltaAngle)
+void Pod::rotateLeftThigh(float angle)
 {
-    legs[0]->setRotationAngle(legs[0]->getRotationAngle() + deltaAngle);
+    legs[0]->setRotationAngle(angle);
 }
 
-void Pod::rotateLeftLeg(float deltaAngle)
+void Pod::rotateLeftLeg(float angle)
 {
-    legs[1]->setRotationAngle(legs[1]->getRotationAngle() + deltaAngle);
+    legs[1]->setRotationAngle(angle);
 }
 
-void Pod::rotateRightThigh(float deltaAngle)
+void Pod::rotateRightThigh(float angle)
 {
-    legs[2]->setRotationAngle(legs[2]->getRotationAngle() + deltaAngle);
+    legs[2]->setRotationAngle(angle);
 }
 
-void Pod::rotateRightLeg(float deltaAngle)
+void Pod::rotateRightLeg(float angle)
 {
-    legs[3]->setRotationAngle(legs[3]->getRotationAngle() + deltaAngle);
+    legs[3]->setRotationAngle(angle);
 }
 
 void Pod::setPosition(Vec3 v)
