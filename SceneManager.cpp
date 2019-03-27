@@ -60,11 +60,6 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
         case 'E':
             cam.rotateLookDirection(-0.5);
             break;
-
-        case 'p':
-        case 'P':
-            pod->rotateLeftLeg(10);
-            break;
         default:
             break;
     }
@@ -73,8 +68,6 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
 
 void SceneManager::timerCallback(int value)
 {
-
-    pod->rotateLeftLeg(10);
     glutPostRedisplay();
     glutTimerFunc(1000/60, timerCallback, 0);
 }
