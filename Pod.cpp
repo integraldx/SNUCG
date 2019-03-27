@@ -137,6 +137,42 @@ shared_ptr<Pod> Pod::getPod()
             headBack->setColor({0.8, 0.8, 0.8});
             head->addChild(move(headBack));
         }
+
+        {
+            vector<Vec3> headBottomDownV;
+            headBottomDownV.push_back({0.3, -1.0, 0.3});
+            headBottomDownV.push_back({0.3, -1.0, -0.3});
+            headBottomDownV.push_back({-0.3, -1.0, -0.3});
+            headBottomDownV.push_back({-0.3, -1.0, 0.3});
+
+            shared_ptr<Object> headBottomDown = std::make_shared<Object>(headBottomDownV);
+            headBottomDown->setColor({0.4, 0.4, 0.4});
+            head->addChild(move(headBottomDown));
+        }
+
+        {
+            vector<Vec3> headBottomLeftV;
+            headBottomLeftV.push_back({0.3, -0.6, 0.3});
+            headBottomLeftV.push_back({0.3, -0.6, -0.3});
+            headBottomLeftV.push_back({0.3, -1.0, -0.3});
+            headBottomLeftV.push_back({0.3, -1.0, 0.3});
+
+            shared_ptr<Object> headBottomLeft = std::make_shared<Object>(headBottomLeftV);
+            headBottomLeft->setColor({0.4, 0.4, 0.4});
+            head->addChild(move(headBottomLeft));
+        }
+
+        {
+            vector<Vec3> headBottomRightV;
+            headBottomRightV.push_back({-0.3, -0.6, 0.3});
+            headBottomRightV.push_back({-0.3, -0.6, -0.3});
+            headBottomRightV.push_back({-0.3, -1.0, -0.3});
+            headBottomRightV.push_back({-0.3, -1.0, 0.3});
+
+            shared_ptr<Object> headBottomRight = std::make_shared<Object>(headBottomRightV);
+            headBottomRight->setColor({0.4, 0.4, 0.4});
+            head->addChild(move(headBottomRight));
+        }
     }
 
     {
