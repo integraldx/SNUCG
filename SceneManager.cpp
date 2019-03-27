@@ -54,11 +54,19 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
             break;
         case 'q':
         case 'Q':
-            cam.rotateLookDirection(0.5);
+            cam.rotateLookDirection(1);
             break;
         case 'e':
         case 'E':
-            cam.rotateLookDirection(-0.5);
+            cam.rotateLookDirection(-1);
+            break;
+        case 'i':
+        case 'I':
+            cam.applyDeltaPosition({0, 0.05, 0});
+            break;
+        case 'k':
+        case 'K':
+            cam.applyDeltaPosition({0, -0.05, 0});
             break;
         default:
             break;
@@ -73,7 +81,7 @@ void SceneManager::animatePod(int cycleTime = 1500)
     double angle = (double)frac / cycleTime * M_PI * 2;
     pod->setPosition({0, 0.3 * sin(angle), 0});
     pod->rotateLeftThigh(1 * sin(angle));
-    pod->rotateLeftLeg(0.5 * cos(angle));
+    pod->rotateLeftLeg(0.5 * cos(angle - 30));
     pod->rotateRightThigh(1 * sin(angle + 30));
     pod->rotateRightLeg(0.5 * cos(angle - 30));
 }
