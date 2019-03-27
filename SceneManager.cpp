@@ -28,7 +28,7 @@ void SceneManager::displayCallback()
     {
         m->draw();
     }
-
+    glutSwapBuffers();
     glFlush();
 }
 
@@ -84,9 +84,9 @@ void SceneManager::animatePod(int cycleTime = 1500)
     double angle = (double)frac / cycleTime * M_PI * 2;
     pod->setPosition({0, 0.3 * sin(angle), 0});
     pod->rotateLeftThigh(1 * sin(angle));
-    pod->rotateLeftLeg(0.6 * cos(angle-10));
-    pod->rotateRightThigh(1 * sin(angle + 30));
-    pod->rotateRightLeg(0.5 * cos(angle - 30));
+    pod->rotateLeftLeg(0.6 * sin(angle-10));
+    pod->rotateRightThigh(1 * sin(angle + 60));
+    pod->rotateRightLeg(0.5 * sin(angle));
 }
 
 void SceneManager::timerCallback(int value)
