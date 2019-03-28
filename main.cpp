@@ -1,17 +1,26 @@
 #include <GL/gl.h>
 #include <GL/glut.h>
 
-#include "Display.hpp"
-#include "Input.hpp"
+#include "SceneManager.hpp"
+#include "Pod.hpp"
 
 
 void init (void) 
 {
+    glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitWindowSize (1280, 720); 
+    glutInitWindowPosition (100, 100);
+    SceneManager::setWindow(glutCreateWindow ("HW#1"));
 /*  select clearing (background) color       */
     glClearColor (0.0, 0.0, 0.0, 0.0);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
 /*  initialize viewing values  */
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
+    glutDisplayFunc(SceneManager::displayCallback); 
+    glutKeyboardFunc(SceneManager::keyboardCallback);
+    SceneManager::initTime();
 }
 
 /* 
@@ -24,13 +33,13 @@ void init (void)
 int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
-    glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB);
-    glutInitWindowSize (1000, 1000); 
-    glutInitWindowPosition (100, 100);
-    glutCreateWindow ("hello");
     init ();
-    glutDisplayFunc(displayFunc); 
-    glutKeyboardFunc(keyboardFunc);
+
+    std::shared_ptr<Pod> model = Pod::getPod();
+    SceneManager::addRenderModel(model->getModel());
+    SceneManager::setPod(model);
+
+    SceneManager::timerCallback(0);
     glutMainLoop();
-    return 0;   /* ISO C requires main to return int. */
+    return 0;  
 }
