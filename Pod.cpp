@@ -322,6 +322,16 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
+            vector<Vec3> leftLegJointV;
+            for(int i = 0; i < 10; i++)
+            {
+                leftLegJointV.push_back({-0.1, (float)(0.1 * sin(i * 2 * M_PI / 10)) - 0.6, (float)(0.1 * cos(i * 2 * M_PI / 10))});
+            }
+
+            leftLeg->addChild(make_shared<Object>(leftLegJointV));
+        }
+
+        {
             for(int i = 0; i < 10; i++)
             {
                 vector<Vec3> leftLegJointV;
@@ -334,6 +344,7 @@ shared_ptr<Pod> Pod::getPod()
                 leftLeg->addChild(move(make_shared<Object>(leftLegJointV)));
             }
         }
+
         leftLeg->setPosition({0.4, -0.8, 0});
         leftLeg->setRotation(30, {-1, 0, 0});
         leftLeg->setColor({0.2, 0.2, 0.2});
@@ -450,7 +461,7 @@ shared_ptr<Pod> Pod::getPod()
             vector<Vec3> rightLegJointV;
             for(int i = 0; i < 10; i++)
             {
-                rightLegJointV.push_back({-0.1, (float)(0.1 * sin(i * 2 * M_PI / 10)), (float)(0.1 * cos(i * 2 * M_PI / 10))});
+                rightLegJointV.push_back({-0.1, (float)(0.1 * sin(i * 2 * M_PI / 10)) - 0.6, (float)(0.1 * cos(i * 2 * M_PI / 10))});
             }
 
             rightLeg->addChild(make_shared<Object>(rightLegJointV));
@@ -460,14 +471,24 @@ shared_ptr<Pod> Pod::getPod()
             for(int i = 0; i < 10; i++)
             {
                 vector<Vec3> rightLegJointV;
-                rightLegJointV.push_back({0.1, (float)(0.1 * cos(i * 2 * M_PI / 10)), (float)(0.1 * sin(i * 2 * M_PI / 10))});
-                rightLegJointV.push_back({-0.1, (float)(0.1 * cos(i * 2 * M_PI / 10)), (float)(0.1 * sin(i * 2 * M_PI / 10))});
-                rightLegJointV.push_back({-0.1, (float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
-                rightLegJointV.push_back({0.1, (float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
+                rightLegJointV.push_back({0.1, (float)(0.1 * cos(i * 2 * M_PI / 10)) - 0.6, (float)(0.1 * sin(i * 2 * M_PI / 10))});
+                rightLegJointV.push_back({-0.1, (float)(0.1 * cos(i * 2 * M_PI / 10)) - 0.6, (float)(0.1 * sin(i * 2 * M_PI / 10))});
+                rightLegJointV.push_back({-0.1, (float)(0.1 * cos((i + 1) * 2 * M_PI / 10)) - 0.6, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
+                rightLegJointV.push_back({0.1, (float)(0.1 * cos((i + 1) * 2 * M_PI / 10)) - 0.6, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
 
                 
                 rightLeg->addChild(move(make_shared<Object>(rightLegJointV)));
             }
+        }
+
+        {
+            vector<Vec3> rightLegJointV;
+            for(int i = 0; i < 10; i++)
+            {
+                rightLegJointV.push_back({0.1, (float)(0.1 * sin(i * 2 * M_PI / 10)) - 0.6, (float)(0.1 * cos(i * 2 * M_PI / 10))});
+            }
+
+            rightLeg->addChild(make_shared<Object>(rightLegJointV));
         }
         rightLeg->setPosition({-0.4, -0.8, 0});
         rightLeg->setRotation(30, {-1, 0, 0});
