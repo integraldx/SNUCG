@@ -16,7 +16,7 @@ protected:
     Vec3 rotationAxis = {0, 0, 0};
     float rotationAngle = 0;
     Vec3 scale = {1, 1, 1};
-
+    bool hasColor = false;
     Vec3 color = {1, 1, 1};
     std::vector<std::shared_ptr<Object>> childs;
 

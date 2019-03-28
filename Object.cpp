@@ -29,7 +29,10 @@ void Object::draw()
         glTranslatef(rotationCenter.x, rotationCenter.y, rotationCenter.z);
         glRotatef(rotationAngle, rotationAxis.x, rotationAxis.y, rotationAxis.z);
         glTranslatef(-rotationCenter.x, -rotationCenter.y, -rotationCenter.z);
-        glColor3f(color.x, color.y, color.z);
+        if(hasColor)
+        {
+            glColor3f(color.x, color.y, color.z);
+        }
         glBegin(GL_POLYGON);
         {
             for(Vec3 v : vertices)
@@ -70,6 +73,7 @@ void Object::setScale(Vec3 v)
 
 void Object::setColor(Vec3 v)
 {
+    hasColor = true;
     color = v;
 }
 
