@@ -37,38 +37,38 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
 {
     switch(key)
     {
-        case 'w':
-        case 'W':
-            cam.applyDeltaPosition(normalizeVec3(cam.getLookDirection()) * 0.05);
-            break;
-        case 's':
-        case 'S':
-            cam.applyDeltaPosition(normalizeVec3(cam.getLookDirection()) * -0.05);
-            break;
-        case 'a':
-        case 'A':
-            cam.applyDeltaPosition(normalizeVec3(crossProduct(cam.getUp(), cam.getLookDirection())) * 0.05);
-            break;
-        case 'd':
-        case 'D':
-            cam.applyDeltaPosition(normalizeVec3(crossProduct(cam.getUp(), cam.getLookDirection())) * -0.05);
-            break;
-        case 'q':
-        case 'Q':
-            cam.rotateLookDirection(1);
-            break;
-        case 'e':
-        case 'E':
-            cam.rotateLookDirection(-1);
-            break;
-        case 'i':
-        case 'I':
-            cam.applyDeltaPosition({0, 0.05, 0});
-            break;
-        case 'k':
-        case 'K':
-            cam.applyDeltaPosition({0, -0.05, 0});
-            break;
+        //case 'w':
+        //case 'W':
+        //    cam.applyDeltaPosition(normalizeVec3(cam.getLookDirection()) * 0.05);
+        //    break;
+        //case 's':
+        //case 'S':
+        //    cam.applyDeltaPosition(normalizeVec3(cam.getLookDirection()) * -0.05);
+        //    break;
+        //case 'a':
+        //case 'A':
+        //    cam.applyDeltaPosition(normalizeVec3(crossProduct(cam.getUp(), cam.getLookDirection())) * 0.05);
+        //    break;
+        //case 'd':
+        //case 'D':
+        //    cam.applyDeltaPosition(normalizeVec3(crossProduct(cam.getUp(), cam.getLookDirection())) * -0.05);
+        //    break;
+        //case 'q':
+        //case 'Q':
+        //    cam.rotateLookDirection(1);
+        //    break;
+        //case 'e':
+        //case 'E':
+        //    cam.rotateLookDirection(-1);
+        //    break;
+        //case 'i':
+        //case 'I':
+        //    cam.applyDeltaPosition({0, 0.05, 0});
+        //    break;
+        //case 'k':
+        //case 'K':
+        //    cam.applyDeltaPosition({0, -0.05, 0});
+        //    break;
         case 'x':
         case 'X':
             glutDestroyWindow(window);
