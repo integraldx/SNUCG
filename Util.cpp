@@ -8,6 +8,16 @@ Vec3 normalizeVec3(Vec3 v)
     return ret;
 }
 
+Vec3 operator + (Vec3 left, Vec3 right)
+{
+    return {left.x + right.x, left.y + right.y, left.z + right.z};
+}
+
+float innerProduct(Vec3 left, Vec3 right)
+{
+    return left.x * right.x + left.y * right.y + left.z * right.z;
+}
+
 Vec3 crossProduct(Vec3 left, Vec3 right)
 {
     Vec3 ret;
@@ -19,6 +29,15 @@ Vec3 crossProduct(Vec3 left, Vec3 right)
 }
 
 Vec3 operator * (Vec3 v, float mul)
+{
+    v.x *= mul;
+    v.y *= mul;
+    v.z *= mul;
+
+    return v;
+}
+
+Vec3 operator * (float mul, Vec3 v)
 {
     v.x *= mul;
     v.y *= mul;

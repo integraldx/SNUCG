@@ -23,18 +23,18 @@ void Model::draw()
     glPopMatrix();
 }
 
-void Model::setPosition(Vec3 v)
+void Model::setPosition(Vector3f v)
 {
     position = v;
 }
 
-void Model::setRotation(float f, Vec3 v)
+void Model::setRotation(float f, Vector3f v)
 {
     rotationAxis = v;
     rotationAngle = f;
 }
 
-void Model::setScale(Vec3 v)
+void Model::setScale(Vector3f v)
 {
     scale = v;
 }

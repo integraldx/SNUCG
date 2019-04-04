@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "Util.hpp"
+#include "Vector3f.hpp"
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include <memory>
@@ -10,27 +10,27 @@ class Object
 {
 protected:
     friend class Model;
-    std::vector<Vec3> vertices;
-    Vec3 position = {0, 0, 0};
-    Vec3 rotationCenter = {0, 0, 0};
-    Vec3 rotationAxis = {0, 0, 0};
+    std::vector<Vector3f> vertices;
+    Vector3f position = {0, 0, 0};
+    Vector3f rotationCenter = {0, 0, 0};
+    Vector3f rotationAxis = {0, 0, 0};
     float rotationAngle = 0;
-    Vec3 scale = {1, 1, 1};
+    Vector3f scale = {1, 1, 1};
     bool hasColor = false;
-    Vec3 color = {1, 1, 1};
+    Vector3f color = {1, 1, 1};
     std::vector<std::shared_ptr<Object>> childs;
 
 public:
     Object();
-    Object(std::vector<Vec3> vertices);
+    Object(std::vector<Vector3f> vertices);
     ~Object();
     void draw();
-    void setPosition(Vec3);
-    void setRotationCenter(Vec3);
-    void setRotation(float, Vec3);
+    void setPosition(Vector3f);
+    void setRotationCenter(Vector3f);
+    void setRotation(float, Vector3f);
     void setRotationAngle(float);
     float getRotationAngle();
-    void setScale(Vec3);
-    void setColor(Vec3);
+    void setScale(Vector3f);
+    void setColor(Vector3f);
     void addChild(std::shared_ptr<Object>);
 };

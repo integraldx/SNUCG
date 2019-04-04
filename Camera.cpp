@@ -1,6 +1,6 @@
 #include "Camera.hpp"
 
-void Camera::applyDeltaPosition(Vec3 v)
+void Camera::applyDeltaPosition(Vector3f v)
 {
     position.x += v.x;
     position.y += v.y;
@@ -16,17 +16,17 @@ void Camera::rotateLookDirection(float angle)
 
 }
 
-Vec3 Camera::getLookDirection()
+Vector3f Camera::getLookDirection()
 {
     return lookDirection;
 }
 
-Vec3 Camera::getPosition()
+Vector3f Camera::getPosition()
 {
     return position;
 }
 
-Vec3 Camera::getUp()
+Vector3f Camera::getUp()
 {
     return up;
 }

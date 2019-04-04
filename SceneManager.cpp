@@ -17,8 +17,8 @@ void SceneManager::displayCallback()
 
     glLoadIdentity();
     gluPerspective(60.0, 16.0f/9.0f, 0.1f, 100.0f);
-    Vec3 camPosition = cam.getPosition();
-    Vec3 camDirection = cam.getLookDirection();
+    Vector3f camPosition = cam.getPosition();
+    Vector3f camDirection = cam.getLookDirection();
     gluLookAt(
         camPosition.x, camPosition.y, camPosition.z,
         camPosition.x + camDirection.x, camPosition.y + camDirection.y, camPosition.z + camDirection.z,
