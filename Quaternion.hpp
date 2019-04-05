@@ -22,5 +22,4 @@ Vector3f getAxis(Quaternion q);
 
 float getAngle(Quaternion q);
 
-float[16] getMatrix(Quaternion q);
 
