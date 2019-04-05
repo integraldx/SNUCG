@@ -1,4 +1,5 @@
 #pragma once
+#include <math.h>
 
 struct Vector3f
 {
@@ -18,3 +19,7 @@ Vector3f crossProduct(Vector3f left, Vector3f right);
 Vector3f operator + (Vector3f left, Vector3f right);
 
 Vector3f operator - (Vector3f left, Vector3f right);
+
+float getScale(Vector3f v);
+
+Vector3f normalize(Vector3f v);

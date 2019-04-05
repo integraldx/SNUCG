@@ -34,3 +34,13 @@ Vector3f operator - (Vector3f left, Vector3f right)
 {
     return {left.x - right.x, left.y - right.y, left.z - right.z};
 }
+
+float getScale(Vector3f v)
+{
+    return sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2));
+}
+
+Vector3f normalize(Vector3f v)
+{
+    return v * (1 / getScale(v));
+}
