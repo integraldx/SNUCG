@@ -10,11 +10,19 @@ Quaternion operator *(Quaternion left, Quaternion right)
     float w = left.w * right.w - dotProduct({left.x, left.y, left.z}, {right.x, right.y, right.z});
     Vector3f v = 
         left.w * (Vector3f){right.x, right.y, right.z} 
-        + right.w * (Vector3f){right.x, right.y, right.z}
+        + right.w * (Vector3f){left.x, left.y, left.z}
         + crossProduct({left.x, left.y, left.z}, {right.x, right.y, right.z});
     
     return {w, v.x, v.y, v.z};
 }
+
+Quaternion expToQuat(float angle, Vector3f axis)
+{
+    float w = cos(angle);
+    Vector3f v = sin(angle) * axis;
+    return {w, v.x, v.y, v.z};
+}
+
 
 Quaternion inverse(Quaternion q)
 {

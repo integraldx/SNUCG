@@ -8,6 +8,7 @@
 #include <time.h>
 #include <chrono>
 #include <algorithm>
+#include "Quaternion.hpp"
 
 class SceneManager
 {

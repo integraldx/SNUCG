@@ -15,7 +15,7 @@ void SceneManager::initializeScene()
     glutInitWindowSize (1280, 720); 
     screenScale = {1280, 720};
     glutInitWindowPosition (100, 100);
-    SceneManager::setWindow(glutCreateWindow ("HW#1"));
+    SceneManager::setWindow(glutCreateWindow ("HW#2"));
 /*  select clearing (background) color       */
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glEnable(GL_DEPTH_TEST);
@@ -126,12 +126,12 @@ void SceneManager::mouseCallback(int button, int state, int x, int y)
     switch (button)
     {
         case GLUT_LEFT_BUTTON:
-            if (state == GLUT_KEY_DOWN)
+            if (state == GLUT_DOWN)
             {
                 isLeftMouseDown = true;
                 initialMousePosition = {x, y};
             }
-            else if (state = GLUT_KEY_UP)
+            else if (state = GLUT_UP)
             {
                 isLeftMouseDown = false;
             }
@@ -152,7 +152,11 @@ void SceneManager::motionCallback(int x, int y)
 {
     if(isLeftMouseDown)
     {
+        Vector3f axis = crossProduct({-(x - initialMousePosition.first), -(y - initialMousePosition.second), 0}, {0, 0, 1});
+        auto quat = expToQuat(getScale(axis) / 500, normalize(axis));
+        pod->getModel()->applyDeltaRotation(quat);
 
+        initialMousePosition = {x, y};
     }
 }
 
