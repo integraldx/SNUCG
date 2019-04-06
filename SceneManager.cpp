@@ -1,10 +1,34 @@
 #include "SceneManager.hpp"
 
+std::pair<int, int> SceneManager::screenScale;
 std::vector<std::shared_ptr<Model>> SceneManager::toRender;
 Camera SceneManager::cam;
-std::shared_ptr<Pod> SceneManager::pod(nullptr);
+std::shared_ptr<Pod> SceneManager::pod;
 int SceneManager::window;
 std::chrono::duration<long, std::milli> SceneManager::startTime;
+bool SceneManager::isLeftMouseDown;
+std::pair<int, int> SceneManager::initialMousePosition;
+
+void SceneManager::initializeScene()
+{
+    glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitWindowSize (1280, 720); 
+    screenScale = {1280, 720};
+    glutInitWindowPosition (100, 100);
+    SceneManager::setWindow(glutCreateWindow ("HW#1"));
+/*  select clearing (background) color       */
+    glClearColor (0.0, 0.0, 0.0, 0.0);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+/*  initialize viewing values  */
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glutDisplayFunc(displayCallback); 
+    glutKeyboardFunc(keyboardCallback);
+    glutMouseFunc(mouseCallback);
+    glutMotionFunc(motionCallback);
+    initTime();
+}
 
 void SceneManager::addRenderModel(std::shared_ptr<Model> m)
 {
@@ -95,6 +119,41 @@ void SceneManager::timerCallback(int value)
     animatePod();
     glutPostRedisplay();
     glutTimerFunc(1000/60, timerCallback, 0);
+}
+
+void SceneManager::mouseCallback(int button, int state, int x, int y)
+{
+    switch (button)
+    {
+        case GLUT_LEFT_BUTTON:
+            if (state == GLUT_KEY_DOWN)
+            {
+                isLeftMouseDown = true;
+                initialMousePosition = {x, y};
+            }
+            else if (state = GLUT_KEY_UP)
+            {
+                isLeftMouseDown = false;
+            }
+            break;
+    
+        case GLUT_RIGHT_BUTTON:
+
+            break;
+        case GLUT_MIDDLE_BUTTON:
+
+            break;
+        default:
+            break;
+    }
+}
+
+void SceneManager::motionCallback(int x, int y)
+{
+    if(isLeftMouseDown)
+    {
+
+    }
 }
 
 void SceneManager::setPod(std::shared_ptr<Pod> p)
