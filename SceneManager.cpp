@@ -179,12 +179,11 @@ void SceneManager::motionCallback(int x, int y)
     if(isLeftMouseDown)
     {
         Vector3f axis = crossProduct({-(x - initialMousePosition.first), -(y - initialMousePosition.second), 0}, {0, 0, 1});
-        if(isnan(axis.x) || isnan(axis.y) || isnan(axis.z))
+        if(~(isnan(axis.x) || isnan(axis.y) || isnan(axis.z)))
         {
-            break;
+			auto quat = expToQuat(getScale(axis) / 500, normalize(axis));
+			pod->getModel()->applyDeltaRotation(quat);
         }
-        auto quat = expToQuat(getScale(axis) / 500, normalize(axis));
-        pod->getModel()->applyDeltaRotation(quat);
     }
     initialMousePosition = {x, y};
 }
