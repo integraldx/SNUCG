@@ -30,3 +30,13 @@ Vector3f Camera::getUp()
 {
     return up;
 }
+
+float Camera::getFOV()
+{
+    return fov;
+}
+
+void Camera::applyDeltaFOV(float delta)
+{
+    fov += delta;
+}

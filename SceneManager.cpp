@@ -40,7 +40,7 @@ void SceneManager::displayCallback()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glLoadIdentity();
-    gluPerspective(60.0, 16.0f/9.0f, 0.1f, 100.0f);
+    gluPerspective(cam.getFOV(), 16.0f/9.0f, 0.1f, 100.0f);
     Vector3f camPosition = cam.getPosition();
     Vector3f camDirection = cam.getLookDirection();
     gluLookAt(
@@ -123,6 +123,8 @@ void SceneManager::timerCallback(int value)
 
 void SceneManager::mouseCallback(int button, int state, int x, int y)
 {
+
+    int mod = glutGetModifiers();
     switch (button)
     {
         case GLUT_LEFT_BUTTON:
@@ -143,6 +145,30 @@ void SceneManager::mouseCallback(int button, int state, int x, int y)
         case GLUT_MIDDLE_BUTTON:
 
             break;
+        case 3:
+            if(mod & GLUT_ACTIVE_CTRL)
+            {
+                cam.applyDeltaFOV(-1);
+            }
+            else
+            {
+                cam.applyDeltaPosition({0, 0, 1});
+            }
+            
+            break;
+
+        case 4:
+            if(mod & GLUT_ACTIVE_CTRL)
+            {
+                cam.applyDeltaFOV(+1);
+            }
+            else
+            {
+                cam.applyDeltaPosition({0, 0, -1});
+            }
+            
+            break;
+
         default:
             break;
     }
