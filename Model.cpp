@@ -36,7 +36,12 @@ void Model::setRotation(float f, Vector3f v)
 
 void Model::applyDeltaRotation(Quaternion q)
 {
-    rotation = q * rotation;
+	
+    Quaternion resultRotation = q * rotation;
+	if(!(isnan(resultRotation.w) || isnan(resultRotation.x) || isnan(resultRotation.y) || isnan(resultRotation.z)))
+	{
+		rotation = resultRotation;
+	}
 }
 
 void Model::setScale(Vector3f v)
