@@ -7,19 +7,31 @@ void Camera::applyDeltaPosition(Vector3f v)
     position.z += v.z;
 }
 
-void Camera::rotateLookDirection(float angle)
+void Camera::rotateLookDirectionHorizontally(float angle)
 {
-    viewAngle += angle * M_PI / 180;
+    viewAngleHorizontal += angle * M_PI / 180;
 
-    lookDirection.x = sin(viewAngle);
-    lookDirection.z = cos(viewAngle);
+    lookDirection.x = sin(viewAngleHorizontal) * cos(viewAngleVertical);
+    lookDirection.z = cos(viewAngleHorizontal) * cos(viewAngleVertical);
+}
 
+void Camera::rotateLookDirectionVertically(float angle)
+{
+    viewAngleVertical += angle * M_PI / 180;
+
+    lookDirection.x = sin(viewAngleHorizontal) * cos(viewAngleVertical);
+    lookDirection.z = cos(viewAngleHorizontal) * cos(viewAngleVertical);
+    lookDirection.y = sin(viewAngleVertical);
 }
 
 Vector3f Camera::getLookDirection()
 {
+    lookDirection.x = sin(viewAngleHorizontal) * cos(viewAngleVertical);
+    lookDirection.z = cos(viewAngleHorizontal) * cos(viewAngleVertical);
+    lookDirection.y = sin(viewAngleVertical);
     return lookDirection;
 }
+
 
 Vector3f Camera::getPosition()
 {
@@ -28,6 +40,7 @@ Vector3f Camera::getPosition()
 
 Vector3f Camera::getUp()
 {
+    up = {sin(viewAngleHorizontal) * sin(viewAngleVertical), cos(viewAngleVertical), cos(viewAngleHorizontal) * sin(viewAngleVertical)};
     return up;
 }
 
