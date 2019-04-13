@@ -12,9 +12,9 @@ std::pair<int, int> SceneManager::initialMousePosition;
 void SceneManager::initializeScene()
 {
     glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize (1280, 720); 
-    screenScale = {1280, 720};
-    glutInitWindowPosition (100, 100);
+    glutInitWindowSize (1000, 1000); 
+    screenScale = {1000, 1000};
+    glutInitWindowPosition (50, 50);
     SceneManager::setWindow(glutCreateWindow ("HW#2"));
 /*  select clearing (background) color       */
     glClearColor (0.0, 0.0, 0.0, 0.0);
@@ -40,7 +40,7 @@ void SceneManager::displayCallback()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glLoadIdentity();
-    gluPerspective(cam.getFOV(), 16.0f/9.0f, 0.1f, 100.0f);
+    gluPerspective(cam.getFOV(), (float)screenScale.first / screenScale.second, 0.1f, 100.0f);
     Vector3f camPosition = cam.getPosition();
     Vector3f camDirection = cam.getLookDirection();
     Vector3f camUp = cam.getUp();
@@ -62,49 +62,26 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
 {
     switch(key)
     {
-        // case 'w':
-        // case 'W':
-        //    cam.applyDeltaPosition(normalizeVec3(cam.getLookDirection()) * 0.05);
-        //    break;
-        // case 's':
-        // case 'S':
-        //    cam.applyDeltaPosition(normalizeVec3(cam.getLookDirection()) * -0.05);
-        //    break;
+        case 'w':
+        case 'W':
+            cam.rotateCameraVertically(+0.07);
+            break;
+        case 's':
+        case 'S':
+            cam.rotateCameraVertically(-0.07);
+            break;
         case 'a':
         case 'A':
-           cam.applyDeltaPosition(normalize(crossProduct(cam.getUp(), cam.getLookDirection())) * 0.05);
-           break;
+            cam.rotateCameraHorizontally(-0.07);
+            break;
         case 'd':
         case 'D':
-           cam.applyDeltaPosition(normalize(crossProduct(cam.getUp(), cam.getLookDirection())) * -0.05);
-           break;
-        case 'q':
-        case 'Q':
-           cam.rotateLookDirectionHorizontally(1);
-           break;
-        case 'e':
-        case 'E':
-           cam.rotateLookDirectionHorizontally(-1);
-           break;
-        case 'i':
-        case 'I':
-           cam.applyDeltaPosition({0, 0.05, 0});
-           break;
-        case 'k':
-        case 'K':
-           cam.applyDeltaPosition({0, -0.05, 0});
-           break;
-        case 'U':
-        case 'u':
-            cam.rotateLookDirectionVertically(1);
-            break;
-        case 'j':
-        case 'J':
-            cam.rotateLookDirectionVertically(-1);
+            cam.rotateCameraHorizontally(+0.07);
             break;
         case 'x':
         case 'X':
             glutDestroyWindow(window);
+            break;
         default:
             break;
     }
@@ -161,7 +138,7 @@ void SceneManager::mouseCallback(int button, int state, int x, int y)
             }
             else
             {
-                cam.applyDeltaPosition(cam.getLookDirection() * 0.5);
+                cam.applyDeltaZoom(-0.1);
             }
             
             break;
@@ -173,7 +150,7 @@ void SceneManager::mouseCallback(int button, int state, int x, int y)
             }
             else
             {
-                cam.applyDeltaPosition(cam.getLookDirection() * -0.5);
+                cam.applyDeltaZoom(0.1);
             }
             
             break;
@@ -187,7 +164,8 @@ void SceneManager::motionCallback(int x, int y)
 {
     if(isLeftMouseDown)
     {
-        Vector3f axis = crossProduct({-(x - initialMousePosition.first), -(y - initialMousePosition.second), 0}, {0, 0, 1});
+        Vector3f axis = crossProduct(cam.rotateViewplaneToVector({(x - initialMousePosition.first), -(y - initialMousePosition.second), 0}), cam.getLookDirection());
+
         if(~(isnan(axis.x) || isnan(axis.y) || isnan(axis.z)))
         {
 			auto quat = expToQuat(getScale(axis) / 500, normalize(axis));

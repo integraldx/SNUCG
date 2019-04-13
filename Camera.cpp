@@ -1,47 +1,44 @@
 #include "Camera.hpp"
 
-void Camera::applyDeltaPosition(Vector3f v)
+Vector3f Camera::getPosition()
 {
-    position.x += v.x;
-    position.y += v.y;
-    position.z += v.z;
+    Vector3f v =
+    {
+        (sin(viewAngleHorizontal) * cos(viewAngleVertical)),
+        (sin(viewAngleVertical)),
+        (cos(viewAngleHorizontal) * cos(viewAngleVertical))
+    };
+
+    return v * zoom;
 }
 
-void Camera::rotateLookDirectionHorizontally(float angle)
+Vector3f Camera::rotateViewplaneToVector(Vector3f v)
 {
-    viewAngleHorizontal += angle * M_PI / 180;
+    Vector3f ret =
+    {
+        (v.x * cos(viewAngleHorizontal) - v.y * sin(viewAngleVertical) * sin(viewAngleHorizontal)),
+        (v.y * cos(viewAngleVertical)),
+        (v.x * -sin(viewAngleHorizontal) - v.y * sin(viewAngleVertical) * cos(viewAngleHorizontal))
+    };
 
-    lookDirection.x = sin(viewAngleHorizontal) * cos(viewAngleVertical);
-    lookDirection.z = cos(viewAngleHorizontal) * cos(viewAngleVertical);
-}
-
-void Camera::rotateLookDirectionVertically(float angle)
-{
-    viewAngleVertical += angle * M_PI / 180;
-
-    lookDirection.x = sin(viewAngleHorizontal) * cos(viewAngleVertical);
-    lookDirection.z = cos(viewAngleHorizontal) * cos(viewAngleVertical);
-    lookDirection.y = sin(viewAngleVertical);
+    return ret;
 }
 
 Vector3f Camera::getLookDirection()
 {
-    lookDirection.x = sin(viewAngleHorizontal) * cos(viewAngleVertical);
-    lookDirection.z = cos(viewAngleHorizontal) * cos(viewAngleVertical);
-    lookDirection.y = sin(viewAngleVertical);
-    return lookDirection;
-}
-
-
-Vector3f Camera::getPosition()
-{
-    return position;
+    return normalize(-1 * getPosition());
 }
 
 Vector3f Camera::getUp()
 {
-    up = {sin(viewAngleHorizontal) * sin(viewAngleVertical), cos(viewAngleVertical), cos(viewAngleHorizontal) * sin(viewAngleVertical)};
-    return up;
+    Vector3f v = 
+    {
+        (-sin(viewAngleHorizontal) * sin(viewAngleVertical)),
+        (cos(viewAngleVertical)),
+        (-cos(viewAngleHorizontal) * sin(viewAngleVertical))
+    };
+
+    return v;
 }
 
 float Camera::getFOV()
@@ -52,4 +49,26 @@ float Camera::getFOV()
 void Camera::applyDeltaFOV(float delta)
 {
     fov += delta;
+}
+
+void Camera::rotateCameraHorizontally(float angle)
+{
+    viewAngleHorizontal += angle;
+
+}
+
+void Camera::rotateCameraVertically(float angle)
+{
+    if(cos(viewAngleVertical + angle) > 0)
+    {
+        viewAngleVertical += angle;
+    }
+}
+
+void Camera::applyDeltaZoom(float deltaZoom)
+{
+    if(zoom + deltaZoom > 0)
+    {
+        zoom += deltaZoom;
+    }
 }

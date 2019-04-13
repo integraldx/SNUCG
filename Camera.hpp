@@ -6,17 +6,16 @@
 
 class Camera
 {
+    float zoom = 3;
     float viewAngleHorizontal = 0;
     float viewAngleVertical = 0;
-    Vector3f position = {0, 0, -5};
-    Vector3f lookDirection = {0, 0, 1};
-    Vector3f up = {0, 1, 0};
     float fov = 45;
     
 public:
-    void applyDeltaPosition(Vector3f);
-    void rotateLookDirectionHorizontally(float angle);
-    void rotateLookDirectionVertically(float angle);
+    void applyDeltaZoom(float zoom);
+    void rotateCameraHorizontally(float angle);
+    void rotateCameraVertically(float angle);
+    Vector3f rotateViewplaneToVector(Vector3f v);
     Vector3f getLookDirection();
     Vector3f getPosition();
     Vector3f getUp();
