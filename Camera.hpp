@@ -1,20 +1,31 @@
 #pragma once
 
 #include <iostream>
-#include "Util.hpp"
+#include "Vector3f.hpp"
 #include "math.h"
+#include "Quaternion.hpp"
 
 class Camera
 {
-    float viewAngle = 0;
-    Vec3 position = {0, 0, -5};
-    Vec3 lookDirection = {0, 0, 1};
-    Vec3 up = {0, 1, 0};
+private:
+    float zoom = 5;
+    Quaternion orientation = {1, 0, 0, 0};
+    float fov = 60;
     
 public:
-    void applyDeltaPosition(Vec3);
-    void rotateLookDirection(float angle);
-    Vec3 getLookDirection();
-    Vec3 getPosition();
-    Vec3 getUp();
+    void applyDeltaZoom(float zoom);
+    void setZoom(float f);
+    Vector3f rotateViewplaneToVector(Vector3f v);
+
+    Vector3f getLookDirection();
+
+    Vector3f getPosition();
+    void applyDeltaRotation(Quaternion q);
+    void setRotation(Quaternion q);
+
+    Vector3f getUp();
+
+    float getFOV();
+    void setFOV(float f);
+    void applyDeltaFOV(float delta);
 };

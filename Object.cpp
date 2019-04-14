@@ -8,9 +8,9 @@ Object::Object()
     vertices.push_back({-0.5, 0.5, 0});
 }
 
-Object::Object(std::vector<Vec3> vertices)
+Object::Object(std::vector<Vector3f> vertices)
 {
-    for(Vec3 v : vertices)
+    for(Vector3f v : vertices)
     {
         this->vertices.push_back(v);
     }
@@ -35,7 +35,7 @@ void Object::draw()
         }
         glBegin(GL_POLYGON);
         {
-            for(Vec3 v : vertices)
+            for(Vector3f v : vertices)
             {
                 glVertex3f(v.x, v.y, v.z);
             }
@@ -50,28 +50,28 @@ void Object::draw()
     return;
 }
 
-void Object::setPosition(Vec3 v)
+void Object::setPosition(Vector3f v)
 {
     position = v;
 }
 
-void Object::setRotationCenter(Vec3 v)
+void Object::setRotationCenter(Vector3f v)
 {
     rotationCenter = v;
 }
 
-void Object::setRotation(float f, Vec3 v)
+void Object::setRotation(float f, Vector3f v)
 {
     rotationAxis = v;
     rotationAngle = f;
 }
 
-void Object::setScale(Vec3 v)
+void Object::setScale(Vector3f v)
 {
     scale = v;
 }
 
-void Object::setColor(Vec3 v)
+void Object::setColor(Vector3f v)
 {
     hasColor = true;
     color = v;

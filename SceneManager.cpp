@@ -1,10 +1,36 @@
 #include "SceneManager.hpp"
 
+std::pair<int, int> SceneManager::screenScale;
 std::vector<std::shared_ptr<Model>> SceneManager::toRender;
 Camera SceneManager::cam;
-std::shared_ptr<Pod> SceneManager::pod(nullptr);
+std::shared_ptr<Pod> SceneManager::pod;
 int SceneManager::window;
 std::chrono::duration<long, std::milli> SceneManager::startTime;
+bool SceneManager::isLeftMouseDown;
+std::pair<int, int> SceneManager::initialMousePosition;
+
+void SceneManager::initializeScene()
+{
+    glutInitDisplayMode (GLUT_SINGLE | GLUT_RGBA | GLUT_DEPTH);
+    glutInitWindowSize (1000, 1000); 
+    screenScale = {1000, 1000};
+    glutInitWindowPosition (50, 50);
+    SceneManager::setWindow(glutCreateWindow ("HW#2"));
+/*  select clearing (background) color       */
+    glClearColor (0.0, 0.0, 0.0, 0.0);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDepthFunc(GL_LESS);
+/*  initialize viewing values  */
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glutDisplayFunc(displayCallback); 
+    glutKeyboardFunc(keyboardCallback);
+    glutMouseFunc(mouseCallback);
+    glutMotionFunc(motionCallback);
+    initTime();
+}
 
 void SceneManager::addRenderModel(std::shared_ptr<Model> m)
 {
@@ -16,19 +42,22 @@ void SceneManager::displayCallback()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glLoadIdentity();
-    gluPerspective(60.0, 16.0f/9.0f, 0.1f, 100.0f);
-    Vec3 camPosition = cam.getPosition();
-    Vec3 camDirection = cam.getLookDirection();
+    gluPerspective(cam.getFOV(), (float)screenScale.first / screenScale.second, 0.1f, 100.0f);
+    Vector3f camPosition = cam.getPosition();
+    Vector3f camDirection = cam.getLookDirection();
+    Vector3f camUp = cam.getUp();
     gluLookAt(
         camPosition.x, camPosition.y, camPosition.z,
         camPosition.x + camDirection.x, camPosition.y + camDirection.y, camPosition.z + camDirection.z,
-        0.0, 1.0, 0.0
+        camUp.x, camUp.y, camUp.z
     );
     
     for(auto m : toRender)
     {
         m->draw();
     }
+    glColor4f(0.9, 0.9, 0.9, 0.1);
+    glutSolidSphere(2, 20, 100);
     glutSwapBuffers();
     glFlush();
 }
@@ -39,39 +68,31 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
     {
         //case 'w':
         //case 'W':
-        //    cam.applyDeltaPosition(normalizeVec3(cam.getLookDirection()) * 0.05);
-        //    break;
+            //cam.rotateCameraVertically(+0.07);
+            //break;
         //case 's':
         //case 'S':
-        //    cam.applyDeltaPosition(normalizeVec3(cam.getLookDirection()) * -0.05);
-        //    break;
+            //cam.rotateCameraVertically(-0.07);
+            //break;
         //case 'a':
         //case 'A':
-        //    cam.applyDeltaPosition(normalizeVec3(crossProduct(cam.getUp(), cam.getLookDirection())) * 0.05);
-        //    break;
+            //cam.rotateCameraHorizontally(-0.07);
+            //break;
         //case 'd':
         //case 'D':
-        //    cam.applyDeltaPosition(normalizeVec3(crossProduct(cam.getUp(), cam.getLookDirection())) * -0.05);
-        //    break;
-        //case 'q':
-        //case 'Q':
-        //    cam.rotateLookDirection(1);
-        //    break;
-        //case 'e':
-        //case 'E':
-        //    cam.rotateLookDirection(-1);
-        //    break;
-        //case 'i':
-        //case 'I':
-        //    cam.applyDeltaPosition({0, 0.05, 0});
-        //    break;
-        //case 'k':
-        //case 'K':
-        //    cam.applyDeltaPosition({0, -0.05, 0});
-        //    break;
+            //cam.rotateCameraHorizontally(+0.07);
+            //break;
+
+        case 'r':
+        case 'R':
+            cam.setRotation({1, 0, 0, 0});
+            cam.setFOV(60);
+            cam.setZoom(5);
+            break;
         case 'x':
         case 'X':
             glutDestroyWindow(window);
+            break;
         default:
             break;
     }
@@ -97,9 +118,105 @@ void SceneManager::timerCallback(int value)
     glutTimerFunc(1000/60, timerCallback, 0);
 }
 
+void SceneManager::mouseCallback(int button, int state, int x, int y)
+{
+
+    int mod = glutGetModifiers();
+    switch (button)
+    {
+        case GLUT_LEFT_BUTTON:
+            if (state == GLUT_DOWN)
+            {
+                isLeftMouseDown = true;
+                initialMousePosition = {x, screenScale.second - y};
+            }
+            else if (state = GLUT_UP)
+            {
+                isLeftMouseDown = false;
+            }
+            break;
+    
+        case GLUT_RIGHT_BUTTON:
+
+            break;
+        case GLUT_MIDDLE_BUTTON:
+
+            break;
+        case 3:
+            if(mod & GLUT_ACTIVE_CTRL)
+            {
+                cam.applyDeltaFOV(-1);
+            }
+            else
+            {
+                cam.applyDeltaZoom(-0.1);
+            }
+            
+            break;
+
+        case 4:
+            if(mod & GLUT_ACTIVE_CTRL)
+            {
+                cam.applyDeltaFOV(+1);
+            }
+            else
+            {
+                cam.applyDeltaZoom(0.1);
+            }
+            
+            break;
+
+        default:
+            break;
+    }
+}
+
+void SceneManager::motionCallback(int x, int y)
+{
+    y = screenScale.second - y;
+    if(isLeftMouseDown && (abs(initialMousePosition.first - x) > 0 || abs(initialMousePosition.second - y) > 0))
+    {
+        float z;
+        glReadPixels((int)x, (int)y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z); 
+
+        GLdouble projection[16];
+        GLdouble modelView[16];
+        GLint viewPort[4];
+
+        glGetDoublev(GL_PROJECTION_MATRIX,projection);
+        glGetDoublev(GL_MODELVIEW_MATRIX,modelView);
+        glGetIntegerv(GL_VIEWPORT,viewPort);
+        
+        Vector3f current;
+        {
+            double cx, cy, cz;
+            gluUnProject(x, y, z, modelView, projection, viewPort, &cx, &cy, &cz);
+            current = {(float)cx, (float)cy, (float)cz};
+        }
+        if(getScale(current) < 2.5)
+        {
+            Vector3f prev;
+            {
+                double cx, cy, cz;
+                gluUnProject(initialMousePosition.first, initialMousePosition.second, z, modelView, projection, viewPort, &cx, &cy, &cz);
+                prev = {(float)cx, (float)cy, (float)cz};
+            }
+
+            Vector3f axis = crossProduct(prev - current, cam.getLookDirection());
+            auto quat = expToQuat(getScale(axis) / 2, normalize(axis));
+           	if(~(isnan(quat.w) || isnan(quat.x) || isnan(quat.y) || isnan(quat.z)))
+			{
+                cam.applyDeltaRotation(quat);
+            }
+        }
+    }
+    initialMousePosition = {x, y};
+}
+
 void SceneManager::setPod(std::shared_ptr<Pod> p)
 {
     pod.swap(p);
+    pod->setRotation(M_PI / 2, {0, 1, 0});
 }
 
 void SceneManager::setWindow(int newWindow)

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Util.hpp"
+#include "Vector3f.hpp"
+#include "Quaternion.hpp"
 #include <memory>
 #include "Object.hpp"
 #include <GL/gl.h>
@@ -8,17 +9,17 @@
 class Model
 {
 protected:
-    Vec3 position = {0, 0, 0};
-    Vec3 rotationAxis = {0, 0, 0};
-    float rotationAngle = 0;
-    Vec3 scale = {1, 1, 1};
+    Vector3f position = {0, 0, 0};
+    Quaternion rotation = identityQuat();
+    Vector3f scale = {1, 1, 1};
     std::shared_ptr<Object> root;
 
 public:
     Model(std::shared_ptr<Object>);
     ~Model();
     void draw();
-    void setPosition(Vec3);
-    void setRotation(float, Vec3);
-    void setScale(Vec3);
+    void setPosition(Vector3f);
+    void setRotation(float, Vector3f);
+    void applyDeltaRotation(Quaternion q);
+    void setScale(Vector3f);
 };

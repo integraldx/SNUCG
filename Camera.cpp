@@ -1,32 +1,68 @@
 #include "Camera.hpp"
 
-void Camera::applyDeltaPosition(Vec3 v)
+void Camera::applyDeltaZoom(float deltaZoom)
 {
-    position.x += v.x;
-    position.y += v.y;
-    position.z += v.z;
+    if(zoom + deltaZoom > 0)
+    {
+        zoom += deltaZoom;
+    }
 }
 
-void Camera::rotateLookDirection(float angle)
+void Camera::setZoom(float f)
 {
-    viewAngle += angle * M_PI / 180;
-
-    lookDirection.x = sin(viewAngle);
-    lookDirection.z = cos(viewAngle);
-
+    zoom = f;
 }
 
-Vec3 Camera::getLookDirection()
+Vector3f Camera::rotateViewplaneToVector(Vector3f v)
 {
-    return lookDirection;
+    Quaternion q = orientation * Quaternion{0, v.x, v.y, v.z} * inverse(orientation);
+    return {q.x, q.y, q.z};
 }
 
-Vec3 Camera::getPosition()
+Vector3f Camera::getPosition()
 {
-    return position;
+    Quaternion q = orientation * Quaternion{0, 0, 0, 1} * inverse(orientation);
+    return zoom * Vector3f{q.x, q.y, q.z};
 }
 
-Vec3 Camera::getUp()
+void Camera::applyDeltaRotation(Quaternion q)
 {
-    return up;
+    Quaternion tempOrientation = q * orientation;
+    Quaternion qua = tempOrientation * Quaternion{0, 0, 0, 1} * inverse(tempOrientation);
+	if(~(isnan(qua.w) || isnan(qua.x) || isnan(qua.y) || isnan(qua.z)))
+	{
+		orientation = tempOrientation;
+	}
+}
+
+
+Vector3f Camera::getLookDirection()
+{
+    return normalize(-1 * getPosition());
+}
+
+void Camera::setRotation(Quaternion q)
+{
+    orientation = q;
+}
+Vector3f Camera::getUp()
+{
+    Quaternion q = orientation * Quaternion{0, 0, 1, 0} * inverse(orientation);
+    return Vector3f{q.x, q.y, q.z};
+}
+
+
+float Camera::getFOV()
+{
+    return fov;
+}
+
+void Camera::setFOV(float f)
+{
+    fov = f;
+}
+
+void Camera::applyDeltaFOV(float delta)
+{
+    fov += delta;
 }

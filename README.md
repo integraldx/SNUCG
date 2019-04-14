@@ -6,16 +6,14 @@ This repository uses OpenGL, GLU, GLUT. And tested on Ubuntu 18.04, with X-windo
 $ make run
 
 ## How to use
-- w, a, s, d to move camera
-- i, k to move camera vertically
-- q, e, to rotate camera horizontally
-- x to exit
+- Left click on sphere and drag to rotate camera
+- Mouse scroll to zoom in and zoom out
+- Ctrl + Mouse scroll to dolly in and dolly out
+- 'R' to reset view to initial state
+- 'X' to exit
 
 ## What I did
-### HW#1
-- Implementation of hierarchical 3d model and animation.
-  - With the use of shared_ptr in c++, each Object(Model) has sub-tree structure.
-  - Draw call acts as stack-based dfs, iterating through vector of childs.
-  - Animation control is handled by SceneManager, holding shared_ptr of target Object.
-- Implementation of simple camera movement
-  - Each draw call uses current state of Camera object. So by modifying it in keyboardCallback, camera movement was easily implemented.
+### HW#2
+- Use of gluUnProject to calculate World Coordinate of clicked location
+- Implementation of Quaternion system to calculate rotation
+- Modifying FoV value to implement zoom

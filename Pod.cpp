@@ -4,12 +4,12 @@ using namespace std;
 
 shared_ptr<Pod> Pod::getPod()
 {
-    vector<Vec3> dummy;
+    vector<Vector3f> dummy;
     shared_ptr<Object> head = std::make_shared<Object>(dummy);
     auto returnPod = make_shared<Pod>(make_shared<Model>(head));
     {
         {
-            vector<Vec3> headUpV;
+            vector<Vector3f> headUpV;
             headUpV.push_back({0.4, 0.6, 0.4});
             headUpV.push_back({0.4, 0.6, -0.4});
             headUpV.push_back({-0.4, 0.6, -0.4});
@@ -21,7 +21,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> headUpLeftV;
+            vector<Vector3f> headUpLeftV;
             headUpLeftV.push_back({-0.4, 0.6, 0.4});
             headUpLeftV.push_back({-0.4, 0.6, -0.4});
             headUpLeftV.push_back({-0.5, 0.5, -0.4});
@@ -33,7 +33,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> headDownV;
+            vector<Vector3f> headDownV;
             headDownV.push_back({0.4, -0.6, 0.4});
             headDownV.push_back({0.4, -0.6, -0.4});
             headDownV.push_back({-0.4, -0.6, -0.4});
@@ -45,7 +45,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> headUpRightV;
+            vector<Vector3f> headUpRightV;
             headUpRightV.push_back({0.4, 0.6, 0.4});
             headUpRightV.push_back({0.4, 0.6, -0.4});
             headUpRightV.push_back({0.5, 0.5, -0.4});
@@ -57,7 +57,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> headLeftV;
+            vector<Vector3f> headLeftV;
             headLeftV.push_back({-0.5, 0.5, 0.4});
             headLeftV.push_back({-0.5, 0.5, -0.4});
             headLeftV.push_back({-0.5, -0.5, -0.4});
@@ -69,7 +69,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> headDownRightV;
+            vector<Vector3f> headDownRightV;
             headDownRightV.push_back({0.4, -0.6, 0.4});
             headDownRightV.push_back({0.4, -0.6, -0.4});
             headDownRightV.push_back({0.5, -0.5, -0.4});
@@ -81,7 +81,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> headRightV;
+            vector<Vector3f> headRightV;
             headRightV.push_back({0.5, 0.5, 0.4});
             headRightV.push_back({0.5, 0.5, -0.4});
             headRightV.push_back({0.5, -0.5, -0.4});
@@ -93,7 +93,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> headDownLeftV;
+            vector<Vector3f> headDownLeftV;
             headDownLeftV.push_back({-0.4, -0.6, 0.4});
             headDownLeftV.push_back({-0.4, -0.6, -0.4});
             headDownLeftV.push_back({-0.5, -0.5, -0.4});
@@ -105,7 +105,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> headFrontV;
+            vector<Vector3f> headFrontV;
             headFrontV.push_back({0.4, 0.6, 0.4});
             headFrontV.push_back({-0.4, 0.6, 0.4});
             headFrontV.push_back({-0.5, 0.5, 0.4});
@@ -122,7 +122,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> headBackV;
+            vector<Vector3f> headBackV;
             headBackV.push_back({0.4, 0.6, -0.4});
             headBackV.push_back({-0.4, 0.6, -0.4});
             headBackV.push_back({-0.5, 0.5, -0.4});
@@ -139,7 +139,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> headBottomDownV;
+            vector<Vector3f> headBottomDownV;
             headBottomDownV.push_back({0.3, -1.0, 0.3});
             headBottomDownV.push_back({0.3, -1.0, -0.3});
             headBottomDownV.push_back({-0.3, -1.0, -0.3});
@@ -151,7 +151,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> headBottomLeftV;
+            vector<Vector3f> headBottomLeftV;
             headBottomLeftV.push_back({0.3, -0.6, 0.3});
             headBottomLeftV.push_back({0.3, -0.6, -0.3});
             headBottomLeftV.push_back({0.3, -1.0, -0.3});
@@ -163,7 +163,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> headBottomRightV;
+            vector<Vector3f> headBottomRightV;
             headBottomRightV.push_back({-0.3, -0.6, 0.3});
             headBottomRightV.push_back({-0.3, -0.6, -0.3});
             headBottomRightV.push_back({-0.3, -1.0, -0.3});
@@ -175,7 +175,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> headBottomFrontV;
+            vector<Vector3f> headBottomFrontV;
             headBottomFrontV.push_back({-0.3, -0.6, -0.3});
             headBottomFrontV.push_back({0.3, -0.6, -0.3});
             headBottomFrontV.push_back({0.3, -1.0, -0.3});
@@ -187,7 +187,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> headBottomBackV;
+            vector<Vector3f> headBottomBackV;
             headBottomBackV.push_back({-0.3, -0.6, 0.3});
             headBottomBackV.push_back({0.3, -0.6, 0.3});
             headBottomBackV.push_back({0.3, -1.0, 0.3});
@@ -201,7 +201,7 @@ shared_ptr<Pod> Pod::getPod()
         {
             for(int i = 0; i < 10; i++)
             {
-                vector<Vec3> headTopColumnV;
+                vector<Vector3f> headTopColumnV;
                 headTopColumnV.push_back({0.03 * sin(M_PI * (double)i / 5.0) + 0.3, 0.6, -0.3 + 0.03 * cos(M_PI * (double) i / 5.0)});
                 headTopColumnV.push_back({0.03 * sin(M_PI * (double)i / 5.0) + 0.3, 0.75, -0.3 + 0.03 * cos(M_PI * (double) i / 5.0)});
                 headTopColumnV.push_back({0.03 * sin(M_PI * (double)(i + 1) / 5.0) + 0.3, 0.75, -0.3 + 0.03 * cos(M_PI * (double)(i + 1) / 5.0)});
@@ -214,7 +214,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> headTopCylinderV;
+            vector<Vector3f> headTopCylinderV;
             for(int i = 0; i < 10; i++)
             {
                 headTopCylinderV.push_back({0.3 + 0.15 * sin(M_PI * (double)i / 5.0), 0.75, -0.3 + 0.15 * cos(M_PI * (double)i / 5.0)});
@@ -225,7 +225,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> headTopCylinderV;
+            vector<Vector3f> headTopCylinderV;
             for(int i = 0; i < 10; i++)
             {
                 headTopCylinderV.push_back({0.3 + 0.15 * sin(M_PI * (double)i / 5.0), 1.05, -0.3 + 0.15 * cos(M_PI * (double)i / 5.0)});
@@ -238,7 +238,7 @@ shared_ptr<Pod> Pod::getPod()
         {
             for(int i = 0; i < 10; i++)
             {
-                vector<Vec3> headTopColumnV;
+                vector<Vector3f> headTopColumnV;
                 headTopColumnV.push_back({0.15 * sin(M_PI * (double)i / 5.0) + 0.3, 1.05, -0.3 + 0.15 * cos(M_PI * (double) i / 5.0)});
                 headTopColumnV.push_back({0.15 * sin(M_PI * (double)i / 5.0) + 0.3, 0.75, -0.3 + 0.15 * cos(M_PI * (double) i / 5.0)});
                 headTopColumnV.push_back({0.15 * sin(M_PI * (double)(i + 1) / 5.0) + 0.3, 0.75, -0.3 + 0.15 * cos(M_PI * (double)(i + 1) / 5.0)});
@@ -254,7 +254,7 @@ shared_ptr<Pod> Pod::getPod()
     {
         shared_ptr<Object> leftLeg = make_shared<Object>(dummy);
         {
-            vector<Vec3> leftLegUpV;
+            vector<Vector3f> leftLegUpV;
             for(int i = 0; i < 10; i++)
             {
                 leftLegUpV.push_back({(float)(0.05 * cos(i * 2 * M_PI / 10)), 0, (float)(0.05 * sin(i * 2 * M_PI / 10))});
@@ -264,7 +264,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> leftLegDownV;
+            vector<Vector3f> leftLegDownV;
             for(int i = 0; i < 10; i++)
             {
                 leftLegDownV.push_back({(float)(0.05 * cos(i * 2 * M_PI / 10)), -0.6, (float)(0.05 * sin(i * 2 * M_PI / 10))});
@@ -276,7 +276,7 @@ shared_ptr<Pod> Pod::getPod()
         {
             for(int i = 0; i < 10; i++)
             {
-                vector<Vec3> leftLegSideV;
+                vector<Vector3f> leftLegSideV;
                 leftLegSideV.push_back({(float)(0.05 * cos(i * 2 * M_PI / 10)), 0, (float)(0.05 * sin(i * 2 * M_PI / 10))});
                 leftLegSideV.push_back({(float)(0.05 * cos(i * 2 * M_PI / 10)), -0.6, (float)(0.05 * sin(i * 2 * M_PI / 10))});
                 leftLegSideV.push_back({(float)(0.05 * cos((i + 1) * 2 * M_PI / 10)), -0.6, (float)(0.05 * sin((i + 1) * 2 * M_PI / 10))});
@@ -288,7 +288,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> leftLegJointV;
+            vector<Vector3f> leftLegJointV;
             for(int i = 0; i < 10; i++)
             {
                 leftLegJointV.push_back({0.1, (float)(0.1 * sin(i * 2 * M_PI / 10)), (float)(0.1 * cos(i * 2 * M_PI / 10))});
@@ -300,7 +300,7 @@ shared_ptr<Pod> Pod::getPod()
         {
             for(int i = 0; i < 10; i++)
             {
-                vector<Vec3> leftLegJointV;
+                vector<Vector3f> leftLegJointV;
                 leftLegJointV.push_back({0.1, (float)(0.1 * cos(i * 2 * M_PI / 10)), (float)(0.1 * sin(i * 2 * M_PI / 10))});
                 leftLegJointV.push_back({-0.1, (float)(0.1 * cos(i * 2 * M_PI / 10)), (float)(0.1 * sin(i * 2 * M_PI / 10))});
                 leftLegJointV.push_back({-0.1, (float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
@@ -312,7 +312,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> leftLegJointV;
+            vector<Vector3f> leftLegJointV;
             for(int i = 0; i < 10; i++)
             {
                 leftLegJointV.push_back({0.1, (float)(0.1 * sin(i * 2 * M_PI / 10)) - 0.6, (float)(0.1 * cos(i * 2 * M_PI / 10))});
@@ -322,7 +322,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> leftLegJointV;
+            vector<Vector3f> leftLegJointV;
             for(int i = 0; i < 10; i++)
             {
                 leftLegJointV.push_back({-0.1, (float)(0.1 * sin(i * 2 * M_PI / 10)) - 0.6, (float)(0.1 * cos(i * 2 * M_PI / 10))});
@@ -334,7 +334,7 @@ shared_ptr<Pod> Pod::getPod()
         {
             for(int i = 0; i < 10; i++)
             {
-                vector<Vec3> leftLegJointV;
+                vector<Vector3f> leftLegJointV;
                 leftLegJointV.push_back({0.1, (float)(0.1 * cos(i * 2 * M_PI / 10)) - 0.6, (float)(0.1 * sin(i * 2 * M_PI / 10))});
                 leftLegJointV.push_back({-0.1, (float)(0.1 * cos(i * 2 * M_PI / 10)) - 0.6, (float)(0.1 * sin(i * 2 * M_PI / 10))});
                 leftLegJointV.push_back({-0.1, (float)(0.1 * cos((i + 1) * 2 * M_PI / 10)) - 0.6, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
@@ -354,7 +354,7 @@ shared_ptr<Pod> Pod::getPod()
         {
             shared_ptr<Object> secondLeftLeg = make_shared<Object>(dummy);
             {
-                vector<Vec3> leftLegUpV;
+                vector<Vector3f> leftLegUpV;
                 for(int i = 0; i < 10; i++)
                 {
                     leftLegUpV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), 0, (float)(0.1 * sin(i * 2 * M_PI / 10))});
@@ -364,7 +364,7 @@ shared_ptr<Pod> Pod::getPod()
             }
 
             {
-                vector<Vec3> leftLegDownV;
+                vector<Vector3f> leftLegDownV;
                 for(int i = 0; i < 10; i++)
                 {
                     leftLegDownV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), -1, (float)(0.1 * sin(i * 2 * M_PI / 10))});
@@ -376,7 +376,7 @@ shared_ptr<Pod> Pod::getPod()
             {
                 for(int i = 0; i < 10; i++)
                 {
-                    vector<Vec3> leftLegSideV;
+                    vector<Vector3f> leftLegSideV;
                     leftLegSideV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), 0, (float)(0.1 * sin(i * 2 * M_PI / 10))});
                     leftLegSideV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), -1, (float)(0.1 * sin(i * 2 * M_PI / 10))});
                     leftLegSideV.push_back({(float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), -1, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
@@ -400,7 +400,7 @@ shared_ptr<Pod> Pod::getPod()
     {
         shared_ptr<Object> rightLeg = make_shared<Object>(dummy);
         {
-            vector<Vec3> rightLegUpV;
+            vector<Vector3f> rightLegUpV;
             for(int i = 0; i < 10; i++)
             {
                 rightLegUpV.push_back({(float)(0.05 * cos(i * 2 * M_PI / 10)), 0, (float)(0.05 * sin(i * 2 * M_PI / 10))});
@@ -410,7 +410,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> rightLegDownV;
+            vector<Vector3f> rightLegDownV;
             for(int i = 0; i < 10; i++)
             {
                 rightLegDownV.push_back({(float)(0.05 * cos(i * 2 * M_PI / 10)), -0.6, (float)(0.05 * sin(i * 2 * M_PI / 10))});
@@ -422,7 +422,7 @@ shared_ptr<Pod> Pod::getPod()
         {
             for(int i = 0; i < 10; i++)
             {
-                vector<Vec3> rightLegSideV;
+                vector<Vector3f> rightLegSideV;
                 rightLegSideV.push_back({(float)(0.05 * cos(i * 2 * M_PI / 10)), 0, (float)(0.05 * sin(i * 2 * M_PI / 10))});
                 rightLegSideV.push_back({(float)(0.05 * cos(i * 2 * M_PI / 10)), -0.6, (float)(0.05 * sin(i * 2 * M_PI / 10))});
                 rightLegSideV.push_back({(float)(0.05 * cos((i + 1) * 2 * M_PI / 10)), -0.6, (float)(0.05 * sin((i + 1) * 2 * M_PI / 10))});
@@ -434,7 +434,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> rightLegJointV;
+            vector<Vector3f> rightLegJointV;
             for(int i = 0; i < 10; i++)
             {
                 rightLegJointV.push_back({-0.1, (float)(0.1 * sin(i * 2 * M_PI / 10)), (float)(0.1 * cos(i * 2 * M_PI / 10))});
@@ -446,7 +446,7 @@ shared_ptr<Pod> Pod::getPod()
         {
             for(int i = 0; i < 10; i++)
             {
-                vector<Vec3> rightLegJointV;
+                vector<Vector3f> rightLegJointV;
                 rightLegJointV.push_back({0.1, (float)(0.1 * cos(i * 2 * M_PI / 10)), (float)(0.1 * sin(i * 2 * M_PI / 10))});
                 rightLegJointV.push_back({-0.1, (float)(0.1 * cos(i * 2 * M_PI / 10)), (float)(0.1 * sin(i * 2 * M_PI / 10))});
                 rightLegJointV.push_back({-0.1, (float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
@@ -458,7 +458,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> rightLegJointV;
+            vector<Vector3f> rightLegJointV;
             for(int i = 0; i < 10; i++)
             {
                 rightLegJointV.push_back({-0.1, (float)(0.1 * sin(i * 2 * M_PI / 10)) - 0.6, (float)(0.1 * cos(i * 2 * M_PI / 10))});
@@ -470,7 +470,7 @@ shared_ptr<Pod> Pod::getPod()
         {
             for(int i = 0; i < 10; i++)
             {
-                vector<Vec3> rightLegJointV;
+                vector<Vector3f> rightLegJointV;
                 rightLegJointV.push_back({0.1, (float)(0.1 * cos(i * 2 * M_PI / 10)) - 0.6, (float)(0.1 * sin(i * 2 * M_PI / 10))});
                 rightLegJointV.push_back({-0.1, (float)(0.1 * cos(i * 2 * M_PI / 10)) - 0.6, (float)(0.1 * sin(i * 2 * M_PI / 10))});
                 rightLegJointV.push_back({-0.1, (float)(0.1 * cos((i + 1) * 2 * M_PI / 10)) - 0.6, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
@@ -482,7 +482,7 @@ shared_ptr<Pod> Pod::getPod()
         }
 
         {
-            vector<Vec3> rightLegJointV;
+            vector<Vector3f> rightLegJointV;
             for(int i = 0; i < 10; i++)
             {
                 rightLegJointV.push_back({0.1, (float)(0.1 * sin(i * 2 * M_PI / 10)) - 0.6, (float)(0.1 * cos(i * 2 * M_PI / 10))});
@@ -498,7 +498,7 @@ shared_ptr<Pod> Pod::getPod()
         {
             shared_ptr<Object> secondRightLeg = make_shared<Object>(dummy);
             {
-                vector<Vec3> rightLegUpV;
+                vector<Vector3f> rightLegUpV;
                 for(int i = 0; i < 10; i++)
                 {
                     rightLegUpV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), 0, (float)(0.1 * sin(i * 2 * M_PI / 10))});
@@ -508,7 +508,7 @@ shared_ptr<Pod> Pod::getPod()
             }
 
             {
-                vector<Vec3> rightLegDownV;
+                vector<Vector3f> rightLegDownV;
                 for(int i = 0; i < 10; i++)
                 {
                     rightLegDownV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), -1, (float)(0.1 * sin(i * 2 * M_PI / 10))});
@@ -520,7 +520,7 @@ shared_ptr<Pod> Pod::getPod()
             {
                 for(int i = 0; i < 10; i++)
                 {
-                    vector<Vec3> rightLegSideV;
+                    vector<Vector3f> rightLegSideV;
                     rightLegSideV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), 0, (float)(0.1 * sin(i * 2 * M_PI / 10))});
                     rightLegSideV.push_back({(float)(0.1 * cos(i * 2 * M_PI / 10)), -1, (float)(0.1 * sin(i * 2 * M_PI / 10))});
                     rightLegSideV.push_back({(float)(0.1 * cos((i + 1) * 2 * M_PI / 10)), -1, (float)(0.1 * sin((i + 1) * 2 * M_PI / 10))});
@@ -573,17 +573,17 @@ void Pod::rotateRightLeg(float angle)
     legs[3]->setRotationAngle(angle);
 }
 
-void Pod::setPosition(Vec3 v)
+void Pod::setPosition(Vector3f v)
 {
     podModel->setPosition(v);
 }
 
-void Pod::setRotation(float f, Vec3 v)
+void Pod::setRotation(float f, Vector3f v)
 {
     podModel->setRotation(f, v);
 }
 
-void Pod::setScale(Vec3 v)
+void Pod::setScale(Vector3f v)
 {
     podModel->setScale(v);
 }
