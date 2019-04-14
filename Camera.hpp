@@ -20,6 +20,7 @@ public:
 
     Vector3f getPosition();
     void applyDeltaRotation(Quaternion q);
+    void setRotation(Quaternion q);
 
     Vector3f getUp();
 

@@ -44,10 +44,6 @@ void SceneManager::displayCallback()
     Vector3f camPosition = cam.getPosition();
     Vector3f camDirection = cam.getLookDirection();
     Vector3f camUp = cam.getUp();
-    std::cout <<
-        camPosition.x << " " << camPosition.y << " " << camPosition.z << std::endl <<
-        camDirection.x << " " << camDirection.y << " " << camDirection.z << std::endl <<
-        camUp.x << " " << camUp.y << " " << camUp.z << std::endl;
     gluLookAt(
         camPosition.x, camPosition.y, camPosition.z,
         camPosition.x + camDirection.x, camPosition.y + camDirection.y, camPosition.z + camDirection.z,
@@ -85,6 +81,7 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
 
         case 'r':
         case 'R':
+            cam.setRotation({1, 0, 0, 0});
             break;
         case 'x':
         case 'X':
@@ -186,6 +183,7 @@ void SceneManager::motionCallback(int x, int y)
 void SceneManager::setPod(std::shared_ptr<Pod> p)
 {
     pod.swap(p);
+    pod->setRotation(M_PI / 2, {0, 1, 0});
 }
 
 void SceneManager::setWindow(int newWindow)

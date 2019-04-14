@@ -31,6 +31,10 @@ Vector3f Camera::getLookDirection()
     return normalize(-1 * getPosition());
 }
 
+void Camera::setRotation(Quaternion q)
+{
+    orientation = q;
+}
 Vector3f Camera::getUp()
 {
     Quaternion q = orientation * Quaternion{0, 0, 1, 0} * inverse(orientation);
