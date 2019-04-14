@@ -8,12 +8,13 @@
 class Camera
 {
 private:
-    float zoom = 3;
+    float zoom = 5;
     Quaternion orientation = {1, 0, 0, 0};
     float fov = 60;
     
 public:
     void applyDeltaZoom(float zoom);
+    void setZoom(float f);
     Vector3f rotateViewplaneToVector(Vector3f v);
 
     Vector3f getLookDirection();

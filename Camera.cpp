@@ -8,6 +8,11 @@ void Camera::applyDeltaZoom(float deltaZoom)
     }
 }
 
+void Camera::setZoom(float f)
+{
+    zoom = f;
+}
+
 Vector3f Camera::rotateViewplaneToVector(Vector3f v)
 {
     Quaternion q = orientation * Quaternion{0, v.x, v.y, v.z} * inverse(orientation);

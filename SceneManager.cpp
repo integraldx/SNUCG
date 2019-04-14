@@ -11,7 +11,7 @@ std::pair<int, int> SceneManager::initialMousePosition;
 
 void SceneManager::initializeScene()
 {
-    glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitDisplayMode (GLUT_SINGLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize (1000, 1000); 
     screenScale = {1000, 1000};
     glutInitWindowPosition (50, 50);
@@ -19,6 +19,8 @@ void SceneManager::initializeScene()
 /*  select clearing (background) color       */
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDepthFunc(GL_LESS);
 /*  initialize viewing values  */
     glMatrixMode(GL_PROJECTION);
@@ -54,6 +56,8 @@ void SceneManager::displayCallback()
     {
         m->draw();
     }
+    glColor4f(0.9, 0.9, 0.9, 0.1);
+    glutSolidSphere(2, 20, 100);
     glutSwapBuffers();
     glFlush();
 }
@@ -82,6 +86,8 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
         case 'r':
         case 'R':
             cam.setRotation({1, 0, 0, 0});
+            cam.setFOV(60);
+            cam.setZoom(5);
             break;
         case 'x':
         case 'X':
@@ -122,7 +128,7 @@ void SceneManager::mouseCallback(int button, int state, int x, int y)
             if (state == GLUT_DOWN)
             {
                 isLeftMouseDown = true;
-                initialMousePosition = {x, y};
+                initialMousePosition = {x, screenScale.second - y};
             }
             else if (state = GLUT_UP)
             {
@@ -167,14 +173,41 @@ void SceneManager::mouseCallback(int button, int state, int x, int y)
 
 void SceneManager::motionCallback(int x, int y)
 {
+    y = screenScale.second - y;
     if(isLeftMouseDown)
     {
-        Vector3f axis = crossProduct(cam.rotateViewplaneToVector({-(x - initialMousePosition.first), (y - initialMousePosition.second), 0}), cam.getLookDirection());
+        float z;
+        glReadPixels((int)x, (int)y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z); 
 
-        if(~(isnan(axis.x) || isnan(axis.y) || isnan(axis.z)))
+        GLdouble projection[16];
+        GLdouble modelView[16];
+        GLint viewPort[4];
+
+        glGetDoublev(GL_PROJECTION_MATRIX,projection);
+        glGetDoublev(GL_MODELVIEW_MATRIX,modelView);
+        glGetIntegerv(GL_VIEWPORT,viewPort);
+        
+        Vector3f current;
         {
-			auto quat = expToQuat(getScale(axis) / 500, normalize(axis));
-            cam.applyDeltaRotation(quat);
+            double cx, cy, cz;
+            gluUnProject(x, y, z, modelView, projection, viewPort, &cx, &cy, &cz);
+            current = {(float)cx, (float)cy, (float)cz};
+        }
+        if(getScale(current) < 2.5)
+        {
+            Vector3f prev;
+            {
+                double cx, cy, cz;
+                gluUnProject(initialMousePosition.first, initialMousePosition.second, z, modelView, projection, viewPort, &cx, &cy, &cz);
+                prev = {(float)cx, (float)cy, (float)cz};
+            }
+
+            Vector3f axis = crossProduct(prev - current, cam.getLookDirection());
+            if(~(isnan(axis.x) || isnan(axis.y) || isnan(axis.z)))
+            {
+                auto quat = expToQuat(getScale(axis) / 2, normalize(axis));
+                cam.applyDeltaRotation(quat);
+            }
         }
     }
     initialMousePosition = {x, y};
