@@ -174,7 +174,7 @@ void SceneManager::mouseCallback(int button, int state, int x, int y)
 void SceneManager::motionCallback(int x, int y)
 {
     y = screenScale.second - y;
-    if(isLeftMouseDown)
+    if(isLeftMouseDown && (abs(initialMousePosition.first - x) > 0 || abs(initialMousePosition.second - y) > 0))
     {
         float z;
         glReadPixels((int)x, (int)y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z); 
@@ -203,9 +203,9 @@ void SceneManager::motionCallback(int x, int y)
             }
 
             Vector3f axis = crossProduct(prev - current, cam.getLookDirection());
-            if(~(isnan(axis.x) || isnan(axis.y) || isnan(axis.z)))
-            {
-                auto quat = expToQuat(getScale(axis) / 2, normalize(axis));
+            auto quat = expToQuat(getScale(axis) / 2, normalize(axis));
+           	if(~(isnan(quat.w) || isnan(quat.x) || isnan(quat.y) || isnan(quat.z)))
+			{
                 cam.applyDeltaRotation(quat);
             }
         }

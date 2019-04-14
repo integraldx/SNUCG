@@ -27,7 +27,12 @@ Vector3f Camera::getPosition()
 
 void Camera::applyDeltaRotation(Quaternion q)
 {
-    orientation = q * orientation;
+    Quaternion tempOrientation = q * orientation;
+    Quaternion qua = tempOrientation * Quaternion{0, 0, 0, 1} * inverse(tempOrientation);
+	if(~(isnan(qua.w) || isnan(qua.x) || isnan(qua.y) || isnan(qua.z)))
+	{
+		orientation = tempOrientation;
+	}
 }
 
 
