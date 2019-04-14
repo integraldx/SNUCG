@@ -26,7 +26,7 @@ Quaternion expToQuat(float angle, Vector3f axis)
 
 Quaternion inverse(Quaternion q)
 {
-    return {-q.w, q.x, q.y, q.z};
+    return {q.w, -q.x, -q.y, -q.z};
 }
 
 Vector3f getAxis(Quaternion q)

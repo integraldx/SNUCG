@@ -1,28 +1,30 @@
 #include "Camera.hpp"
 
-Vector3f Camera::getPosition()
+void Camera::applyDeltaZoom(float deltaZoom)
 {
-    Vector3f v =
+    if(zoom + deltaZoom > 0)
     {
-        (sin(viewAngleHorizontal) * cos(viewAngleVertical)),
-        (sin(viewAngleVertical)),
-        (cos(viewAngleHorizontal) * cos(viewAngleVertical))
-    };
-
-    return v * zoom;
+        zoom += deltaZoom;
+    }
 }
 
 Vector3f Camera::rotateViewplaneToVector(Vector3f v)
 {
-    Vector3f ret =
-    {
-        (v.x * cos(viewAngleHorizontal) - v.y * sin(viewAngleVertical) * sin(viewAngleHorizontal)),
-        (v.y * cos(viewAngleVertical)),
-        (v.x * -sin(viewAngleHorizontal) - v.y * sin(viewAngleVertical) * cos(viewAngleHorizontal))
-    };
-
-    return ret;
+    Quaternion q = orientation * Quaternion{0, v.x, v.y, v.z} * inverse(orientation);
+    return {q.x, q.y, q.z};
 }
+
+Vector3f Camera::getPosition()
+{
+    Quaternion q = orientation * Quaternion{0, 0, 0, 1} * inverse(orientation);
+    return zoom * Vector3f{q.x, q.y, q.z};
+}
+
+void Camera::applyDeltaRotation(Quaternion q)
+{
+    orientation = q * orientation;
+}
+
 
 Vector3f Camera::getLookDirection()
 {
@@ -31,44 +33,22 @@ Vector3f Camera::getLookDirection()
 
 Vector3f Camera::getUp()
 {
-    Vector3f v = 
-    {
-        (-sin(viewAngleHorizontal) * sin(viewAngleVertical)),
-        (cos(viewAngleVertical)),
-        (-cos(viewAngleHorizontal) * sin(viewAngleVertical))
-    };
-
-    return v;
+    Quaternion q = orientation * Quaternion{0, 0, 1, 0} * inverse(orientation);
+    return Vector3f{q.x, q.y, q.z};
 }
+
 
 float Camera::getFOV()
 {
     return fov;
 }
 
+void Camera::setFOV(float f)
+{
+    fov = f;
+}
+
 void Camera::applyDeltaFOV(float delta)
 {
     fov += delta;
-}
-
-void Camera::rotateCameraHorizontally(float angle)
-{
-    viewAngleHorizontal += angle;
-
-}
-
-void Camera::rotateCameraVertically(float angle)
-{
-    if(cos(viewAngleVertical + angle) > 0)
-    {
-        viewAngleVertical += angle;
-    }
-}
-
-void Camera::applyDeltaZoom(float deltaZoom)
-{
-    if(zoom + deltaZoom > 0)
-    {
-        zoom += deltaZoom;
-    }
 }

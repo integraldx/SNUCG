@@ -44,6 +44,10 @@ void SceneManager::displayCallback()
     Vector3f camPosition = cam.getPosition();
     Vector3f camDirection = cam.getLookDirection();
     Vector3f camUp = cam.getUp();
+    std::cout <<
+        camPosition.x << " " << camPosition.y << " " << camPosition.z << std::endl <<
+        camDirection.x << " " << camDirection.y << " " << camDirection.z << std::endl <<
+        camUp.x << " " << camUp.y << " " << camUp.z << std::endl;
     gluLookAt(
         camPosition.x, camPosition.y, camPosition.z,
         camPosition.x + camDirection.x, camPosition.y + camDirection.y, camPosition.z + camDirection.z,
@@ -62,21 +66,25 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
 {
     switch(key)
     {
-        case 'w':
-        case 'W':
-            cam.rotateCameraVertically(+0.07);
-            break;
-        case 's':
-        case 'S':
-            cam.rotateCameraVertically(-0.07);
-            break;
-        case 'a':
-        case 'A':
-            cam.rotateCameraHorizontally(-0.07);
-            break;
-        case 'd':
-        case 'D':
-            cam.rotateCameraHorizontally(+0.07);
+        //case 'w':
+        //case 'W':
+            //cam.rotateCameraVertically(+0.07);
+            //break;
+        //case 's':
+        //case 'S':
+            //cam.rotateCameraVertically(-0.07);
+            //break;
+        //case 'a':
+        //case 'A':
+            //cam.rotateCameraHorizontally(-0.07);
+            //break;
+        //case 'd':
+        //case 'D':
+            //cam.rotateCameraHorizontally(+0.07);
+            //break;
+
+        case 'r':
+        case 'R':
             break;
         case 'x':
         case 'X':
@@ -164,12 +172,12 @@ void SceneManager::motionCallback(int x, int y)
 {
     if(isLeftMouseDown)
     {
-        Vector3f axis = crossProduct(cam.rotateViewplaneToVector({(x - initialMousePosition.first), -(y - initialMousePosition.second), 0}), cam.getLookDirection());
+        Vector3f axis = crossProduct(cam.rotateViewplaneToVector({-(x - initialMousePosition.first), (y - initialMousePosition.second), 0}), cam.getLookDirection());
 
         if(~(isnan(axis.x) || isnan(axis.y) || isnan(axis.z)))
         {
 			auto quat = expToQuat(getScale(axis) / 500, normalize(axis));
-			pod->getModel()->applyDeltaRotation(quat);
+            cam.applyDeltaRotation(quat);
         }
     }
     initialMousePosition = {x, y};
