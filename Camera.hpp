@@ -10,6 +10,8 @@ class Camera
 private:
     float zoom = 5;
     Quaternion orientation = {1, 0, 0, 0};
+    Vector3f center = {0, 0, 0};
+    std::pair<float, float> panValue = {0, 0};
     float fov = 60;
     
 public:
@@ -28,4 +30,8 @@ public:
     float getFOV();
     void setFOV(float f);
     void applyDeltaFOV(float delta);
+
+    void applyDeltaPan(float x, float y);
+    void setCenter(Vector3f);
+    Vector3f getCenter();
 };

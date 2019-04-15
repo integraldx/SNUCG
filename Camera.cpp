@@ -22,7 +22,9 @@ Vector3f Camera::rotateViewplaneToVector(Vector3f v)
 Vector3f Camera::getPosition()
 {
     Quaternion q = orientation * Quaternion{0, 0, 0, 1} * inverse(orientation);
-    return zoom * Vector3f{q.x, q.y, q.z};
+    return zoom * (Vector3f{q.x, q.y, q.z}) + center;
+
+    // return zoom * Vector3f{q.x, q.y, q.z};
 }
 
 void Camera::applyDeltaRotation(Quaternion q)
@@ -38,7 +40,8 @@ void Camera::applyDeltaRotation(Quaternion q)
 
 Vector3f Camera::getLookDirection()
 {
-    return normalize(-1 * getPosition());
+    Quaternion q = orientation * Quaternion{0, 0, 0, -1} * inverse(orientation);
+    return {q.x, q.y, q.z};
 }
 
 void Camera::setRotation(Quaternion q)
@@ -65,4 +68,19 @@ void Camera::setFOV(float f)
 void Camera::applyDeltaFOV(float delta)
 {
     fov += delta;
+}
+
+void Camera::applyDeltaPan(float x, float y)
+{
+    center = center +  x * normalize(crossProduct(this->getLookDirection(), this->getUp())) + (y * this->getUp());
+}
+
+void Camera::setCenter(Vector3f v)
+{
+    center = v;
+}
+
+Vector3f Camera::getCenter()
+{
+    return center;
 }

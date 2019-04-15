@@ -56,8 +56,16 @@ void SceneManager::displayCallback()
     {
         m->draw();
     }
-    glColor4f(0.9, 0.9, 0.9, 0.1);
-    glutSolidSphere(2, 20, 100);
+
+    glPushMatrix();
+    {
+        glColor4f(0.9, 0.9, 0.9, 0.1);
+        auto cen = cam.getCenter();
+        glTranslatef(cen.x, cen.y, cen.z);
+        glutSolidSphere(2.5, 20, 100);
+    }
+    glPopMatrix();
+
     glutSwapBuffers();
     glFlush();
 }
@@ -66,28 +74,29 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
 {
     switch(key)
     {
-        //case 'w':
-        //case 'W':
-            //cam.rotateCameraVertically(+0.07);
-            //break;
-        //case 's':
-        //case 'S':
-            //cam.rotateCameraVertically(-0.07);
-            //break;
-        //case 'a':
-        //case 'A':
-            //cam.rotateCameraHorizontally(-0.07);
-            //break;
-        //case 'd':
-        //case 'D':
-            //cam.rotateCameraHorizontally(+0.07);
-            //break;
+        case 'w':
+        case 'W':
+            cam.applyDeltaPan(0, 0.1);
+            break;
+        case 's':
+        case 'S':
+            cam.applyDeltaPan(0, -0.1);
+            break;
+        case 'a':
+        case 'A':
+            cam.applyDeltaPan(-0.1, 0);
+            break;
+        case 'd':
+        case 'D':
+            cam.applyDeltaPan(0.1, 0);
+            break;
 
         case 'r':
         case 'R':
             cam.setRotation({1, 0, 0, 0});
             cam.setFOV(60);
             cam.setZoom(5);
+            cam.setCenter({0, 0, 0});
             break;
         case 'x':
         case 'X':
@@ -193,7 +202,7 @@ void SceneManager::motionCallback(int x, int y)
             gluUnProject(x, y, z, modelView, projection, viewPort, &cx, &cy, &cz);
             current = {(float)cx, (float)cy, (float)cz};
         }
-        if(getScale(current) < 2.5)
+        if(getScale(current - cam.getCenter()) < 2.5)
         {
             Vector3f prev;
             {
