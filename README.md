@@ -9,6 +9,7 @@ $ make run
 - Left click on sphere and drag to rotate camera
 - Mouse scroll to zoom in and zoom out
 - Ctrl + Mouse scroll to dolly in and dolly out
+- 'W', 'A', 'S', 'D' to translate camera center parallel to view plane.
 - 'R' to reset view to initial state
 - 'X' to exit
 
