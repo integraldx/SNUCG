@@ -386,7 +386,6 @@ shared_ptr<Pod> Pod::getPod()
                 }
             }
             secondLeftLeg->setPosition({0, -0.7, 0});
-            secondLeftLeg->setRotation(-120, {-1, 0, 0});
             secondLeftLeg->setColor({0.8, 0.8, 0.8});
             returnPod->legs.push_back(shared_ptr<Object>(secondLeftLeg));
 
@@ -530,7 +529,7 @@ shared_ptr<Pod> Pod::getPod()
                 }
             }
             secondRightLeg->setPosition({0, -0.7, 0});
-            secondRightLeg->setRotation(-120, {-1, 0, 0});
+            secondRightLeg->setRotation(0, {1, 0, 0});
             secondRightLeg->setColor({0.8, 0.8, 0.8});
 
             returnPod->legs.push_back(secondRightLeg);
@@ -555,22 +554,22 @@ Pod::Pod(shared_ptr<Model> m)
 
 void Pod::rotateLeftThigh(float angle)
 {
-    legs[0]->setRotationAngle(angle);
+    legs[0]->setRotation(angle, {1, 0, 0});
 }
 
 void Pod::rotateLeftLeg(float angle)
 {
-    legs[1]->setRotationAngle(angle);
+    legs[1]->setRotation(angle, {1, 0, 0});
 }
 
 void Pod::rotateRightThigh(float angle)
 {
-    legs[2]->setRotationAngle(angle);
+    legs[2]->setRotation(angle, {1, 0, 0});
 }
 
 void Pod::rotateRightLeg(float angle)
 {
-    legs[3]->setRotationAngle(angle);
+    legs[3]->setRotation(angle, {1, 0, 0});
 }
 
 void Pod::setPosition(Vector3f v)

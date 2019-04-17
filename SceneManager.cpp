@@ -130,10 +130,10 @@ void SceneManager::animatePod(int cycleTime = 1500)
     int frac = (startTime.count() - t.count()) % cycleTime;
     double angle = (double)frac / cycleTime * M_PI * 2;
     pod->setPosition({0, 0.3 * sin(angle), 0});
-    pod->rotateLeftThigh(10 * cos(angle) + 30);
-    pod->rotateLeftLeg(10 * sin(angle) - 120);
-    pod->rotateRightThigh(-10 * sin(angle) + 30);
-    pod->rotateRightLeg(-10 * cos(angle) - 120);
+    pod->rotateLeftThigh(- (10 * cos(angle) + 30));
+    pod->rotateLeftLeg(10 * sin(angle) + 120);
+    pod->rotateRightThigh(- (-10 * sin(angle) + 30));
+    pod->rotateRightLeg((10 * cos(angle) - 5) + 120);
 }
 
 void SceneManager::timerCallback(int value)
@@ -231,7 +231,7 @@ void SceneManager::motionCallback(int x, int y)
             }
 
             Vector3f axis = crossProduct(prev - current, cam.getLookDirection());
-            auto quat = expToQuat(getScale(axis) / 2, normalize(axis));
+            auto quat = expToQuat(getScale(axis), normalize(axis));
            	if(~(isnan(quat.w) || isnan(quat.x) || isnan(quat.y) || isnan(quat.z)))
 			{
                 cam.applyDeltaRotation(quat);

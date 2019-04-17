@@ -18,8 +18,8 @@ Quaternion operator *(Quaternion left, Quaternion right)
 
 Quaternion expToQuat(float angle, Vector3f axis)
 {
-    float w = cos(angle);
-    Vector3f v = sin(angle) * axis;
+    float w = cos(angle / 2);
+    Vector3f v = sin(angle / 2) * axis;
     return {w, v.x, v.y, v.z};
 }
 
@@ -31,7 +31,7 @@ Quaternion inverse(Quaternion q)
 
 Vector3f getAxis(Quaternion q)
 {
-    float angle = getAngle(q);
+    float angle = getAngle(q) / 2;
     Vector3f v;
     v.x = q.x / sin(angle);
     v.y = q.y / sin(angle);
@@ -42,5 +42,5 @@ Vector3f getAxis(Quaternion q)
 
 float getAngle(Quaternion q)
 {
-    return acos(q.w);
+    return acos(q.w) * 2;
 }

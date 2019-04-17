@@ -26,7 +26,10 @@ void Object::draw()
     glPushMatrix();
     {
         glTranslatef(position.x, position.y, position.z);
+        glScalef(scale.x, scale.y, scale.z);
         glTranslatef(rotationCenter.x, rotationCenter.y, rotationCenter.z);
+        float rotationAngle = getAngle(rotation) / M_PI * 180;
+        Vector3f rotationAxis = getAxis(rotation);
         glRotatef(rotationAngle, rotationAxis.x, rotationAxis.y, rotationAxis.z);
         glTranslatef(-rotationCenter.x, -rotationCenter.y, -rotationCenter.z);
         if(hasColor)
@@ -62,8 +65,8 @@ void Object::setRotationCenter(Vector3f v)
 
 void Object::setRotation(float f, Vector3f v)
 {
-    rotationAxis = v;
-    rotationAngle = f;
+    Quaternion q = expToQuat(f / 180 * M_PI, v);
+    rotation = q;
 }
 
 void Object::setScale(Vector3f v)
@@ -84,10 +87,10 @@ void Object::addChild(std::shared_ptr<Object> obj)
 
 float Object::getRotationAngle()
 {
-    return rotationAngle;
+    return getAngle(rotation) / M_PI * 180;
 }
 
-void Object::setRotationAngle(float f)
+Vector3f Object::getRotationAxis()
 {
-    rotationAngle = f;
+    return getAxis(rotation);
 }
