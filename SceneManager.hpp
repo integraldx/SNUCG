@@ -21,9 +21,10 @@ private:
     static std::chrono::duration<long, std::milli> startTime;
     static bool isLeftMouseDown;
     static std::pair<int, int> initialMousePosition;
+    static int homeworkNumber;
 
 public:
-    static void initializeScene();
+    static void initializeScene(int);
     static void addRenderModel(std::shared_ptr<Model>);
     static void displayCallback();
     static void keyboardCallback(unsigned char, int, int);

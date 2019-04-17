@@ -8,14 +8,16 @@ int SceneManager::window;
 std::chrono::duration<long, std::milli> SceneManager::startTime;
 bool SceneManager::isLeftMouseDown;
 std::pair<int, int> SceneManager::initialMousePosition;
+int SceneManager::homeworkNumber;
 
-void SceneManager::initializeScene()
+void SceneManager::initializeScene(int homeworkNumber)
 {
+    SceneManager::homeworkNumber = homeworkNumber;
     glutInitDisplayMode (GLUT_SINGLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize (1000, 1000); 
     screenScale = {1000, 1000};
     glutInitWindowPosition (50, 50);
-    SceneManager::setWindow(glutCreateWindow ("HW#2"));
+    SceneManager::setWindow(glutCreateWindow ("HW#" + homeworkNumber));
 /*  select clearing (background) color       */
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glEnable(GL_DEPTH_TEST);
@@ -30,6 +32,20 @@ void SceneManager::initializeScene()
     glutMouseFunc(mouseCallback);
     glutMotionFunc(motionCallback);
     initTime();
+    std::shared_ptr<Pod> model;
+    switch(homeworkNumber)
+    {
+        case 1:
+        case 2:
+            model = Pod::getPod();
+            addRenderModel(model->getModel());
+            setPod(model);
+            timerCallback(0);
+            break;
+        default:
+            exit(-1);
+            break;
+    }
 }
 
 void SceneManager::addRenderModel(std::shared_ptr<Model> m)
@@ -122,7 +138,10 @@ void SceneManager::animatePod(int cycleTime = 1500)
 
 void SceneManager::timerCallback(int value)
 {
-    animatePod();
+    if(homeworkNumber == 1 || homeworkNumber || 2)
+    {
+        animatePod();
+    }
     glutPostRedisplay();
     glutTimerFunc(1000/60, timerCallback, 0);
 }

@@ -7,12 +7,12 @@
 int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
-    SceneManager::initializeScene();
 
-    std::shared_ptr<Pod> model = Pod::getPod();
-    SceneManager::addRenderModel(model->getModel());
-    SceneManager::setPod(model);
-    SceneManager::timerCallback(0);
+    std::cout << "Input HW number: ";
+    int hwNumber;
+    std::cin >> hwNumber;
+
+    SceneManager::initializeScene(hwNumber);
     glutMainLoop();
     return 0;  
 }
