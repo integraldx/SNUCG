@@ -24,7 +24,7 @@ public:
     Object();
     Object(std::vector<Vector3f> vertices);
     ~Object();
-    void draw();
+    virtual void draw();
     void setPosition(Vector3f);
     void setRotationCenter(Vector3f);
     void setRotation(Quaternion q);

@@ -33,6 +33,9 @@ void SceneManager::initializeScene(int homeworkNumber)
     glutMotionFunc(motionCallback);
     initTime();
     std::shared_ptr<Pod> model;
+    std::vector<Vector3f> v;
+    std::shared_ptr<Model> m;
+    std::shared_ptr<Object> o;
     switch(homeworkNumber)
     {
         case 1:
@@ -40,12 +43,23 @@ void SceneManager::initializeScene(int homeworkNumber)
             model = Pod::getPod();
             addRenderModel(model->getModel());
             setPod(model);
-            timerCallback(0);
+            break;
+        case 3:
+            v.push_back({-1, 0, 0});
+            v.push_back({0, -1, 0});
+            v.push_back({1, 0, 0});
+            v.push_back({0, 1, 0});
+            o = std::dynamic_pointer_cast<Object>(std::make_shared<SplinedObject>(v, 100));
+            o->setColor({1, 1, 1});
+            m = std::make_shared<Model>(o);
+            addRenderModel(m);
             break;
         default:
             exit(-1);
             break;
     }
+
+    timerCallback(0);
 }
 
 void SceneManager::addRenderModel(std::shared_ptr<Model> m)
@@ -138,7 +152,7 @@ void SceneManager::animatePod(int cycleTime = 1500)
 
 void SceneManager::timerCallback(int value)
 {
-    if(homeworkNumber == 1 || homeworkNumber || 2)
+    if(homeworkNumber == 1 || homeworkNumber == 2)
     {
         animatePod();
     }
