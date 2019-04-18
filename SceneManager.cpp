@@ -49,6 +49,7 @@ void SceneManager::initializeScene(int homeworkNumber)
             v.push_back({0, -1, 0});
             v.push_back({1, 0, 0});
             v.push_back({0, 1, 0});
+            v.push_back({-1, 0, 0});
             o = std::dynamic_pointer_cast<Object>(std::make_shared<SplinedObject>(v, 100));
             o->setColor({1, 1, 1});
             m = std::make_shared<Model>(o);

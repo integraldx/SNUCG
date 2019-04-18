@@ -47,8 +47,8 @@ std::vector<Vector3f> SplinedObject::generateSplinedVertices()
 {
     std::vector<Vector3f> result;
     {
-        Vector3f tangent1 = (vertices[1] - vertices[0]) * 0.5;
         Vector3f tangent2 = (vertices[2] - vertices[0]) * 0.5;
+        Vector3f tangent1 = (vertices[1] - tangent2 - vertices[0]);
         Vector3f ctrlPoints[4];
         ctrlPoints[0] = vertices[0];
         ctrlPoints[1] = vertices[0] + tangent1;
@@ -82,15 +82,15 @@ std::vector<Vector3f> SplinedObject::generateSplinedVertices()
             3 * pow((1 - t), 1) * pow(t, 2) * ctrlPoints[2] +
             pow(t, 3) * ctrlPoints[3];
         };
-        for(int j = 0; j < interpolationLevel * 2; j++)
+        for(int j = 0; j < interpolationLevel; j++)
         {
-            result.push_back(pFunc((float)j / (interpolationLevel * 2)));
+            result.push_back(pFunc((float)j / (interpolationLevel)));
         }
     }
     {
         int fin = vertices.size() - 1;
         Vector3f tangent1 = (vertices[fin] - vertices[fin - 2]) * 0.5;
-        Vector3f tangent2 = (vertices[fin] - vertices[fin - 1]) * 0.5;
+        Vector3f tangent2 = (vertices[fin] - (vertices[fin - 1] + tangent1));
         Vector3f ctrlPoints[4];
         ctrlPoints[0] = vertices[fin - 1];
         ctrlPoints[1] = vertices[fin - 1] + tangent1;
