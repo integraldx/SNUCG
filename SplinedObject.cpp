@@ -46,30 +46,28 @@ void SplinedObject::draw()
 std::vector<Vector3f> SplinedObject::generateSplinedVertices()
 {
     std::vector<Vector3f> result;
+    for(int i = 0; i < vertices.size() - 1; i++)
     {
-        Vector3f tangent2 = (vertices[2] - vertices[0]) * 0.5;
-        Vector3f tangent1 = (vertices[1] - tangent2 - vertices[0]);
-        Vector3f ctrlPoints[4];
-        ctrlPoints[0] = vertices[0];
-        ctrlPoints[1] = vertices[0] + tangent1;
-        ctrlPoints[2] = vertices[1] - tangent2;
-        ctrlPoints[3] = vertices[1];
-        auto pFunc = [ctrlPoints](float t)
+        Vector3f tangent1;
+        Vector3f tangent2;
+        if(i == 0)
         {
-            return pow((1 - t), 3) * ctrlPoints[0] +
-            3 * pow((1 - t), 2) * pow(t, 1) * ctrlPoints[1] + 
-            3 * pow((1 - t), 1) * pow(t, 2) * ctrlPoints[2] +
-            pow(t, 3) * ctrlPoints[3];
-        };
-        for(int j = 0; j < interpolationLevel; j++)
-        {
-            result.push_back(pFunc((float)j / (interpolationLevel)));
+            tangent2 = (vertices[i + 2] - vertices[i]) * 0.5;
+            tangent1 = (vertices[1] - tangent2 - vertices[0]);
         }
-    }
-    for(int i = 1; i < vertices.size() - 2; i++)
-    {
-        Vector3f tangent1 = (vertices[i + 1] - vertices[i - 1]) * 0.5;
-        Vector3f tangent2 = (vertices[i + 2] - vertices[i]) * 0.5;
+        else if(i == vertices.size() - 2)
+        {
+            tangent1 = (vertices[i + 1] - vertices[i - 1]) * 0.5;
+            tangent2 = (vertices[i + 1] - (vertices[i] + tangent1));
+        }
+        else
+        {
+            tangent1 = (vertices[i + 1] - vertices[i - 1]) * 0.5;
+            tangent2 = (vertices[i + 2] - vertices[i]) * 0.5;
+        }
+        
+        
+
         Vector3f ctrlPoints[4];
         ctrlPoints[0] = vertices[i];
         ctrlPoints[1] = vertices[i] + tangent1;
@@ -83,27 +81,6 @@ std::vector<Vector3f> SplinedObject::generateSplinedVertices()
             pow(t, 3) * ctrlPoints[3];
         };
         for(int j = 0; j < interpolationLevel; j++)
-        {
-            result.push_back(pFunc((float)j / (interpolationLevel)));
-        }
-    }
-    {
-        int fin = vertices.size() - 1;
-        Vector3f tangent1 = (vertices[fin] - vertices[fin - 2]) * 0.5;
-        Vector3f tangent2 = (vertices[fin] - (vertices[fin - 1] + tangent1));
-        Vector3f ctrlPoints[4];
-        ctrlPoints[0] = vertices[fin - 1];
-        ctrlPoints[1] = vertices[fin - 1] + tangent1;
-        ctrlPoints[2] = vertices[fin] - tangent2;
-        ctrlPoints[3] = vertices[fin];
-        auto pFunc = [ctrlPoints](float t)
-        {
-            return pow((1 - t), 3) * ctrlPoints[0] +
-            3 * pow((1 - t), 2) * pow(t, 1) * ctrlPoints[1] + 
-            3 * pow((1 - t), 1) * pow(t, 2) * ctrlPoints[2] +
-            pow(t, 3) * ctrlPoints[3];
-        };
-        for(int j = 0; j <= interpolationLevel; j++)
         {
             result.push_back(pFunc((float)j / (interpolationLevel)));
         }
