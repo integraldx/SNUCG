@@ -12,6 +12,37 @@ int SceneManager::homeworkNumber;
 
 void SceneManager::initializeScene(int homeworkNumber)
 {
+    std::shared_ptr<Pod> model;
+    std::vector<Vector3f> v;
+    std::shared_ptr<Model> m;
+    std::shared_ptr<Object> o;
+    std::string input;
+    switch(homeworkNumber)
+    {
+        case 1:
+        case 2:
+            model = Pod::getPod();
+            addRenderModel(model->getModel());
+            setPod(model);
+            break;
+        case 3:
+            std::cout << "Input file path : ";
+            std::cin >> input;
+            SplineParser::getModelFromTxt(input);
+            v.push_back({-1, 0, 0});
+            v.push_back({0, -1, 0});
+            v.push_back({1, 0, 0});
+            v.push_back({0, 1, 0});
+            v.push_back({-1, 0, 0});
+            o = std::dynamic_pointer_cast<Object>(std::make_shared<SplinedObject>(v, 100));
+            o->setColor({1, 1, 1});
+            m = std::make_shared<Model>(o);
+            addRenderModel(m);
+            break;
+        default:
+            exit(-1);
+            break;
+    }
     SceneManager::homeworkNumber = homeworkNumber;
     glutInitDisplayMode (GLUT_SINGLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize (1000, 1000); 
@@ -32,33 +63,6 @@ void SceneManager::initializeScene(int homeworkNumber)
     glutMouseFunc(mouseCallback);
     glutMotionFunc(motionCallback);
     initTime();
-    std::shared_ptr<Pod> model;
-    std::vector<Vector3f> v;
-    std::shared_ptr<Model> m;
-    std::shared_ptr<Object> o;
-    switch(homeworkNumber)
-    {
-        case 1:
-        case 2:
-            model = Pod::getPod();
-            addRenderModel(model->getModel());
-            setPod(model);
-            break;
-        case 3:
-            v.push_back({-1, 0, 0});
-            v.push_back({0, -1, 0});
-            v.push_back({1, 0, 0});
-            v.push_back({0, 1, 0});
-            v.push_back({-1, 0, 0});
-            o = std::dynamic_pointer_cast<Object>(std::make_shared<SplinedObject>(v, 100));
-            o->setColor({1, 1, 1});
-            m = std::make_shared<Model>(o);
-            addRenderModel(m);
-            break;
-        default:
-            exit(-1);
-            break;
-    }
 
     timerCallback(0);
 }
