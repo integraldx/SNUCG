@@ -1,6 +1,6 @@
 #include "SplinedObject.hpp"
 SplinedObject::SplinedObject(std::vector<Vector3f> v)
-: Object(v), interpolationLevel(0)
+: Object(v), interpolationLevel(1)
 {
 
 }

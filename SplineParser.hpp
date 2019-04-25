@@ -4,6 +4,9 @@
 #include "Model.hpp"
 #include <memory>
 #include <string>
+#include <sstream>
+#include "SplinedObject.hpp"
+#include "Model.hpp"
 
 class SplineParser
 {

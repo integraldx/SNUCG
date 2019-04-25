@@ -69,6 +69,11 @@ void Object::setRotation(float f, Vector3f v)
     rotation = q;
 }
 
+void Object::setRotation(Quaternion q)
+{
+    rotation = q;
+}
+
 void Object::setScale(Vector3f v)
 {
     scale = v;
