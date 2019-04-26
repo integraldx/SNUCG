@@ -2,10 +2,6 @@
 
 Object::Object()
 {
-    vertices.push_back({0.5, 0.5, 0});
-    vertices.push_back({0.5, -0.5, 0});
-    vertices.push_back({-0.5, -0.5, 0});
-    vertices.push_back({-0.5, 0.5, 0});
 }
 
 Object::Object(std::vector<Vector3f> vertices)
