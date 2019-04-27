@@ -3,56 +3,30 @@
 std::pair<int, int> SceneManager::screenScale;
 std::vector<std::shared_ptr<Model>> SceneManager::toRender;
 Camera SceneManager::cam;
-std::shared_ptr<Pod> SceneManager::pod;
 int SceneManager::window;
 std::chrono::duration<long, std::milli> SceneManager::startTime;
 bool SceneManager::isLeftMouseDown;
 std::pair<int, int> SceneManager::initialMousePosition;
-int SceneManager::homeworkNumber;
 
-void SceneManager::initializeScene(int homeworkNumber)
+void SceneManager::initializeScene(std::string s)
 {
-    std::shared_ptr<Pod> model;
-    std::vector<Vector3f> v;
-    std::shared_ptr<Model> m;
-    std::shared_ptr<Object> o;
-    std::string input;
-    switch(homeworkNumber)
-    {
-        case 1:
-        case 2:
-            model = Pod::getPod();
-            addRenderModel(model->getModel());
-            setPod(model);
-            break;
-        case 3:
-            std::cout << "Input file path : ";
-            std::cin >> input;
-            m = SplineParser::getModelFromTxt(input);
-            // v.push_back({-1, 0, 0});
-            // v.push_back({0, -1, 0});
-            // v.push_back({1, 0, 0});
-            // v.push_back({0, 1, 0});
-            // v.push_back({-1, 0, 0});
-            // o = std::dynamic_pointer_cast<Object>(std::make_shared<SplinedObject>(v, 100));
-            // o->setColor({1, 1, 1});
-            // m = std::make_shared<Model>(o);
-            addRenderModel(m);
-            break;
-        default:
-            exit(-1);
-            break;
-    }
-    SceneManager::homeworkNumber = homeworkNumber;
+    auto splineParser = SplineParser::parseFile(s);
+    std::shared_ptr<Object> o = splineParser.generateObject(10);
+    std::shared_ptr<Model> m = std::make_shared<Model>(o);
+    addRenderModel(m);
     glutInitDisplayMode (GLUT_SINGLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize (1000, 1000); 
     screenScale = {1000, 1000};
     glutInitWindowPosition (50, 50);
-    SceneManager::setWindow(glutCreateWindow ("HW#" + homeworkNumber));
+    SceneManager::setWindow(glutCreateWindow ("HW3"));
 /*  select clearing (background) color       */
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
+    GLfloat ambient[] = {0.1, 0.1, 0.1, 0.1};
+    GLfloat position[] = {10, 10, 10, 1};
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+    glLightfv(GL_LIGHT0, GL_POSITION, position);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -145,24 +119,8 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
 
 }
 
-void SceneManager::animatePod(int cycleTime = 1500)
-{
-    auto t = std::chrono::duration_cast<std::chrono::duration<long, std::milli>>(std::chrono::system_clock::now().time_since_epoch());
-    int frac = (startTime.count() - t.count()) % cycleTime;
-    double angle = (double)frac / cycleTime * M_PI * 2;
-    pod->setPosition({0, 0.3 * sin(angle), 0});
-    pod->rotateLeftThigh(- (10 * cos(angle) + 30));
-    pod->rotateLeftLeg(10 * sin(angle) + 120);
-    pod->rotateRightThigh(- (-10 * sin(angle) + 30));
-    pod->rotateRightLeg((10 * cos(angle) - 5) + 120);
-}
-
 void SceneManager::timerCallback(int value)
 {
-    if(homeworkNumber == 1 || homeworkNumber == 2)
-    {
-        animatePod();
-    }
     glutPostRedisplay();
     glutTimerFunc(1000/60, timerCallback, 0);
 }
@@ -228,12 +186,6 @@ void SceneManager::motionCallback(int x, int y)
         cam.applyDeltaRotationByAngle(-(x - initialMousePosition.first) * rate , -(y - initialMousePosition.second) * rate);
     }
     initialMousePosition = {x, y};
-}
-
-void SceneManager::setPod(std::shared_ptr<Pod> p)
-{
-    pod.swap(p);
-    pod->setRotation(M_PI / 2, {0, 1, 0});
 }
 
 void SceneManager::setWindow(int newWindow)

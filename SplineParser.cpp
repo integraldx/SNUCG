@@ -1,13 +1,11 @@
 #include "SplineParser.hpp"
 
-std::shared_ptr<Model> SplineParser::getModelFromTxt(std::string filePath)
+SplineParser SplineParser::parseFile(std::string filePath)
 {
-    enum SplineKind{BSPLINE, CATMULL_ROM} splineKind;
     enum parsingState {KIND, CROSSNUM, CTRLPNTNUM, CTRLPNT, SCAL, ROT, POS, CLEAR, END} state = KIND;
     std::ifstream stream(filePath.data());
 
-    std::vector<Vector3f> v;
-    std::shared_ptr<Object> rootObj = std::make_shared<Object>(v);
+    SplineParser sp;
     int crossSectionNum;
     int controlPointNumPerCross;
     std::vector<Vector3f> controlPointsV;
@@ -37,7 +35,7 @@ std::shared_ptr<Model> SplineParser::getModelFromTxt(std::string filePath)
             {
                 std::string kindString;
                 ss >> kindString;
-                splineKind = kindString.compare("BSPLINE") ? BSPLINE : CATMULL_ROM;
+                sp.splineMode = kindString.compare("BSPLINE") == 0 ? BSPLINE : CATMULL_ROM; 
                 state = CROSSNUM;
             }
             else if (state == CROSSNUM)
@@ -48,6 +46,7 @@ std::shared_ptr<Model> SplineParser::getModelFromTxt(std::string filePath)
             else if (state == CTRLPNTNUM)
             {
                 ss >> controlPointNumPerCross;
+                sp.controlPointsNum = controlPointNumPerCross;
                 state = CTRLPNT;
             }
             else if (state == CTRLPNT)
@@ -84,13 +83,12 @@ std::shared_ptr<Model> SplineParser::getModelFromTxt(std::string filePath)
 
             if (state == CLEAR)
             {
-                std::shared_ptr<SplinedObject> newObj = std::make_shared<SplinedObject>(controlPointsV, 10);
-                newObj->setPosition(tempPosition);
-                newObj->setRotation(tempRotation);
-                newObj->setScale({tempScalingFactor, tempScalingFactor, tempScalingFactor});
-                newObj->setColor({1, 1, 1});
-                rootObj->addChild(std::move(std::dynamic_pointer_cast<Object>(newObj)));
-                controlPointsV.clear();
+                SplineParser::CrossSection newCross;
+                newCross.surface = controlPointsV;
+                newCross.position = tempPosition;
+                newCross.orientation = tempRotation;
+                newCross.scale = tempScalingFactor;
+                sp.crossSections.push_back(newCross);
 
                 state = CTRLPNT;
                 crossSectionCounter++;
@@ -108,5 +106,38 @@ std::shared_ptr<Model> SplineParser::getModelFromTxt(std::string filePath)
         exit(1);
     }
 
-    return std::make_shared<Model>(move(rootObj));
+    return sp;
+}
+
+std::shared_ptr<Object> SplineParser::generateObject(int splineLevel)
+{
+    printf("%d\n", controlPointsNum);
+    std::vector<Vector3f> vertices;
+    for(int i = 1; i < controlPointsNum - 1; i++)
+    {
+        vertices.push_back(crossSections[0].surface[0] + crossSections[0].position);
+        vertices.push_back(crossSections[0].surface[i] + crossSections[0].position);
+        vertices.push_back(crossSections[0].surface[i + 1] + crossSections[0].position);
+    }
+    for(int i = 0; i < crossSections.size() - 1; i++)
+    {
+        for(int j = 0; j < controlPointsNum; j++)
+        {
+            vertices.push_back(crossSections[i].surface[j % controlPointsNum] + crossSections[i].position);
+            vertices.push_back(crossSections[i + 1].surface[j % controlPointsNum] + crossSections[i + 1].position);
+            vertices.push_back(crossSections[i].surface[(j + 1) % controlPointsNum] + crossSections[i].position);
+
+            vertices.push_back(crossSections[i].surface[(j + 1) % controlPointsNum] + crossSections[i].position);
+            vertices.push_back(crossSections[i + 1].surface[j % controlPointsNum] + crossSections[i + 1].position);
+            vertices.push_back(crossSections[i + 1].surface[(j + 1) % controlPointsNum] + crossSections[i + 1].position);
+        }
+    }
+    for(int i = 1; i < controlPointsNum - 1; i++)
+    {
+        vertices.push_back(crossSections[crossSections.size() - 1].position + crossSections[crossSections.size() - 1].surface[0]);
+        vertices.push_back(crossSections[crossSections.size() - 1].position + crossSections[crossSections.size() - 1].surface[i]);
+        vertices.push_back(crossSections[crossSections.size() - 1].position + crossSections[crossSections.size() - 1].surface[i + 1]);
+    }
+    std::shared_ptr<Object> result = std::make_shared<Object>(vertices);
+    return result;
 }

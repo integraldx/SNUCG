@@ -28,18 +28,29 @@ void Object::draw()
         Vector3f rotationAxis = getAxis(rotation);
         glRotatef(rotationAngle, rotationAxis.x, rotationAxis.y, rotationAxis.z);
         glTranslatef(-rotationCenter.x, -rotationCenter.y, -rotationCenter.z);
+
         if(hasColor)
         {
             glColor3f(color.x, color.y, color.z);
         }
-        glBegin(GL_POLYGON);
+        else
         {
-            for(Vector3f v : vertices)
-            {
-                glVertex3f(v.x, v.y, v.z);
-            }
+            glColor4f(1, 1, 1, 1);
         }
-        glEnd();
+
+        for(int i = 0; i < vertices.size() - 2; i += 3)
+        {
+            auto normal = crossProduct(vertices[i + 1] - vertices[i], vertices[i + 2] - vertices[i]);
+            glNormal3f(normal.x, normal.y, normal.z);
+            glBegin(GL_POLYGON);
+            {
+                glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
+                glVertex3f(vertices[i + 1].x, vertices[i + 1].y, vertices[i + 1].z);
+                glVertex3f(vertices[i + 2].x, vertices[i + 2].y, vertices[i + 2].z);
+            }
+            glEnd();
+        }
+
         for(auto& o : childs)
         {
             o->draw();
