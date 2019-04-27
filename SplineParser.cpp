@@ -3,7 +3,7 @@
 std::shared_ptr<Model> SplineParser::getModelFromTxt(std::string filePath)
 {
     enum SplineKind{BSPLINE, CATMULL_ROM} splineKind;
-    enum parsingState {KIND, CROSSNUM, CTRLPNTNUM, CTRLPNT, SCAL, ROT, POS, CLEAR} state = KIND;
+    enum parsingState {KIND, CROSSNUM, CTRLPNTNUM, CTRLPNT, SCAL, ROT, POS, CLEAR, END} state = KIND;
     std::ifstream stream(filePath.data());
 
     std::vector<Vector3f> v;
@@ -12,6 +12,7 @@ std::shared_ptr<Model> SplineParser::getModelFromTxt(std::string filePath)
     int controlPointNumPerCross;
     std::vector<Vector3f> controlPointsV;
     int tempCounter = 0;
+    int crossSectionCounter = 0;
     float tempScalingFactor;
     Quaternion tempRotation;
     Vector3f tempPosition;
@@ -22,7 +23,10 @@ std::shared_ptr<Model> SplineParser::getModelFromTxt(std::string filePath)
         while (std::getline(stream, s))
         {
             int commentIndex = s.find_first_of('#');
-            s = s.substr(0, commentIndex);
+            if(commentIndex != s.npos)
+            {
+                s = s.substr(0, commentIndex);
+            }
             if(s.size() == 0 || s[0] == ' ')
             {
                 continue;
@@ -52,10 +56,9 @@ std::shared_ptr<Model> SplineParser::getModelFromTxt(std::string filePath)
                 ss >> x >> z;
                 controlPointsV.push_back({x, 0, z});
                 tempCounter++;
-                printf("%f %f\n", x, z);
                 if(tempCounter >= controlPointNumPerCross)
                 {
-                    tempCounter == 0;
+                    tempCounter = 0;
                     state = SCAL;
                 }
             }
@@ -75,6 +78,7 @@ std::shared_ptr<Model> SplineParser::getModelFromTxt(std::string filePath)
             {
                 float x, y, z;
                 ss >> x >> y >> z;
+                tempPosition = {x, y, z};
                 state = CLEAR;
             }
 
@@ -86,8 +90,14 @@ std::shared_ptr<Model> SplineParser::getModelFromTxt(std::string filePath)
                 newObj->setScale({tempScalingFactor, tempScalingFactor, tempScalingFactor});
                 newObj->setColor({1, 1, 1});
                 rootObj->addChild(std::move(std::dynamic_pointer_cast<Object>(newObj)));
+                controlPointsV.clear();
 
                 state = CTRLPNT;
+                crossSectionCounter++;
+                if(crossSectionCounter >= crossSectionNum)
+                {
+                    break;
+                }
             }
         }
         stream.close();

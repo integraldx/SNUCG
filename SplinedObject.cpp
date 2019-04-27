@@ -133,7 +133,6 @@ std::vector<SplinedObject> SplinedObject::generateSplinedObjects()
         };
         for(int j = 0; j < interpolationLevel; j++)
         {
-            result.push_back(pFunc((float)j / (interpolationLevel)));
         }
     }
     return result;
