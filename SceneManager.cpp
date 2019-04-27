@@ -53,6 +53,8 @@ void SceneManager::initializeScene(int homeworkNumber)
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDepthFunc(GL_LESS);
 /*  initialize viewing values  */
@@ -92,14 +94,14 @@ void SceneManager::displayCallback()
         m->draw();
     }
 
-    glPushMatrix();
-    {
-        glColor4f(0.9, 0.9, 0.9, 0.1);
-        auto cen = cam.getCenter();
-        glTranslatef(cen.x, cen.y, cen.z);
-        glutSolidSphere(2.5, 20, 100);
-    }
-    glPopMatrix();
+    // glPushMatrix();
+    // {
+    //     glColor4f(0.9, 0.9, 0.9, 0.0);
+    //     auto cen = cam.getCenter();
+    //     glTranslatef(cen.x, cen.y, cen.z);
+    //     glutSolidSphere(2.5, 20, 100);
+    // }
+    // glPopMatrix();
 
     glutSwapBuffers();
     glFlush();
@@ -111,19 +113,19 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
     {
         case 'w':
         case 'W':
-            cam.applyDeltaPan(0, 0.1);
+            cam.setCenter(cam.getCenter() + cam.getLookDirection() * 0.1);
             break;
         case 's':
         case 'S':
-            cam.applyDeltaPan(0, -0.1);
+            cam.setCenter(cam.getCenter() - cam.getLookDirection() * 0.1);
             break;
         case 'a':
         case 'A':
-            cam.applyDeltaPan(-0.1, 0);
+            cam.setCenter(cam.getCenter() + crossProduct(cam.getUp(), cam.getLookDirection()) * 0.1);
             break;
         case 'd':
         case 'D':
-            cam.applyDeltaPan(0.1, 0);
+            cam.setCenter(cam.getCenter() - crossProduct(cam.getUp(), cam.getLookDirection()) * 0.1);
             break;
 
         case 'r':
@@ -167,7 +169,6 @@ void SceneManager::timerCallback(int value)
 
 void SceneManager::mouseCallback(int button, int state, int x, int y)
 {
-
     int mod = glutGetModifiers();
     switch (button)
     {
@@ -183,12 +184,12 @@ void SceneManager::mouseCallback(int button, int state, int x, int y)
             }
             break;
     
-        case GLUT_RIGHT_BUTTON:
+        // case GLUT_RIGHT_BUTTON:
 
-            break;
-        case GLUT_MIDDLE_BUTTON:
+        //     break;
+        // case GLUT_MIDDLE_BUTTON:
 
-            break;
+        //     break;
         case 3:
             if(mod & GLUT_ACTIVE_CTRL)
             {
@@ -221,41 +222,10 @@ void SceneManager::mouseCallback(int button, int state, int x, int y)
 void SceneManager::motionCallback(int x, int y)
 {
     y = screenScale.second - y;
-    if(isLeftMouseDown && (abs(initialMousePosition.first - x) > 0 || abs(initialMousePosition.second - y) > 0))
+    float rate = 0.003;
+    if(isLeftMouseDown)
     {
-        float z;
-        glReadPixels((int)x, (int)y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &z); 
-
-        GLdouble projection[16];
-        GLdouble modelView[16];
-        GLint viewPort[4];
-
-        glGetDoublev(GL_PROJECTION_MATRIX,projection);
-        glGetDoublev(GL_MODELVIEW_MATRIX,modelView);
-        glGetIntegerv(GL_VIEWPORT,viewPort);
-        
-        Vector3f current;
-        {
-            double cx, cy, cz;
-            gluUnProject(x, y, z, modelView, projection, viewPort, &cx, &cy, &cz);
-            current = {(float)cx, (float)cy, (float)cz};
-        }
-        if(getScale(current - cam.getCenter()) < 2.5)
-        {
-            Vector3f prev;
-            {
-                double cx, cy, cz;
-                gluUnProject(initialMousePosition.first, initialMousePosition.second, z, modelView, projection, viewPort, &cx, &cy, &cz);
-                prev = {(float)cx, (float)cy, (float)cz};
-            }
-
-            Vector3f axis = crossProduct(prev - current, cam.getLookDirection());
-            auto quat = expToQuat(getScale(axis), normalize(axis));
-           	if(~(isnan(quat.w) || isnan(quat.x) || isnan(quat.y) || isnan(quat.z)))
-			{
-                cam.applyDeltaRotation(quat);
-            }
-        }
+        cam.applyDeltaRotationByAngle(-(x - initialMousePosition.first) * rate , -(y - initialMousePosition.second) * rate);
     }
     initialMousePosition = {x, y};
 }
