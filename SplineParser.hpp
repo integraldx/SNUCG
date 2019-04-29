@@ -20,11 +20,16 @@ private:
         Quaternion orientation;
         float scale;
         std::vector<Vector3f> surface;
+
+        Vector3f getAppliedVertexAt(int index);
     };
+
+    int interpolationLevel;
 
     std::vector<SplineParser::CrossSection> crossSections;
 
 public:
     static SplineParser parseFile(std::string s);
     std::shared_ptr<Object> generateObject(int splineLevel);
+    void setInterpolationLevel(int i);
 };

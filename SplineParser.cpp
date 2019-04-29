@@ -1,5 +1,12 @@
 #include "SplineParser.hpp"
 
+Vector3f SplineParser::CrossSection::getAppliedVertexAt(int index)
+{
+    Quaternion q = {0, scale * surface[index].x, scale * surface[index].y, scale * surface[index].z};
+    q = orientation * q * inverse(orientation);
+    return Vector3f{q.x, q.y, q.z} + position;
+}
+
 SplineParser SplineParser::parseFile(std::string filePath)
 {
     enum parsingState {KIND, CROSSNUM, CTRLPNTNUM, CTRLPNT, SCAL, ROT, POS, CLEAR, END} state = KIND;
@@ -115,29 +122,34 @@ std::shared_ptr<Object> SplineParser::generateObject(int splineLevel)
     std::vector<Vector3f> vertices;
     for(int i = 1; i < controlPointsNum - 1; i++)
     {
-        vertices.push_back(crossSections[0].surface[0] + crossSections[0].position);
-        vertices.push_back(crossSections[0].surface[i] + crossSections[0].position);
-        vertices.push_back(crossSections[0].surface[i + 1] + crossSections[0].position);
+        vertices.push_back(crossSections[0].getAppliedVertexAt(0));
+        vertices.push_back(crossSections[0].getAppliedVertexAt(i));
+        vertices.push_back(crossSections[0].getAppliedVertexAt(i + 1));
     }
     for(int i = 0; i < crossSections.size() - 1; i++)
     {
         for(int j = 0; j < controlPointsNum; j++)
         {
-            vertices.push_back(crossSections[i].surface[j % controlPointsNum] + crossSections[i].position);
-            vertices.push_back(crossSections[i + 1].surface[j % controlPointsNum] + crossSections[i + 1].position);
-            vertices.push_back(crossSections[i].surface[(j + 1) % controlPointsNum] + crossSections[i].position);
+            vertices.push_back(crossSections[i].getAppliedVertexAt(j % controlPointsNum));
+            vertices.push_back(crossSections[i + 1].getAppliedVertexAt(j % controlPointsNum));
+            vertices.push_back(crossSections[i].getAppliedVertexAt((j + 1) % controlPointsNum));
 
-            vertices.push_back(crossSections[i].surface[(j + 1) % controlPointsNum] + crossSections[i].position);
-            vertices.push_back(crossSections[i + 1].surface[j % controlPointsNum] + crossSections[i + 1].position);
-            vertices.push_back(crossSections[i + 1].surface[(j + 1) % controlPointsNum] + crossSections[i + 1].position);
+            vertices.push_back(crossSections[i].getAppliedVertexAt((j + 1) % controlPointsNum));
+            vertices.push_back(crossSections[i + 1].getAppliedVertexAt(j % controlPointsNum));
+            vertices.push_back(crossSections[i + 1].getAppliedVertexAt((j + 1) % controlPointsNum));
         }
     }
     for(int i = 1; i < controlPointsNum - 1; i++)
     {
-        vertices.push_back(crossSections[crossSections.size() - 1].position + crossSections[crossSections.size() - 1].surface[0]);
-        vertices.push_back(crossSections[crossSections.size() - 1].position + crossSections[crossSections.size() - 1].surface[i]);
-        vertices.push_back(crossSections[crossSections.size() - 1].position + crossSections[crossSections.size() - 1].surface[i + 1]);
+        vertices.push_back(crossSections[crossSections.size() - 1].getAppliedVertexAt(0));
+        vertices.push_back(crossSections[crossSections.size() - 1].getAppliedVertexAt(i + 1));
+        vertices.push_back(crossSections[crossSections.size() - 1].getAppliedVertexAt(i));
     }
     std::shared_ptr<Object> result = std::make_shared<Object>(vertices);
     return result;
+}
+
+void SplineParser::setInterpolationLevel(int i)
+{
+    interpolationLevel = i;
 }

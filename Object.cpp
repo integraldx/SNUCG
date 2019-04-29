@@ -40,7 +40,7 @@ void Object::draw()
 
         for(int i = 0; i < vertices.size() - 2; i += 3)
         {
-            auto normal = crossProduct(vertices[i + 1] - vertices[i], vertices[i + 2] - vertices[i]);
+            auto normal = normalize(crossProduct(vertices[i + 1] - vertices[i], vertices[i + 2] - vertices[i]));
             glNormal3f(normal.x, normal.y, normal.z);
             glBegin(GL_POLYGON);
             {
