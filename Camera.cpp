@@ -51,8 +51,8 @@ void Camera::setRotation(Quaternion q)
 
 void Camera::applyDeltaRotationByAngle(float horizontal, float vertical)
 {
-    Quaternion hDelta = expToQuat(horizontal, getUp());
     Quaternion vDelta = expToQuat(vertical, crossProduct(getUp(), getLookDirection()));
+    Quaternion hDelta = expToQuat(horizontal, {0, 1, 0});
 
     orientation = hDelta * vDelta * orientation;
 }
