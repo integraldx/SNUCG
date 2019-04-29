@@ -44,3 +44,19 @@ float getAngle(Quaternion q)
 {
     return acos(q.w) * 2;
 }
+
+Quaternion normalize(Quaternion q)
+{
+    float size = sqrt(pow(q.w, 2) + pow(q.x, 2) + pow(q.y, 2) + pow(q.z, 2));
+    return {q.w / size, q.x / size, q.y / size, q.z / size};
+}
+
+Quaternion operator *(Quaternion left, float right)
+{
+    return {left.w / right, left.x / right, left.y / right, left.z / right};
+}
+
+Quaternion affine (Quaternion left, Quaternion right)
+{
+    return {left.w / 2 + right.w / 2, left.x / 2 + right.x / 2 + left.y / 2 + right.y / 2, left.z / 2 + right.z / 2};
+}

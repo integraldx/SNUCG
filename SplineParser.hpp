@@ -6,6 +6,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <functional>
 #include "SplinedObject.hpp"
 #include "Model.hpp"
 
@@ -24,12 +25,12 @@ private:
         Vector3f getAppliedVertexAt(int index);
     };
 
-    int interpolationLevel;
 
     std::vector<SplineParser::CrossSection> crossSections;
+
+    std::vector<SplineParser::CrossSection> getSplinedSections(int splineLevel);
 
 public:
     static SplineParser parseFile(std::string s);
     std::shared_ptr<Object> generateObject(int splineLevel);
-    void setInterpolationLevel(int i);
 };

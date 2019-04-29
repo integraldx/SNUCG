@@ -118,38 +118,96 @@ SplineParser SplineParser::parseFile(std::string filePath)
 
 std::shared_ptr<Object> SplineParser::generateObject(int splineLevel)
 {
-    printf("%d\n", controlPointsNum);
+    auto generated = getSplinedSections(splineLevel);
+    printf("%d\n", generated.size());
+    for(auto a : generated)
+    {
+        printf("%f\n", a.position.y);
+    }
     std::vector<Vector3f> vertices;
     for(int i = 1; i < controlPointsNum - 1; i++)
     {
-        vertices.push_back(crossSections[0].getAppliedVertexAt(0));
-        vertices.push_back(crossSections[0].getAppliedVertexAt(i));
-        vertices.push_back(crossSections[0].getAppliedVertexAt(i + 1));
+        vertices.push_back(generated[0].getAppliedVertexAt(0));
+        vertices.push_back(generated[0].getAppliedVertexAt(i));
+        vertices.push_back(generated[0].getAppliedVertexAt(i + 1));
     }
-    for(int i = 0; i < crossSections.size() - 1; i++)
+    for(int i = 0; i < generated.size() - 1; i++)
     {
         for(int j = 0; j < controlPointsNum; j++)
         {
-            vertices.push_back(crossSections[i].getAppliedVertexAt(j % controlPointsNum));
-            vertices.push_back(crossSections[i + 1].getAppliedVertexAt(j % controlPointsNum));
-            vertices.push_back(crossSections[i].getAppliedVertexAt((j + 1) % controlPointsNum));
+            vertices.push_back(generated[i].getAppliedVertexAt(j % controlPointsNum));
+            vertices.push_back(generated[i + 1].getAppliedVertexAt(j % controlPointsNum));
+            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % controlPointsNum));
 
-            vertices.push_back(crossSections[i].getAppliedVertexAt((j + 1) % controlPointsNum));
-            vertices.push_back(crossSections[i + 1].getAppliedVertexAt(j % controlPointsNum));
-            vertices.push_back(crossSections[i + 1].getAppliedVertexAt((j + 1) % controlPointsNum));
+            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % controlPointsNum));
+            vertices.push_back(generated[i + 1].getAppliedVertexAt(j % controlPointsNum));
+            vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % controlPointsNum));
         }
     }
     for(int i = 1; i < controlPointsNum - 1; i++)
     {
-        vertices.push_back(crossSections[crossSections.size() - 1].getAppliedVertexAt(0));
-        vertices.push_back(crossSections[crossSections.size() - 1].getAppliedVertexAt(i + 1));
-        vertices.push_back(crossSections[crossSections.size() - 1].getAppliedVertexAt(i));
+        vertices.push_back(generated[generated.size() - 1].getAppliedVertexAt(0));
+        vertices.push_back(generated[generated.size() - 1].getAppliedVertexAt(i + 1));
+        vertices.push_back(generated[generated.size() - 1].getAppliedVertexAt(i));
     }
     std::shared_ptr<Object> result = std::make_shared<Object>(vertices);
     return result;
 }
 
-void SplineParser::setInterpolationLevel(int i)
+std::vector<SplineParser::CrossSection> SplineParser::getSplinedSections(int splineLevel)
 {
-    interpolationLevel = i;
+    std::vector<SplineParser::CrossSection> result;
+
+    for(int i = 0; i < crossSections.size() - 1; i++)
+    {
+        std::function<Vector3f(float)> positionFunc;
+
+        {
+            Vector3f tangent1;
+            Vector3f tangent2;
+            if (i == 0)
+            {
+                tangent2 = (crossSections[i + 2].position - crossSections[i].position) * 0.25;
+                tangent1 = crossSections[i + 1].position - tangent2 - crossSections[i].position;
+            }
+            else if (i == crossSections.size() - 1)
+            {
+                tangent1 = (crossSections[i + 1].position - crossSections[i - 1].position) * 0.25;
+                tangent2 = crossSections[i + 1].position - (crossSections[i].position + tangent1);
+            }
+            else
+            {
+                tangent1 = (crossSections[i + 1].position - crossSections[i - 1].position) * 0.25;
+                tangent2 = (crossSections[i + 2].position - crossSections[i].position) * 0.25;
+            }
+
+            Vector3f controlPoints[] = {
+                crossSections[i].position, 
+                crossSections[i].position + tangent1,
+                crossSections[i + 1].position - tangent2,
+                crossSections[i + 1].position
+                };
+            positionFunc = [controlPoints](float t)
+            {
+                return 
+                    pow(1 - t, 3) * controlPoints[0] +
+                    pow(1 - t, 2) * pow(t, 1) * 3 * controlPoints[1] +
+                    pow(1 - t, 1) * pow(t, 2) * 3 * controlPoints[2] +
+                    pow(t, 3) * controlPoints[3];
+            };
+        }
+
+        for(int j = 0; j < splineLevel; j++)
+        {
+            CrossSection cs;
+            cs.position = positionFunc((float)j / splineLevel);
+            cs.orientation = crossSections[i].orientation;
+            cs.scale = crossSections[i].scale;
+            cs.surface = crossSections[i].surface;
+
+            result.push_back(cs);
+        }
+    }
+
+    return result;
 }

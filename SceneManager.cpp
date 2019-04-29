@@ -11,7 +11,7 @@ std::pair<int, int> SceneManager::initialMousePosition;
 void SceneManager::initializeScene(std::string s)
 {
     auto splineParser = SplineParser::parseFile(s);
-    std::shared_ptr<Object> o = splineParser.generateObject(10);
+    std::shared_ptr<Object> o = splineParser.generateObject(100);
     std::shared_ptr<Model> m = std::make_shared<Model>(o);
     addRenderModel(m);
     glutInitDisplayMode (GLUT_SINGLE | GLUT_RGBA | GLUT_DEPTH);
