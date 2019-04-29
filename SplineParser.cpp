@@ -176,40 +176,29 @@ std::vector<SplineParser::CrossSection> SplineParser::getSplinedSections(int spl
     for(int i = 0; i < crossSections.size() - 1; i++)
     {
         std::function<Vector3f(float)> positionFunc;
-
         {
-            Vector3f tangent1;
-            Vector3f tangent2;
-            if (i == 0)
             {
-                tangent2 = (crossSections[i + 2].position - crossSections[i].position) * 0.5;
-                tangent1 = crossSections[i + 1].position - tangent2 - crossSections[i].position;
-            }
-            else if (i == crossSections.size() - 1)
-            {
-                tangent1 = (crossSections[i + 1].position - crossSections[i - 1].position) * 0.5;
-                tangent2 = crossSections[i + 1].position - (crossSections[i].position + tangent1);
-            }
-            else
-            {
-                tangent1 = (crossSections[i + 1].position - crossSections[i - 1].position) * 0.5;
-                tangent2 = (crossSections[i + 2].position - crossSections[i].position) * 0.5;
-            }
+                Vector3f controlPoints[] = {
+                    i != 0 ? crossSections[i - 1].position : crossSections[i].position, 
+                    crossSections[i].position,
+                    crossSections[i + 1].position,
+                    i != crossSections.size() - 2 ? crossSections[i + 2].position : crossSections[i + 1].position
+                    };
 
-            Vector3f controlPoints[] = {
-                crossSections[i].position, 
-                crossSections[i].position + tangent1,
-                crossSections[i + 1].position - tangent2,
-                crossSections[i + 1].position
+                positionFunc = [controlPoints](float t)
+                {
+                    Vector3f a[] = {
+                        (-t) * controlPoints[0] + (t + 1) * controlPoints[1],
+                        (1 - t) * controlPoints[1] + (t) * controlPoints[2],
+                        (2 - t) * controlPoints[2] + (t - 1) * controlPoints[3]
+                    };
+                    Vector3f b[] = {
+                        (1 - t) * 0.5 * a[0] + (t + 1) * 0.5 * a[1],
+                        (2 - t) * 0.5 * a[1] + (t) * 0.5 * a[2]
+                    };
+                    return (1 - t) * b[0] + t * b[1];
                 };
-            positionFunc = [controlPoints](float t)
-            {
-                return 
-                    pow(1 - t, 3) * controlPoints[0] +
-                    pow(1 - t, 2) * pow(t, 1) * 3 * controlPoints[1] +
-                    pow(1 - t, 1) * pow(t, 2) * 3 * controlPoints[2] +
-                    pow(t, 3) * controlPoints[3];
-            };
+            }
         }
 
         for(int j = 0; j < splineLevel; j++)
