@@ -242,14 +242,37 @@ std::vector<SplineParser::CrossSection> SplineParser::getSplinedSections(int spl
             };
         }
 
+        std::function<float(float)> scaleFunc;
+        {
+            float controlPoints[] = {
+                i != 0 ? crossSections[i - 1].scale : crossSections[i].scale, 
+                crossSections[i].scale,
+                crossSections[i + 1].scale,
+                i != crossSections.size() - 2 ? crossSections[i + 2].scale : crossSections[i + 1].scale
+                };
+
+            scaleFunc = [controlPoints](float t)
+            {
+                float a[] = {
+                    (-t) * controlPoints[0] + (t + 1) * controlPoints[1],
+                    (1 - t) * controlPoints[1] + (t) * controlPoints[2],
+                    (2 - t) * controlPoints[2] + (t - 1) * controlPoints[3]
+                };
+                float b[] = {
+                    (1 - t) * 0.5 * a[0] + (t + 1) * 0.5 * a[1],
+                    (2 - t) * 0.5 * a[1] + (t) * 0.5 * a[2]
+                };
+                return (1 - t) * b[0] + t * b[1];
+            };
+        }
         for(int j = 0; j < splineLevel; j++)
         {
             CrossSection cs;
             cs.position = positionFunc((float)j / splineLevel);
             // cs.orientation = crossSections[i].orientation;
             cs.orientation = orientationFunc((float)j / splineLevel);
-            printf("%f\n", getAngle(cs.orientation) / M_PI * 180);
-            cs.scale = crossSections[i].scale;
+            // cs.scale = crossSections[i].scale;
+            cs.scale = scaleFunc((float)j / splineLevel);
             cs.surface = crossSections[i].surface;
 
             result.push_back(cs);
