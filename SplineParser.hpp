@@ -29,7 +29,38 @@ private:
     std::vector<SplineParser::CrossSection> crossSections;
 
     std::vector<SplineParser::CrossSection> getSplinedSections(int splineLevel);
-    static std::vector<Vector3f> closedBSpline(std::vector<Vector3f> v, int splineLevel);
+    static std::vector<Vector3f> closedBSpline(std::vector<Vector3f> v, int splineLevel)
+    {
+        std::vector<Vector3f> result;
+        for(int i = 0; i < v.size(); i++)
+        {
+            std::function<Vector3f(float)> func;
+            Vector3f controlPoints[] = 
+            {
+                v[(i + v.size() - 1) % v.size()],
+                v[(i + v.size()) % v.size()],
+                v[(i + v.size() + 1) % v.size()],
+                v[(i + v.size() + 2) % v.size()]
+            };
+
+            func = [controlPoints](float t)
+            {
+                return 
+                Vector3f{
+                    1 / 6.0 * pow(1 - t, 3) * controlPoints[0] +
+                    1 / 6.0 * (3 * pow(t, 3) - 6 * pow(t, 2) + 4) * controlPoints[1] +
+                    1 / 6.0 * (-3 * pow(t, 3) + 3 * pow(t, 2) + 3 * t + 1) * controlPoints[2] +
+                    1 / 6.0 * pow(t, 3) * controlPoints[3] 
+                };
+            };
+
+            for(int j = 0; j < splineLevel; j++)
+            {
+                result.push_back(func((float)j / splineLevel));
+            }
+        }
+        return result;
+    }
     static std::vector<Vector3f> closedCatMullSpline(std::vector<Vector3f> v, int splineLevel)
     {
         std::vector<Vector3f> result;

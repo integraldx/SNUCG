@@ -79,7 +79,7 @@ SplineParser SplineParser::parseFile(std::string filePath)
             {
                 float angle, x, y, z;
                 ss >> angle >> x >> y >> z;
-                tempRotation = expToQuat(angle / 180 * M_PI, {x, y, z});
+                tempRotation = expToQuat(angle, {x, y, z});
                 state = POS;
             }
             else if (state == POS)
@@ -107,8 +107,6 @@ SplineParser SplineParser::parseFile(std::string filePath)
                     break;
                 }
             }
-            printf("%s\n", s.c_str());
-            printf("%x\n", s[0]);
         }
         stream.close();
     }
@@ -290,7 +288,7 @@ std::vector<SplineParser::CrossSection> SplineParser::getSplinedSections(int spl
                     (1 - t) * 0.5 * a[0] + (t + 1) * 0.5 * a[1],
                     (2 - t) * 0.5 * a[1] + (t) * 0.5 * a[2]
                 };
-                return closedCatMullSpline((1 - t) * b[0] + t * b[1], splineLevel);
+                return splineMode == 0 ? closedBSpline((1 - t) * b[0] + t * b[1], splineLevel) : closedCatMullSpline((1 - t) * b[0] + t * b[1], splineLevel);
             };
         }
         for(int j = 0; j < splineLevel; j++)
