@@ -11,7 +11,7 @@ std::pair<int, int> SceneManager::initialMousePosition;
 void SceneManager::initializeScene(std::string s)
 {
     auto splineParser = SplineParser::parseFile(s);
-    std::shared_ptr<Object> o = splineParser.generateObject(100);
+    std::shared_ptr<Object> o = splineParser.generateObject(20);
     std::shared_ptr<Model> m = std::make_shared<Model>(o);
     addRenderModel(m);
     glutInitDisplayMode (GLUT_SINGLE | GLUT_RGBA | GLUT_DEPTH);
@@ -24,7 +24,7 @@ void SceneManager::initializeScene(std::string s)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     GLfloat ambient[] = {0.1, 0.1, 0.1, 0.1};
-    GLfloat position[] = {10, 10, 10, 1};
+    GLfloat position[] = {1000, 1000, 1000, 1};
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
     glLightfv(GL_LIGHT0, GL_POSITION, position);
     glEnable(GL_LIGHTING);
@@ -55,7 +55,7 @@ void SceneManager::displayCallback()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glLoadIdentity();
-    gluPerspective(cam.getFOV(), (float)screenScale.first / screenScale.second, 0.1f, 100.0f);
+    gluPerspective(cam.getFOV(), (float)screenScale.first / screenScale.second, 0.1f, 10000.0f);
     Vector3f camPosition = cam.getPosition();
     Vector3f camDirection = cam.getLookDirection();
     Vector3f camUp = cam.getUp();
@@ -89,19 +89,19 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
     {
         case 'w':
         case 'W':
-            cam.setCenter(cam.getCenter() + cam.getLookDirection() * 0.1);
+            cam.setCenter(cam.getCenter() + cam.getLookDirection());
             break;
         case 's':
         case 'S':
-            cam.setCenter(cam.getCenter() - cam.getLookDirection() * 0.1);
+            cam.setCenter(cam.getCenter() - cam.getLookDirection());
             break;
         case 'a':
         case 'A':
-            cam.setCenter(cam.getCenter() + crossProduct(cam.getUp(), cam.getLookDirection()) * 0.1);
+            cam.setCenter(cam.getCenter() + crossProduct(cam.getUp(), cam.getLookDirection()));
             break;
         case 'd':
         case 'D':
-            cam.setCenter(cam.getCenter() - crossProduct(cam.getUp(), cam.getLookDirection()) * 0.1);
+            cam.setCenter(cam.getCenter() - crossProduct(cam.getUp(), cam.getLookDirection()));
             break;
 
         case 'r':

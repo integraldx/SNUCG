@@ -27,12 +27,14 @@ SplineParser SplineParser::parseFile(std::string filePath)
         std::string s;
         while (std::getline(stream, s))
         {
+            std::string temp;
+            // std::cin >> temp;
             int commentIndex = s.find_first_of('#');
             if(commentIndex != s.npos)
             {
                 s = s.substr(0, commentIndex);
             }
-            if(s.size() == 0 || s[0] == ' ')
+            if(s.size() == 0 || s[0] == ' ' || s[0] == '\0' || s[0] == '\r')
             {
                 continue;
             }
@@ -93,6 +95,7 @@ SplineParser SplineParser::parseFile(std::string filePath)
                 SplineParser::CrossSection newCross;
                 newCross.surface = controlPointsV;
                 newCross.position = tempPosition;
+                printf("%f %f %f\n", newCross.position.x, newCross.position.y, newCross.position.z);
                 newCross.orientation = tempRotation;
                 newCross.scale = tempScalingFactor;
                 sp.crossSections.push_back(newCross);
@@ -104,6 +107,8 @@ SplineParser SplineParser::parseFile(std::string filePath)
                     break;
                 }
             }
+            printf("%s\n", s.c_str());
+            printf("%x\n", s[0]);
         }
         stream.close();
     }
@@ -275,6 +280,8 @@ std::vector<SplineParser::CrossSection> SplineParser::getSplinedSections(int spl
             cs.scale = scaleFunc((float)j / splineLevel);
             cs.surface = crossSections[i].surface;
 
+            // for(int i = 0; i < cs.surface.size(); i++)
+            //     printf("%f %f %f\n", cs.getAppliedVertexAt(i));
             result.push_back(cs);
         }
     }

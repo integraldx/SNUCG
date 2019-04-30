@@ -4,7 +4,10 @@ int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
 
-    SceneManager::initializeScene("input.txt");
+    std::string s;
+    std::cin >> s;
+
+    SceneManager::initializeScene(s);
     glutMainLoop();
     return 0;  
 }
