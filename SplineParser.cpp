@@ -95,10 +95,10 @@ SplineParser SplineParser::parseFile(std::string filePath)
                 SplineParser::CrossSection newCross;
                 newCross.surface = controlPointsV;
                 newCross.position = tempPosition;
-                printf("%f %f %f\n", newCross.position.x, newCross.position.y, newCross.position.z);
                 newCross.orientation = tempRotation;
                 newCross.scale = tempScalingFactor;
                 sp.crossSections.push_back(newCross);
+                controlPointsV.clear();
 
                 state = CTRLPNT;
                 crossSectionCounter++;
@@ -125,62 +125,62 @@ std::shared_ptr<Object> SplineParser::generateObject(int splineLevel)
 {
     auto generated = getSplinedSections(splineLevel);
     std::vector<Vector3f> vertices;
-    for(int i = 1; i < controlPointsNum - 1; i++)
+    for(int j = 1; j < generated[generated.size() - 1].surface.size(); j++)
     {
         vertices.push_back(generated[0].getAppliedVertexAt(0));
-        vertices.push_back(generated[0].getAppliedVertexAt(i));
-        vertices.push_back(generated[0].getAppliedVertexAt(i + 1));
+        vertices.push_back(generated[0].getAppliedVertexAt(j));
+        vertices.push_back(generated[0].getAppliedVertexAt(j + 1));
     }
     for(int i = 0; i < generated.size() - 1; i++)
     {
-        for(int j = 1; j < controlPointsNum - 1; j++)
+        // for(int j = 1; j < generated[i].surface.size(); j++)
+        // {
+        //     vertices.push_back(generated[i].getAppliedVertexAt(0));
+        //     vertices.push_back(generated[i].getAppliedVertexAt(j));
+        //     vertices.push_back(generated[i].getAppliedVertexAt(j + 1));
+        // }
+        for(int j = 0; j < generated[i].surface.size(); j++)
         {
-            vertices.push_back(generated[i].getAppliedVertexAt(0));
-            vertices.push_back(generated[i].getAppliedVertexAt(j));
-            vertices.push_back(generated[i].getAppliedVertexAt(j + 1));
+            vertices.push_back(generated[i].getAppliedVertexAt(j % generated[i].surface.size()));
+            vertices.push_back(generated[i + 1].getAppliedVertexAt(j % generated[i].surface.size()));
+            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+
+            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+            vertices.push_back(generated[i + 1].getAppliedVertexAt(j % generated[i].surface.size()));
+            vertices.push_back(generated[i].getAppliedVertexAt(j % generated[i].surface.size()));
+
+            vertices.push_back(generated[i].getAppliedVertexAt(j % generated[i].surface.size()));
+            vertices.push_back(generated[i + 1].getAppliedVertexAt(j % generated[i].surface.size()));
+            vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+
+            vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+            vertices.push_back(generated[i + 1].getAppliedVertexAt(j % generated[i].surface.size()));
+            vertices.push_back(generated[i].getAppliedVertexAt(j % generated[i].surface.size()));
+
+            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+            vertices.push_back(generated[i + 1].getAppliedVertexAt(j % generated[i].surface.size()));
+            vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+
+            vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+            vertices.push_back(generated[i + 1].getAppliedVertexAt(j % generated[i].surface.size()));
+            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+
+            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+            vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+
+            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+            vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
         }
-        for(int j = 0; j < controlPointsNum; j++)
-        {
-            vertices.push_back(generated[i].getAppliedVertexAt(j % controlPointsNum));
-            vertices.push_back(generated[i + 1].getAppliedVertexAt(j % controlPointsNum));
-            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % controlPointsNum));
-
-            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % controlPointsNum));
-            vertices.push_back(generated[i + 1].getAppliedVertexAt(j % controlPointsNum));
-            vertices.push_back(generated[i].getAppliedVertexAt(j % controlPointsNum));
-
-            vertices.push_back(generated[i].getAppliedVertexAt(j % controlPointsNum));
-            vertices.push_back(generated[i + 1].getAppliedVertexAt(j % controlPointsNum));
-            vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % controlPointsNum));
-
-            vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % controlPointsNum));
-            vertices.push_back(generated[i + 1].getAppliedVertexAt(j % controlPointsNum));
-            vertices.push_back(generated[i].getAppliedVertexAt(j % controlPointsNum));
-
-            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % controlPointsNum));
-            vertices.push_back(generated[i + 1].getAppliedVertexAt(j % controlPointsNum));
-            vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % controlPointsNum));
-
-            vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % controlPointsNum));
-            vertices.push_back(generated[i + 1].getAppliedVertexAt(j % controlPointsNum));
-            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % controlPointsNum));
-
-            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % controlPointsNum));
-            vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % controlPointsNum));
-            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % controlPointsNum));
-
-            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % controlPointsNum));
-            vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % controlPointsNum));
-            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % controlPointsNum));
-        }
-        for(int j = 1; j < controlPointsNum - 1; j++)
-        {
-            vertices.push_back(generated[i].getAppliedVertexAt(0));
-            vertices.push_back(generated[i].getAppliedVertexAt(j + 1));
-            vertices.push_back(generated[i].getAppliedVertexAt(j));
-        }
+        // for(int j = 1; j < generated[i].surface.size(); j++)
+        // {
+        //     vertices.push_back(generated[i].getAppliedVertexAt(0));
+        //     vertices.push_back(generated[i].getAppliedVertexAt(j + 1));
+        //     vertices.push_back(generated[i].getAppliedVertexAt(j));
+        // }
     }
-    for(int j = 1; j < controlPointsNum - 1; j++)
+    for(int j = 1; j < generated[generated.size() - 1].surface.size(); j++)
     {
         vertices.push_back(generated[generated.size() - 1].getAppliedVertexAt(0));
         vertices.push_back(generated[generated.size() - 1].getAppliedVertexAt(j + 1));
@@ -270,6 +270,29 @@ std::vector<SplineParser::CrossSection> SplineParser::getSplinedSections(int spl
                 return (1 - t) * b[0] + t * b[1];
             };
         }
+
+        SplineMode splineMode = splineMode;
+        std::function<std::vector<Vector3f>(float)> surfaceFunc;
+        {
+            std::vector<Vector3f> controlPoints[] = {
+                i != 0 ? crossSections[i - 1].surface : crossSections[i].surface, 
+                crossSections[i].surface,
+                crossSections[i + 1].surface,
+                i != crossSections.size() - 2 ? crossSections[i + 2].surface : crossSections[i + 1].surface
+            };
+            surfaceFunc = [splineMode, splineLevel, controlPoints](float t) {
+                std::vector<Vector3f> a[] = {
+                    (-t) * controlPoints[0] + (t + 1) * controlPoints[1],
+                    (1 - t) * controlPoints[1] + (t) * controlPoints[2],
+                    (2 - t) * controlPoints[2] + (t - 1) * controlPoints[3]
+                };
+                std::vector<Vector3f> b[] = {
+                    (1 - t) * 0.5 * a[0] + (t + 1) * 0.5 * a[1],
+                    (2 - t) * 0.5 * a[1] + (t) * 0.5 * a[2]
+                };
+                return closedCatMullSpline((1 - t) * b[0] + t * b[1], splineLevel);
+            };
+        }
         for(int j = 0; j < splineLevel; j++)
         {
             CrossSection cs;
@@ -278,7 +301,8 @@ std::vector<SplineParser::CrossSection> SplineParser::getSplinedSections(int spl
             cs.orientation = orientationFunc((float)j / splineLevel);
             // cs.scale = crossSections[i].scale;
             cs.scale = scaleFunc((float)j / splineLevel);
-            cs.surface = crossSections[i].surface;
+            // cs.surface = crossSections[i].surface;
+            cs.surface = surfaceFunc((float)j / splineLevel);
 
             // for(int i = 0; i < cs.surface.size(); i++)
             //     printf("%f %f %f\n", cs.getAppliedVertexAt(i));
@@ -288,3 +312,25 @@ std::vector<SplineParser::CrossSection> SplineParser::getSplinedSections(int spl
 
     return result;
 }
+
+std::vector<Vector3f> operator *(float left, std::vector<Vector3f> right)
+{
+    std::vector<Vector3f> result;
+    for(auto a : right)
+    {
+        result.push_back(left * a);
+    }
+    return result;
+}
+
+
+std::vector<Vector3f> operator +(std::vector<Vector3f> left, std::vector<Vector3f> right)
+{
+    std::vector<Vector3f> result;
+    for(int i = 0; i < left.size(); i++)
+    {
+        result.push_back(left[i] + right[i]);
+    }
+    return result;
+}
+
