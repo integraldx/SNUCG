@@ -109,7 +109,7 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
             cam.setRotation({1, 0, 0, 0});
             cam.setFOV(60);
             cam.setZoom(5);
-            cam.setCenter({0, 0, 0});
+            cam.setCenter({0, 0, 100});
             break;
         case 'x':
         case 'X':
