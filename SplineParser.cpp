@@ -129,6 +129,12 @@ std::shared_ptr<Object> SplineParser::generateObject(int splineLevel)
         vertices.push_back(generated[0].getAppliedVertexAt(j));
         vertices.push_back(generated[0].getAppliedVertexAt(j + 1));
     }
+    for(int j = 1; j < generated[generated.size() - 1].surface.size(); j++)
+    {
+        vertices.push_back(generated[0].getAppliedVertexAt(0));
+        vertices.push_back(generated[0].getAppliedVertexAt(j + 1));
+        vertices.push_back(generated[0].getAppliedVertexAt(j));
+    }
     for(int i = 0; i < generated.size() - 1; i++)
     {
         // for(int j = 1; j < generated[i].surface.size(); j++)
@@ -183,6 +189,12 @@ std::shared_ptr<Object> SplineParser::generateObject(int splineLevel)
         vertices.push_back(generated[generated.size() - 1].getAppliedVertexAt(0));
         vertices.push_back(generated[generated.size() - 1].getAppliedVertexAt(j + 1));
         vertices.push_back(generated[generated.size() - 1].getAppliedVertexAt(j));
+    }
+    for(int j = 1; j < generated[generated.size() - 1].surface.size(); j++)
+    {
+        vertices.push_back(generated[generated.size() - 1].getAppliedVertexAt(0));
+        vertices.push_back(generated[generated.size() - 1].getAppliedVertexAt(j));
+        vertices.push_back(generated[generated.size() - 1].getAppliedVertexAt(j + 1));
     }
     std::shared_ptr<Object> result = std::make_shared<Object>(vertices);
     return result;
@@ -301,6 +313,7 @@ std::vector<SplineParser::CrossSection> SplineParser::getSplinedSections(int spl
             cs.scale = scaleFunc((float)j / splineLevel);
             // cs.surface = crossSections[i].surface;
             cs.surface = surfaceFunc((float)j / splineLevel);
+            // cs.surface = splineMode == 0 ? closedBSpline(crossSections[i].surface, splineLevel) : closedCatMullSpline(crossSections[i].surface, splineLevel);
 
             // for(int i = 0; i < cs.surface.size(); i++)
             //     printf("%f %f %f\n", cs.getAppliedVertexAt(i));
