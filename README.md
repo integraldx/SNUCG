@@ -3,18 +3,17 @@ This is repository for managing 2019s Computer Graphics Homeworks.
 This repository uses OpenGL, GLU, GLUT. And tested on Ubuntu 18.04, with X-window.  
 
 ## How to compile & Run
-$ make run
+$ make
+$ ./main *filename*
 
 ## How to use
-- Left click on sphere and drag to rotate camera
-- Mouse scroll to zoom in and zoom out
-- Ctrl + Mouse scroll to dolly in and dolly out
-- 'W', 'A', 'S', 'D' to translate camera center parallel to view plane.
+- W, A, S, D to move camera
+- Left click and drag to rotate camera view (FPS style)
 - 'R' to reset view to initial state
 - 'X' to exit
 
 ## What I did
-### HW#2
-- Use of gluUnProject to calculate World Coordinate of clicked location
-- Implementation of Quaternion system to calculate rotation
-- Modifying FoV value to implement zoom
+### HW#3
+- Use of catmull-rom spline to interpolate through cross sections
+  - Quaternion spline with slerp 
+- Use of CatMull-rom spline and BSpline to interpolate through control points of each cross sections

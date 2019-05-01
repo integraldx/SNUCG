@@ -10,7 +10,7 @@ class Camera
 private:
     float zoom = 5;
     Quaternion orientation = {1, 0, 0, 0};
-    Vector3f center = {0, 0, 0};
+    Vector3f center = {0, 10, 100};
     std::pair<float, float> panValue = {0, 0};
     float fov = 60;
     
@@ -23,6 +23,7 @@ public:
 
     Vector3f getPosition();
     void applyDeltaRotation(Quaternion q);
+    void applyDeltaRotationByAngle(float horizontal, float vertical);
     void setRotation(Quaternion q);
 
     Vector3f getUp();

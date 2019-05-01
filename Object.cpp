@@ -2,10 +2,6 @@
 
 Object::Object()
 {
-    vertices.push_back({0.5, 0.5, 0});
-    vertices.push_back({0.5, -0.5, 0});
-    vertices.push_back({-0.5, -0.5, 0});
-    vertices.push_back({-0.5, 0.5, 0});
 }
 
 Object::Object(std::vector<Vector3f> vertices)
@@ -26,21 +22,35 @@ void Object::draw()
     glPushMatrix();
     {
         glTranslatef(position.x, position.y, position.z);
+        glScalef(scale.x, scale.y, scale.z);
         glTranslatef(rotationCenter.x, rotationCenter.y, rotationCenter.z);
+        float rotationAngle = getAngle(rotation) / M_PI * 180;
+        Vector3f rotationAxis = getAxis(rotation);
         glRotatef(rotationAngle, rotationAxis.x, rotationAxis.y, rotationAxis.z);
         glTranslatef(-rotationCenter.x, -rotationCenter.y, -rotationCenter.z);
+
         if(hasColor)
         {
             glColor3f(color.x, color.y, color.z);
         }
-        glBegin(GL_POLYGON);
+        else
         {
-            for(Vector3f v : vertices)
-            {
-                glVertex3f(v.x, v.y, v.z);
-            }
+            glColor4f(1, 1, 1, 1);
         }
-        glEnd();
+
+        for(int i = 0; i < vertices.size() - 2; i += 3)
+        {
+            auto normal = normalize(crossProduct(vertices[i + 1] - vertices[i], vertices[i + 2] - vertices[i]));
+            glNormal3f(normal.x, normal.y, normal.z);
+            glBegin(GL_POLYGON);
+            {
+                glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
+                glVertex3f(vertices[i + 1].x, vertices[i + 1].y, vertices[i + 1].z);
+                glVertex3f(vertices[i + 2].x, vertices[i + 2].y, vertices[i + 2].z);
+            }
+            glEnd();
+        }
+
         for(auto& o : childs)
         {
             o->draw();
@@ -62,8 +72,13 @@ void Object::setRotationCenter(Vector3f v)
 
 void Object::setRotation(float f, Vector3f v)
 {
-    rotationAxis = v;
-    rotationAngle = f;
+    Quaternion q = expToQuat(f / 180 * M_PI, v);
+    rotation = q;
+}
+
+void Object::setRotation(Quaternion q)
+{
+    rotation = q;
 }
 
 void Object::setScale(Vector3f v)
@@ -84,10 +99,10 @@ void Object::addChild(std::shared_ptr<Object> obj)
 
 float Object::getRotationAngle()
 {
-    return rotationAngle;
+    return getAngle(rotation) / M_PI * 180;
 }
 
-void Object::setRotationAngle(float f)
+Vector3f Object::getRotationAxis()
 {
-    rotationAngle = f;
+    return getAxis(rotation);
 }
