@@ -1,16 +1,18 @@
 #pragma once
 
 #include <vector>
-#include "Vector3f.hpp"
+#include "Vectorf.hpp"
 #include "Quaternion.hpp"
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include <memory>
+#include "Material.hpp"
 
 class Object
 {
 protected:
     friend class Model;
+    
     std::vector<Vector3f> vertices;
     Vector3f position = {0, 0, 0};
     Vector3f rotationCenter = {0, 0, 0};
@@ -19,6 +21,7 @@ protected:
     bool hasColor = false;
     Vector3f color = {1, 1, 1};
     std::vector<std::shared_ptr<Object>> childs;
+    Material m;
 
 public:
     Object();
@@ -34,5 +37,6 @@ public:
     Vector3f getRotationAxis();
     void setScale(Vector3f);
     void setColor(Vector3f);
+    void setMaterial(Material m);
     void addChild(std::shared_ptr<Object>);
 };

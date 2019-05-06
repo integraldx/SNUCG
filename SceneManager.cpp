@@ -12,24 +12,26 @@ void SceneManager::initializeScene(std::string s)
 {
     auto splineParser = SplineParser::parseFile(s);
     std::shared_ptr<Object> o = splineParser.generateObject(10);
+    Material mat;
+    mat.setEmission({0.5, 0.5, 0.5, 1});
+    o->setMaterial(mat);
     std::shared_ptr<Model> m = std::make_shared<Model>(o);
     addRenderModel(m);
     glutInitDisplayMode (GLUT_SINGLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize (1000, 1000); 
     screenScale = {1000, 1000};
     glutInitWindowPosition (50, 50);
-    SceneManager::setWindow(glutCreateWindow ("HW3"));
+    SceneManager::setWindow(glutCreateWindow ("HW4"));
 /*  select clearing (background) color       */
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
+    glShadeModel(GL_SMOOTH);
     GLfloat ambient[] = {0.1, 0.1, 0.1, 0.1};
     GLfloat position[] = {1000, 1000, 1000, 1};
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
     glLightfv(GL_LIGHT0, GL_POSITION, position);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDepthFunc(GL_LESS);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
@@ -70,14 +72,14 @@ void SceneManager::displayCallback()
         m->draw();
     }
 
-    // glPushMatrix();
-    // {
-    //     glColor4f(0.9, 0.9, 0.9, 0.0);
-    //     auto cen = cam.getCenter();
-    //     glTranslatef(cen.x, cen.y, cen.z);
-    //     glutSolidSphere(2.5, 20, 100);
-    // }
-    // glPopMatrix();
+    glPushMatrix();
+    {
+        glColor4f(0.9, 0.9, 0.9, 1.0);
+        GLfloat mat_amb_diff[] = { 0.1, 0.5, 0.8, 1.0 };
+        glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, mat_amb_diff);
+        glutSolidSphere(2.5, 20, 100);
+    }
+    glPopMatrix();
 
     glutSwapBuffers();
     glFlush();

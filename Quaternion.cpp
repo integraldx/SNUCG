@@ -7,11 +7,11 @@ Quaternion identityQuat()
 
 Quaternion operator *(Quaternion left, Quaternion right)
 {
-    float w = left.w * right.w - dotProduct({left.x, left.y, left.z}, {right.x, right.y, right.z});
+    float w = left.w * right.w - dotProduct(Vector3f{left.x, left.y, left.z}, Vector3f{right.x, right.y, right.z});
     Vector3f v = 
         left.w * (Vector3f){right.x, right.y, right.z} 
         + right.w * (Vector3f){left.x, left.y, left.z}
-        + crossProduct({left.x, left.y, left.z}, {right.x, right.y, right.z});
+        + crossProduct(Vector3f{left.x, left.y, left.z}, Vector3f{right.x, right.y, right.z});
     
     return {w, v.x, v.y, v.z};
 }

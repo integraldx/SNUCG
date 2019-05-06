@@ -8,7 +8,6 @@
 #include <chrono>
 #include <algorithm>
 #include "Quaternion.hpp"
-#include "SplinedObject.hpp"
 #include "SplineParser.hpp"
 
 class SceneManager
