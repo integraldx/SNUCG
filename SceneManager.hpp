@@ -20,6 +20,10 @@ private:
     static std::chrono::duration<long, std::milli> startTime;
     static bool isLeftMouseDown;
     static std::pair<int, int> initialMousePosition;
+    static std::string splineFileName;
+
+    static void setLightingEnviornment();
+    static void setInitialObjects();
 
 public:
     static void initializeScene(std::string);
@@ -31,4 +35,5 @@ public:
     static void motionCallback(int x, int y);
     static void setWindow(int);
     static void initTime();
+    static void renderMaterialedSpheres();
 };

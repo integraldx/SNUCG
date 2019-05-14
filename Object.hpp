@@ -39,4 +39,5 @@ public:
     void setColor(Vector3f);
     void setMaterial(Material m);
     void addChild(std::shared_ptr<Object>);
+
 };

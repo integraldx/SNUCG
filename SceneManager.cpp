@@ -7,34 +7,27 @@ int SceneManager::window;
 std::chrono::duration<long, std::milli> SceneManager::startTime;
 bool SceneManager::isLeftMouseDown;
 std::pair<int, int> SceneManager::initialMousePosition;
+std::string SceneManager::splineFileName;
 
 void SceneManager::initializeScene(std::string s)
 {
-    auto splineParser = SplineParser::parseFile(s);
-    std::shared_ptr<Object> o = splineParser.generateObject(10);
-    Material mat;
-    mat.setEmission({0.5, 0.5, 0.5, 1});
-    o->setMaterial(mat);
-    std::shared_ptr<Model> m = std::make_shared<Model>(o);
-    addRenderModel(m);
+    splineFileName = std::string(s);
+    setInitialObjects();
     glutInitDisplayMode (GLUT_SINGLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize (1000, 1000); 
     screenScale = {1000, 1000};
     glutInitWindowPosition (50, 50);
-    SceneManager::setWindow(glutCreateWindow ("HW4"));
+    SceneManager::setWindow(glutCreateWindow("HW4"));
 /*  select clearing (background) color       */
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glEnable(GL_DEPTH_TEST);
+    setLightingEnviornment();
     glShadeModel(GL_SMOOTH);
-    GLfloat ambient[] = {0.1, 0.1, 0.1, 0.1};
-    GLfloat position[] = {1000, 1000, 1000, 1};
-    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-    glLightfv(GL_LIGHT0, GL_POSITION, position);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
     glDepthFunc(GL_LESS);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+    //glEnable(GL_CULL_FACE);
+    //glCullFace(GL_BACK);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 /*  initialize viewing values  */
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -45,6 +38,81 @@ void SceneManager::initializeScene(std::string s)
     initTime();
 
     timerCallback(0);
+}
+
+void SceneManager::setLightingEnviornment()
+{
+    glEnable(GL_LIGHTING);
+    // Light 0
+    {
+        GLfloat ambient[] = {0.1, 0.1, 0.1, 0.1};
+        GLfloat position[] = {500, 1000, 1000, 1};
+        GLfloat lightColor[] = {1.0, 0.7, 0.7, 1};
+        GLfloat specular[] = {1, 1, 1, 1};
+        glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+        glLightfv(GL_LIGHT0, GL_POSITION, position);
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
+        glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+        glEnable(GL_LIGHT0);
+    }
+
+    // Light 1
+    {
+        GLfloat ambient[] = {0.1, 0.1, 0.1, 0.1};
+        GLfloat position[] = {-1000, 1000, 0, 1};
+        GLfloat lightColor[] = {0.7, 1.0, 0.7, 1};
+        GLfloat specular[] = {1, 1, 1, 1};
+        glLightfv(GL_LIGHT1, GL_AMBIENT, ambient);
+        glLightfv(GL_LIGHT1, GL_POSITION, position);
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, lightColor);
+        glLightfv(GL_LIGHT1, GL_SPECULAR, specular);
+        glEnable(GL_LIGHT1);
+    }
+
+    // Light 2
+    {
+        GLfloat ambient[] = {0.1, 0.1, 0.1, 0.1};
+        GLfloat position[] = {500, 1000, -1000, 1};
+        GLfloat lightColor[] = {0.7, 0.7, 1.0, 1};
+        GLfloat specular[] = {1, 1, 1, 1};
+        glLightfv(GL_LIGHT2, GL_AMBIENT, ambient);
+        glLightfv(GL_LIGHT2, GL_POSITION, position);
+        glLightfv(GL_LIGHT2, GL_DIFFUSE, lightColor);
+        glLightfv(GL_LIGHT2, GL_SPECULAR, specular);
+        glEnable(GL_LIGHT2);
+    }
+}
+
+void SceneManager::setInitialObjects()
+{
+    // Splined Object
+    {
+        auto splineParser = SplineParser::parseFile(splineFileName);
+        std::shared_ptr<Object> o = splineParser.generateObject(30);
+        Material mat;
+        mat.setSpecular({1, 1, 1, 1.0});
+        mat.setShininess(128);
+        o->setMaterial(mat);
+        std::shared_ptr<Model> m = std::make_shared<Model>(o);
+        addRenderModel(m);
+    }
+
+    {
+        std::vector<Vector3f> planeV;
+        planeV.push_back({100, -50, 100});
+        planeV.push_back({100, -50, -100});
+        planeV.push_back({-100, -50, -100});
+        planeV.push_back({100, -50, 100});
+        planeV.push_back({-100, -50, -100});
+        planeV.push_back({-100, -50, 100});
+
+        std::shared_ptr<Object> o = std::make_shared<Object>(planeV);
+        Material mat;
+        mat.setDiffuse({0.4, 0.4, 0.4, 1});
+        o->setMaterial(mat);
+        std::shared_ptr<Model> m = std::make_shared<Model>(o);
+        addRenderModel(m);
+    }
 }
 
 void SceneManager::addRenderModel(std::shared_ptr<Model> m)
@@ -72,17 +140,98 @@ void SceneManager::displayCallback()
         m->draw();
     }
 
-    glPushMatrix();
-    {
-        glColor4f(0.9, 0.9, 0.9, 1.0);
-        GLfloat mat_amb_diff[] = { 0.1, 0.5, 0.8, 1.0 };
-        glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, mat_amb_diff);
-        glutSolidSphere(2.5, 20, 100);
-    }
-    glPopMatrix();
+    renderMaterialedSpheres();
 
     glutSwapBuffers();
     glFlush();
+}
+
+void SceneManager::renderMaterialedSpheres()
+{
+    // 1
+    {
+        glPushMatrix();
+        glTranslatef(15, 0, 0);
+        Material mat;
+
+        mat.applyMaterial();
+        glutSolidSphere(5, 20, 20);
+
+        glPopMatrix();
+    }
+
+    // 2
+    {
+        glPushMatrix();
+        glTranslatef(30, 0, 0);
+        Material mat;
+
+        mat.applyMaterial();
+        glutSolidSphere(5, 20, 20);
+
+        glPopMatrix();
+    }
+
+    // 3
+    {
+        glPushMatrix();
+        glTranslatef(20, -10, 10);
+        Material mat;
+
+        mat.applyMaterial();
+        glutSolidSphere(5, 20, 20);
+
+        glPopMatrix();
+    }
+
+    // 4
+    {
+        glPushMatrix();
+        glTranslatef(-15, 0, 0);
+        Material mat;
+
+        mat.applyMaterial();
+        glutSolidSphere(5, 20, 20);
+
+        glPopMatrix();
+    }
+
+    // 5
+    {
+        glPushMatrix();
+        glTranslatef(-30, 0, 0);
+        Material mat;
+
+        mat.applyMaterial();
+        glutSolidSphere(5, 20, 20);
+
+        glPopMatrix();
+    }
+
+    // 6
+    {
+        glPushMatrix();
+        glTranslatef(-20, -10, 10);
+        Material mat;
+
+        mat.applyMaterial();
+        glutSolidSphere(5, 20, 20);
+
+        glPopMatrix();
+    }
+
+    // 7
+    {
+        glPushMatrix();
+        glTranslatef(5, 5, 5);
+        Material mat;
+        mat.setDiffuse({1, 1, 1, 0.4});
+
+        mat.applyMaterial();
+        glutSolidSphere(5, 20, 20);
+
+        glPopMatrix();
+    }
 }
 
 void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
@@ -106,16 +255,17 @@ void SceneManager::keyboardCallback(unsigned char key, int mousex, int mousey)
             cam.setCenter(cam.getCenter() - crossProduct(cam.getUp(), cam.getLookDirection()));
             break;
 
-        case 'r':
-        case 'R':
-            cam.setRotation({1, 0, 0, 0});
-            cam.setFOV(60);
-            cam.setZoom(5);
-            cam.setCenter({0, 0, 100});
-            break;
+        // case 'r':
+        // case 'R':
+        //     cam.setRotation({1, 0, 0, 0});
+        //     cam.setFOV(60);
+        //     cam.setZoom(5);
+        //     cam.setCenter({0, 0, 100});
+        //     break;
         case 'x':
         case 'X':
             glutDestroyWindow(window);
+            exit(0);
             break;
         default:
             break;

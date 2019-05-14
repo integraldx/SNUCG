@@ -145,37 +145,37 @@ std::shared_ptr<Object> SplineParser::generateObject(int splineLevel)
         // }
         for(int j = 0; j < generated[i].surface.size(); j++)
         {
-            vertices.push_back(generated[i].getAppliedVertexAt(j % generated[i].surface.size()));
-            vertices.push_back(generated[i + 1].getAppliedVertexAt(j % generated[i].surface.size()));
-            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+            // vertices.push_back(generated[i].getAppliedVertexAt(j % generated[i].surface.size()));
+            // vertices.push_back(generated[i + 1].getAppliedVertexAt(j % generated[i].surface.size()));
+            // vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
 
             vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
             vertices.push_back(generated[i + 1].getAppliedVertexAt(j % generated[i].surface.size()));
             vertices.push_back(generated[i].getAppliedVertexAt(j % generated[i].surface.size()));
 
-            vertices.push_back(generated[i].getAppliedVertexAt(j % generated[i].surface.size()));
-            vertices.push_back(generated[i + 1].getAppliedVertexAt(j % generated[i].surface.size()));
-            vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+            // vertices.push_back(generated[i].getAppliedVertexAt(j % generated[i].surface.size()));
+            // vertices.push_back(generated[i + 1].getAppliedVertexAt(j % generated[i].surface.size()));
+            // vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+
+            // vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+            // vertices.push_back(generated[i + 1].getAppliedVertexAt(j % generated[i].surface.size()));
+            // vertices.push_back(generated[i].getAppliedVertexAt(j % generated[i].surface.size()));
+
+            // vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+            // vertices.push_back(generated[i + 1].getAppliedVertexAt(j % generated[i].surface.size()));
+            // vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
 
             vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
             vertices.push_back(generated[i + 1].getAppliedVertexAt(j % generated[i].surface.size()));
-            vertices.push_back(generated[i].getAppliedVertexAt(j % generated[i].surface.size()));
-
-            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
-            vertices.push_back(generated[i + 1].getAppliedVertexAt(j % generated[i].surface.size()));
-            vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
-
-            vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
-            vertices.push_back(generated[i + 1].getAppliedVertexAt(j % generated[i].surface.size()));
             vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
 
-            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
-            vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
-            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+            // vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+            // vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+            // vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
 
-            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
-            vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
-            vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+            // vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+            // vertices.push_back(generated[i + 1].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
+            // vertices.push_back(generated[i].getAppliedVertexAt((j + 1) % generated[i].surface.size()));
         }
         // for(int j = 1; j < generated[i].surface.size(); j++)
         // {

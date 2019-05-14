@@ -33,10 +33,6 @@ void Object::draw()
         {
             glColor3f(color.x, color.y, color.z);
         }
-        else
-        {
-            glColor4f(1, 1, 1, 1);
-        }
 
         
         m.applyMaterial();

@@ -3,7 +3,7 @@ main: main.cpp Camera.* Model.* Object.* SceneManager.* Vectorf.* Quaternion.* S
 
 run:
 	make main
-	./main
+	./main iceCream.txt
 
 clean:
 	rm ./main
