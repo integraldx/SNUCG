@@ -101,12 +101,12 @@ void SceneManager::setInitialObjects()
 
     {
         std::vector<Vector3f> planeV;
-        planeV.push_back({100, -30, 100});
-        planeV.push_back({100, -30, -100});
-        planeV.push_back({-100, -30, -100});
-        planeV.push_back({100, -30, 100});
-        planeV.push_back({-100, -30, -100});
-        planeV.push_back({-100, -30, 100});
+        planeV.push_back({100, 0, 100});
+        planeV.push_back({100, 0, -100});
+        planeV.push_back({-100, 0, -100});
+        planeV.push_back({100, 0, 100});
+        planeV.push_back({-100, 0, -100});
+        planeV.push_back({-100, 0, 100});
 
         std::shared_ptr<Object> o = std::make_shared<Object>(planeV);
         Material mat;
@@ -115,10 +115,11 @@ void SceneManager::setInitialObjects()
         mat.setShininess(5);
         o->setMaterial(mat);
         std::shared_ptr<Model> m = std::make_shared<Model>(o);
+        m->setPosition({0, -30, 0});
         addRenderModel(m);
     }
 
-    renderMaterialedSpheres();
+    setMaterialedSpheres();
 }
 
 void SceneManager::addRenderModel(std::shared_ptr<Model> m)
@@ -145,6 +146,8 @@ void SceneManager::displayCallback()
     );
     
     setLightingEnviornment();
+    std::sort(toRender.begin(), toRender.end(), depthSortFunc);
+
     for(auto m : toRender)
     {
         m->draw();
@@ -155,7 +158,7 @@ void SceneManager::displayCallback()
     glFlush();
 }
 
-void SceneManager::renderMaterialedSpheres()
+void SceneManager::setMaterialedSpheres()
 {
     // 1
     {
@@ -169,6 +172,7 @@ void SceneManager::renderMaterialedSpheres()
 
         auto mod = std::make_shared<Model>(sp);
         mod->setPosition({15, 0, 0});
+        mod->opaque = false;
         addRenderModel(mod);
     }
 
@@ -184,6 +188,7 @@ void SceneManager::renderMaterialedSpheres()
 
         auto mod = std::make_shared<Model>(sp);
         mod->setPosition({30, 0, 0});
+        mod->opaque = false;
         addRenderModel(mod);
     }
 
@@ -200,6 +205,7 @@ void SceneManager::renderMaterialedSpheres()
 
         auto mod = std::make_shared<Model>(sp);
         mod->setPosition({20, -10, 10});
+        mod->opaque = false;
         addRenderModel(mod);
     }
 
@@ -215,6 +221,7 @@ void SceneManager::renderMaterialedSpheres()
 
         auto mod = std::make_shared<Model>(sp);
         mod->setPosition({-15, 0, 0});
+        mod->opaque = false;
         addRenderModel(mod);
     }
 
@@ -231,6 +238,7 @@ void SceneManager::renderMaterialedSpheres()
 
         auto mod = std::make_shared<Model>(sp);
         mod->setPosition({-30, 0, 0});
+        mod->opaque = false;
         addRenderModel(mod);
     }
 
@@ -247,6 +255,7 @@ void SceneManager::renderMaterialedSpheres()
 
         auto mod = std::make_shared<Model>(sp);
         mod->setPosition({-20, -10, 10});
+        mod->opaque = false;
         addRenderModel(mod);
     }
 
@@ -260,6 +269,21 @@ void SceneManager::renderMaterialedSpheres()
 
         auto mod = std::make_shared<Model>(sp);
         mod->setPosition({5, 5, 5});
+        mod->opaque = false;
+        addRenderModel(mod);
+    }
+
+    // 8
+    {
+        auto sp = std::static_pointer_cast<Object>(std::make_shared<SphereObject>());
+        sp->setScale({5, 5, 5});
+        Material mat;
+        mat.setDiffuse({0.3, 0.8, 0.3, 0.4});
+        sp->setMaterial(mat);
+
+        auto mod = std::make_shared<Model>(sp);
+        mod->setPosition({3, 5, 11});
+        mod->opaque = false;
         addRenderModel(mod);
     }
 }
@@ -380,4 +404,25 @@ void SceneManager::setWindow(int newWindow)
 void SceneManager::initTime()
 {
     startTime = std::chrono::duration_cast<std::chrono::duration<long, std::milli>>(std::chrono::system_clock::now().time_since_epoch());
+}
+
+
+bool SceneManager::depthSortFunc(std::shared_ptr<Model> left, std::shared_ptr<Model> right)
+{
+    if(left->opaque)
+    {
+        return true;
+    }
+    else if(right->opaque)
+    {
+        return false;
+    }
+    if(left->getDepthOfPosition(cam) < right->getDepthOfPosition(cam))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
