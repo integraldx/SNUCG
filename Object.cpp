@@ -28,12 +28,6 @@ void Object::draw()
         Vector3f rotationAxis = getAxis(rotation);
         glRotatef(rotationAngle, rotationAxis.x, rotationAxis.y, rotationAxis.z);
         glTranslatef(-rotationCenter.x, -rotationCenter.y, -rotationCenter.z);
-
-        if(hasColor)
-        {
-            glColor3f(color.x, color.y, color.z);
-        }
-
         
         m.applyMaterial();
         for(int i = 0; i < vertices.size() - 2; i += 3)

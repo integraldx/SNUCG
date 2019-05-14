@@ -9,6 +9,7 @@
 #include <algorithm>
 #include "Quaternion.hpp"
 #include "SplineParser.hpp"
+#include "SphereObject.hpp"
 
 class SceneManager
 {

@@ -49,7 +49,7 @@ void SceneManager::setLightingEnviornment()
     // Light 0
     {
         GLfloat ambient[] = {0.2, 0.2, 0.2, 1};
-        GLfloat position[] = {500, 1000, 1000, 1};
+        GLfloat position[] = {50, 100, 100, 1};
         GLfloat lightColor[] = {1.0, 0.8, 0.8, 1};
         GLfloat specular[] = {1, 0.9, 0.9, 1};
         glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
@@ -61,7 +61,7 @@ void SceneManager::setLightingEnviornment()
     // Light 1
     {
         GLfloat ambient[] = {0.2, 0.2, 0.2, 1};
-        GLfloat position[] = {-1000, 1000, 0, 1};
+        GLfloat position[] = {-100, 100, 0, 1};
         GLfloat lightColor[] = {0.8, 1.0, 0.8, 1};
         GLfloat specular[] = {0.9, 1, 0.9, 1};
         glLightfv(GL_LIGHT1, GL_AMBIENT, ambient);
@@ -73,7 +73,7 @@ void SceneManager::setLightingEnviornment()
     // Light 2
     {
         GLfloat ambient[] = {0.2, 0.2, 0.2, 1};
-        GLfloat position[] = {500, 1000, -1000, 1};
+        GLfloat position[] = {50, 100, -100, 1};
         GLfloat lightColor[] = {0.8, 0.8, 1.0, 1};
         GLfloat specular[] = {0.9, 0.9, 1, 1};
         glLightfv(GL_LIGHT2, GL_AMBIENT, ambient);
@@ -117,6 +117,8 @@ void SceneManager::setInitialObjects()
         std::shared_ptr<Model> m = std::make_shared<Model>(o);
         addRenderModel(m);
     }
+
+    renderMaterialedSpheres();
 }
 
 void SceneManager::addRenderModel(std::shared_ptr<Model> m)
@@ -148,7 +150,6 @@ void SceneManager::displayCallback()
         m->draw();
     }
 
-    renderMaterialedSpheres();
 
     glutSwapBuffers();
     glFlush();
@@ -158,109 +159,108 @@ void SceneManager::renderMaterialedSpheres()
 {
     // 1
     {
-        glPushMatrix();
-        glTranslatef(15, 0, 0);
+        auto sp = std::static_pointer_cast<Object>(std::make_shared<SphereObject>());
+        sp->setScale({5, 5, 5});
         Material mat;
         mat.setDiffuse({0.2, 0.2, 0.2, 1});
         mat.setSpecular({0.8, 0.8, 0.8, 0.8});
         mat.setShininess(12);
+        sp->setMaterial(mat);
 
-
-        mat.applyMaterial();
-        glutSolidSphere(5, 100, 100);
-
-        glPopMatrix();
+        auto mod = std::make_shared<Model>(sp);
+        mod->setPosition({15, 0, 0});
+        addRenderModel(mod);
     }
 
     // 2
     {
-        glPushMatrix();
-        glTranslatef(30, 0, 0);
+        auto sp = std::static_pointer_cast<Object>(std::make_shared<SphereObject>());
+        sp->setScale({5, 5, 5});
         Material mat;
         mat.setDiffuse({0.3, 0.3, 0.6, 1});
         mat.setSpecular({0.5, 0.5, 0.5, 1});
         mat.setShininess(50);
+        sp->setMaterial(mat);
 
-        mat.applyMaterial();
-        glutSolidSphere(5, 100, 100);
-
-        glPopMatrix();
+        auto mod = std::make_shared<Model>(sp);
+        mod->setPosition({30, 0, 0});
+        addRenderModel(mod);
     }
 
     // 3
     {
-        glPushMatrix();
-        glTranslatef(20, -10, 10);
+        auto sp = std::static_pointer_cast<Object>(std::make_shared<SphereObject>());
+        sp->setScale({5, 5, 5});
         Material mat;
-        mat.setDiffuse({1, 0.8, 0.8, 1});
-        mat.setAmbient({0.2, 0.2, 0.2, 1});
+        mat.setDiffuse({0.8, 0.6, 0.6, 1});
+        mat.setAmbient({0.1, 0.1, 0.1, 1});
         mat.setSpecular({0.2, 0.2, 0.2, 0.2});
-        mat.setShininess(11);
+        mat.setShininess(30);
+        sp->setMaterial(mat);
 
-        mat.applyMaterial();
-        glutSolidSphere(5, 100, 100);
-
-        glPopMatrix();
+        auto mod = std::make_shared<Model>(sp);
+        mod->setPosition({20, -10, 10});
+        addRenderModel(mod);
     }
 
     // 4
     {
-        glPushMatrix();
-        glTranslatef(-15, 0, 0);
+        auto sp = std::static_pointer_cast<Object>(std::make_shared<SphereObject>());
+        sp->setScale({5, 5, 5});
         Material mat;
         mat.setDiffuse({0.4, 0.2, 0.2, 1});
         mat.setSpecular({0.1, 0.1, 0.1, 1});
         mat.setShininess(10);
+        sp->setMaterial(mat);
 
-        mat.applyMaterial();
-        glutSolidSphere(5, 100, 100);
-
-        glPopMatrix();
+        auto mod = std::make_shared<Model>(sp);
+        mod->setPosition({-15, 0, 0});
+        addRenderModel(mod);
     }
 
     // 5
     {
-        glPushMatrix();
-        glTranslatef(-30, 0, 0);
+        auto sp = std::static_pointer_cast<Object>(std::make_shared<SphereObject>());
+        sp->setScale({5, 5, 5});
         Material mat;
         mat.setDiffuse({0.05, 0.05, 0.05, 1});
         mat.setAmbient({0.01, 0.01, 0.01, 1});
         mat.setSpecular({0.2, 0.2, 0.2, 1});
         mat.setShininess(10);
+        sp->setMaterial(mat);
 
-        mat.applyMaterial();
-        glutSolidSphere(5, 100, 100);
-
-        glPopMatrix();
+        auto mod = std::make_shared<Model>(sp);
+        mod->setPosition({-30, 0, 0});
+        addRenderModel(mod);
     }
 
     // 6
     {
-        glPushMatrix();
-        glTranslatef(-20, -10, 10);
+        auto sp = std::static_pointer_cast<Object>(std::make_shared<SphereObject>());
+        sp->setScale({5, 5, 5});
         Material mat;
         mat.setDiffuse({0.4, 0.8, 0.4, 0.7});
         mat.setSpecular({0.2, 0.4, 0.2, 1});
         mat.setShininess({76});
         mat.setEmission({0.1, 0.2, 0.1, 0});
+        sp->setMaterial(mat);
 
-        mat.applyMaterial();
-        glutSolidSphere(5, 100, 100);
-
-        glPopMatrix();
+        auto mod = std::make_shared<Model>(sp);
+        mod->setPosition({-20, -10, 10});
+        addRenderModel(mod);
     }
 
     // 7
     {
-        glPushMatrix();
-        glTranslatef(5, 5, 5);
+        auto sp = std::static_pointer_cast<Object>(std::make_shared<SphereObject>());
+        sp->setScale({5, 5, 5});
         Material mat;
-        mat.setDiffuse({0.8, 0.8, 0.8, 0.4});
+        mat.setDiffuse({0.8, 0.3, 0.3, 0.4});
+        sp->setMaterial(mat);
 
-        mat.applyMaterial();
-        glutSolidSphere(5, 100, 100);
-
-        glPopMatrix();
+        auto mod = std::make_shared<Model>(sp);
+        mod->setPosition({5, 5, 5});
+        addRenderModel(mod);
     }
 }
 
