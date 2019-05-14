@@ -48,7 +48,7 @@ void SceneManager::setLightingEnviornment()
 {
     // Light 0
     {
-        GLfloat ambient[] = {0.1, 0.1, 0.1, 0.1};
+        GLfloat ambient[] = {0.2, 0.2, 0.2, 1};
         GLfloat position[] = {500, 1000, 1000, 1};
         GLfloat lightColor[] = {1.0, 0.8, 0.8, 1};
         GLfloat specular[] = {1, 0.9, 0.9, 1};
@@ -60,7 +60,7 @@ void SceneManager::setLightingEnviornment()
 
     // Light 1
     {
-        GLfloat ambient[] = {0.1, 0.1, 0.1, 0.1};
+        GLfloat ambient[] = {0.2, 0.2, 0.2, 1};
         GLfloat position[] = {-1000, 1000, 0, 1};
         GLfloat lightColor[] = {0.8, 1.0, 0.8, 1};
         GLfloat specular[] = {0.9, 1, 0.9, 1};
@@ -72,7 +72,7 @@ void SceneManager::setLightingEnviornment()
 
     // Light 2
     {
-        GLfloat ambient[] = {0.1, 0.1, 0.1, 0.1};
+        GLfloat ambient[] = {0.2, 0.2, 0.2, 1};
         GLfloat position[] = {500, 1000, -1000, 1};
         GLfloat lightColor[] = {0.8, 0.8, 1.0, 1};
         GLfloat specular[] = {0.9, 0.9, 1, 1};
@@ -101,16 +101,18 @@ void SceneManager::setInitialObjects()
 
     {
         std::vector<Vector3f> planeV;
-        planeV.push_back({100, -50, 100});
-        planeV.push_back({100, -50, -100});
-        planeV.push_back({-100, -50, -100});
-        planeV.push_back({100, -50, 100});
-        planeV.push_back({-100, -50, -100});
-        planeV.push_back({-100, -50, 100});
+        planeV.push_back({100, -30, 100});
+        planeV.push_back({100, -30, -100});
+        planeV.push_back({-100, -30, -100});
+        planeV.push_back({100, -30, 100});
+        planeV.push_back({-100, -30, -100});
+        planeV.push_back({-100, -30, 100});
 
         std::shared_ptr<Object> o = std::make_shared<Object>(planeV);
         Material mat;
         mat.setDiffuse({0.4, 0.4, 0.4, 1});
+        mat.setSpecular({0.1, 0.1, 0.1, 1});
+        mat.setShininess(5);
         o->setMaterial(mat);
         std::shared_ptr<Model> m = std::make_shared<Model>(o);
         addRenderModel(m);
@@ -190,9 +192,11 @@ void SceneManager::renderMaterialedSpheres()
         glPushMatrix();
         glTranslatef(20, -10, 10);
         Material mat;
-        mat.setSpecular({0.8, 0.8, 0.8, 0.8});
-        mat.setShininess(12);
-        
+        mat.setDiffuse({1, 0.8, 0.8, 1});
+        mat.setAmbient({0.2, 0.2, 0.2, 1});
+        mat.setSpecular({0.2, 0.2, 0.2, 0.2});
+        mat.setShininess(11);
+
         mat.applyMaterial();
         glutSolidSphere(5, 100, 100);
 
@@ -204,6 +208,9 @@ void SceneManager::renderMaterialedSpheres()
         glPushMatrix();
         glTranslatef(-15, 0, 0);
         Material mat;
+        mat.setDiffuse({0.4, 0.2, 0.2, 1});
+        mat.setSpecular({0.1, 0.1, 0.1, 1});
+        mat.setShininess(10);
 
         mat.applyMaterial();
         glutSolidSphere(5, 100, 100);
@@ -216,6 +223,10 @@ void SceneManager::renderMaterialedSpheres()
         glPushMatrix();
         glTranslatef(-30, 0, 0);
         Material mat;
+        mat.setDiffuse({0.05, 0.05, 0.05, 1});
+        mat.setAmbient({0.01, 0.01, 0.01, 1});
+        mat.setSpecular({0.2, 0.2, 0.2, 1});
+        mat.setShininess(10);
 
         mat.applyMaterial();
         glutSolidSphere(5, 100, 100);
@@ -228,6 +239,10 @@ void SceneManager::renderMaterialedSpheres()
         glPushMatrix();
         glTranslatef(-20, -10, 10);
         Material mat;
+        mat.setDiffuse({0.4, 0.8, 0.4, 0.7});
+        mat.setSpecular({0.2, 0.4, 0.2, 1});
+        mat.setShininess({76});
+        mat.setEmission({0.1, 0.2, 0.1, 0});
 
         mat.applyMaterial();
         glutSolidSphere(5, 100, 100);
