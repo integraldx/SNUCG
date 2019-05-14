@@ -21,7 +21,7 @@ Vector3f Camera::rotateViewplaneToVector(Vector3f v)
 
 Vector3f Camera::getPosition()
 {
-    Quaternion q = orientation * Quaternion{0, 0, 0, 1} * inverse(orientation);
+    // Quaternion q = orientation * Quaternion{0, 0, 0, 1} * inverse(orientation);
     return center;
 
     // return zoom * Vector3f{q.x, q.y, q.z};
