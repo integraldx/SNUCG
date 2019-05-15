@@ -48,6 +48,11 @@ void SortedObject::sort()
     return;
 }
 
+void SortedObject::setMaterial(Material m)
+{
+    this->m = m;
+}
+
 bool SortedObject::faceSorter(Face left, Face right)
 {
     Vector3f leftAverage = (left.first + left.second + left.third) * (1.0f / 3);
@@ -56,7 +61,7 @@ bool SortedObject::faceSorter(Face left, Face right)
     Vector3f leftDelta = leftAverage - SceneManager::cam.getCenter();
     Vector3f rightDelta = rightAverage - SceneManager::cam.getCenter();
 
-    if(getScale(leftDelta) < getScale(rightDelta))
+    if(dotProduct(leftDelta, SceneManager::cam.getLookDirection()) < dotProduct(rightDelta, SceneManager::cam.getLookDirection()))
     {
         return false;
     }

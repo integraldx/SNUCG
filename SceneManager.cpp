@@ -22,7 +22,6 @@ void SceneManager::initializeScene(std::string s)
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
-    glEnable(GL_RESCALE_NORMAL);
     setLightingEnviornment();
     glShadeModel(GL_SMOOTH);
     glDepthFunc(GL_LESS);
@@ -50,7 +49,7 @@ void SceneManager::setLightingEnviornment()
     // Light 0
     {
         GLfloat ambient[] = {0.2, 0.2, 0.2, 1};
-        GLfloat position[] = {50, 100, 100, 1};
+        GLfloat position[] = {25, 50, 50, 1};
         GLfloat lightColor[] = {1.0, 0.8, 0.8, 1};
         GLfloat specular[] = {1, 0.9, 0.9, 1};
         glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
@@ -62,7 +61,7 @@ void SceneManager::setLightingEnviornment()
     // Light 1
     {
         GLfloat ambient[] = {0.2, 0.2, 0.2, 1};
-        GLfloat position[] = {-100, 100, 0, 1};
+        GLfloat position[] = {-40, 40, 0, 1};
         GLfloat lightColor[] = {0.8, 1.0, 0.8, 1};
         GLfloat specular[] = {0.9, 1, 0.9, 1};
         glLightfv(GL_LIGHT1, GL_AMBIENT, ambient);
@@ -74,7 +73,7 @@ void SceneManager::setLightingEnviornment()
     // Light 2
     {
         GLfloat ambient[] = {0.2, 0.2, 0.2, 1};
-        GLfloat position[] = {50, 100, -100, 1};
+        GLfloat position[] = {20, 40, -40, 1};
         GLfloat lightColor[] = {0.8, 0.8, 1.0, 1};
         GLfloat specular[] = {0.9, 0.9, 1, 1};
         glLightfv(GL_LIGHT2, GL_AMBIENT, ambient);
@@ -102,21 +101,61 @@ void SceneManager::setInitialObjects()
 
     {
         std::vector<Vector3f> planeV;
-        planeV.push_back({100, 0, 100});
-        planeV.push_back({100, 0, -100});
-        planeV.push_back({-100, 0, -100});
-        planeV.push_back({100, 0, 100});
-        planeV.push_back({-100, 0, -100});
-        planeV.push_back({-100, 0, 100});
+        planeV.push_back({50, 0, 50});
+        planeV.push_back({50, 0, -50});
+        planeV.push_back({-50, 0, -50});
+        planeV.push_back({50, 0, 50});
+        planeV.push_back({-50, 0, -50});
+        planeV.push_back({-50, 0, 50});
 
         std::shared_ptr<Object> o = std::make_shared<Object>(planeV);
         Material mat;
         mat.setDiffuse({0.4, 0.4, 0.4, 1});
-        mat.setSpecular({0.1, 0.1, 0.1, 1});
-        mat.setShininess(5);
+        mat.setSpecular({0.8, 0.8, 0.8, 1});
+        mat.setShininess(30);
         o->setMaterial(mat);
         std::shared_ptr<Model> m = std::make_shared<Model>(o);
         m->setPosition({0, -30, 0});
+        addRenderModel(m);
+    }
+
+    {
+        std::vector<Vector3f> planeV;
+        planeV.push_back({-50, 70, 0});
+        planeV.push_back({-50, -30, 0});
+        planeV.push_back({50, -30, 0});
+        planeV.push_back({50, -30, 0});
+        planeV.push_back({50, 70, 0});
+        planeV.push_back({-50, 70, 0});
+
+        std::shared_ptr<Object> o = std::make_shared<Object>(planeV);
+        Material mat;
+        mat.setDiffuse({0.4, 0.4, 0.4, 1});
+        mat.setSpecular({0.8, 0.8, 0.8, 1});
+        mat.setShininess(30);
+        o->setMaterial(mat);
+        std::shared_ptr<Model> m = std::make_shared<Model>(o);
+        m->setPosition({0, 0, -50});
+        addRenderModel(m);
+    }
+
+    {
+        std::vector<Vector3f> planeV;
+        planeV.push_back({0, -30, -50});
+        planeV.push_back({0, 70, -50});
+        planeV.push_back({0, 70, 50});
+        planeV.push_back({0, 70, 50});
+        planeV.push_back({0, -30, 50});
+        planeV.push_back({0, -30, -50});
+
+        std::shared_ptr<Object> o = std::make_shared<Object>(planeV);
+        Material mat;
+        mat.setDiffuse({0.4, 0.4, 0.4, 1});
+        mat.setSpecular({0.8, 0.8, 0.8, 1});
+        mat.setShininess(30);
+        o->setMaterial(mat);
+        std::shared_ptr<Model> m = std::make_shared<Model>(o);
+        m->setPosition({-50, 0, 0});
         addRenderModel(m);
     }
 
@@ -271,11 +310,11 @@ void SceneManager::setMaterialedSpheres()
         v.push_back({ 1,  1,  1});
 
         v.push_back({ 1, -1,  1});
+        v.push_back({-1, -1, -1});
         v.push_back({ 1, -1, -1});
-        v.push_back({-1, -1, -1});
-        v.push_back({-1, -1, -1});
-        v.push_back({-1, -1,  1});
         v.push_back({ 1, -1,  1});
+        v.push_back({-1, -1,  1});
+        v.push_back({-1, -1, -1});
 
         v.push_back({ 1,  1,  1});
         v.push_back({ 1, -1,  1});
@@ -284,19 +323,19 @@ void SceneManager::setMaterialedSpheres()
         v.push_back({ 1,  1, -1});
         v.push_back({ 1,  1,  1});
 
-        v.push_back({-1,  1,  1});
+        v.push_back({-1, -1, -1});
         v.push_back({-1, -1,  1});
-        v.push_back({-1, -1, -1});
-        v.push_back({-1, -1, -1});
+        v.push_back({-1,  1,  1});
+        v.push_back({-1,  1,  1});
         v.push_back({-1,  1, -1});
-        v.push_back({-1,  1,  1});
+        v.push_back({-1, -1, -1});
 
-        v.push_back({ 1,  1,  1});
+        v.push_back({-1, -1,  1});
         v.push_back({ 1, -1,  1});
-        v.push_back({-1, -1,  1});
-        v.push_back({-1, -1,  1});
-        v.push_back({-1,  1,  1});
         v.push_back({ 1,  1,  1});
+        v.push_back({ 1,  1,  1});
+        v.push_back({-1,  1,  1});
+        v.push_back({-1, -1,  1});
 
         v.push_back({ 1,  1, -1});
         v.push_back({ 1, -1, -1});
@@ -311,12 +350,85 @@ void SceneManager::setMaterialedSpheres()
         auto sp = std::static_pointer_cast<Object>(std::make_shared<SortedObject>(v));
         sp->setScale({5, 5, 5});
         Material mat;
-        mat.setDiffuse({0.3, 0.8, 0.3, 0.4});
+        mat.setDiffuse({0.4, 0.6, 0.4, 0.6});
         sp->setMaterial(mat);
 
         auto mod = std::make_shared<Model>(sp);
-        mod->setPosition({10, 12, -2});
+        mod->setPosition({2, 4, 7});
         mod->opaque = false;
+        addRenderModel(mod);
+    }
+
+    // 8
+    {
+        auto sp = std::static_pointer_cast<Object>(std::make_shared<SortedObject>(v));
+        sp->setScale({3, 3, 3});
+        Material mat;
+        mat.setDiffuse({0.6, 0.4, 0.4, 0.6});
+        sp->setMaterial(mat);
+
+        auto mod = std::make_shared<Model>(sp);
+        mod->setPosition({5, 13, 5});
+        mod->opaque = false;
+        addRenderModel(mod);
+    }
+
+    // 9
+    {
+        auto sp = std::static_pointer_cast<Object>(std::make_shared<SortedObject>(v));
+        sp->setScale({3, 3, 3});
+        Material mat;
+        mat.setDiffuse({0.4, 0.4, 0.6, 0.6});
+        sp->setMaterial(mat);
+
+        auto mod = std::make_shared<Model>(sp);
+        mod->setPosition({-2, 20, -2});
+        mod->opaque = false;
+        addRenderModel(mod);
+    }
+
+    // Light Bulb 1
+    {
+        auto sp = std::static_pointer_cast<Object>(std::make_shared<SphereObject>());
+        sp->setScale({5, 5, 5});
+        Material mat;
+        mat.setDiffuse({0, 0, 0, 1});
+        mat.setEmission({1.0, 0.7, 0.7, 1});
+        sp->setMaterial(mat);
+
+        auto mod = std::make_shared<Model>(sp);
+        mod->setPosition({25, 50, 50});
+        mod->opaque = true;
+        addRenderModel(mod);
+    }
+
+    // Light Bulb 2
+    {
+        auto sp = std::static_pointer_cast<Object>(std::make_shared<SphereObject>());
+        sp->setScale({5, 5, 5});
+        Material mat;
+        mat.setDiffuse({0, 0, 0, 1});
+        mat.setEmission({0.7, 1.0, 0.7, 1});
+        sp->setMaterial(mat);
+
+        auto mod = std::make_shared<Model>(sp);
+        mod->setPosition({-40, 40, 0});
+        mod->opaque = true;
+        addRenderModel(mod);
+    }
+
+    // Light Bulb 3
+    {
+        auto sp = std::static_pointer_cast<Object>(std::make_shared<SphereObject>());
+        sp->setScale({5, 5, 5});
+        Material mat;
+        mat.setDiffuse({0, 0, 0, 1});
+        mat.setEmission({0.7, 0.7, 1.0, 1});
+        sp->setMaterial(mat);
+
+        auto mod = std::make_shared<Model>(sp);
+        mod->setPosition({20, 40, -40});
+        mod->opaque = true;
         addRenderModel(mod);
     }
 }

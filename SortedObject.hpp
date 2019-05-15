@@ -12,6 +12,7 @@ class SortedObject : public Object
 
     public:
     SortedObject(std::vector<Vector3f> v);
+    void setMaterial(Material m);
     void draw();
     void sort();
 
