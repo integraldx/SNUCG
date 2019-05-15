@@ -10,6 +10,7 @@
 #include "Quaternion.hpp"
 #include "SplineParser.hpp"
 #include "SphereObject.hpp"
+#include "SortedObject.hpp"
 
 class SceneManager
 {
@@ -21,12 +22,12 @@ private:
     static bool isLeftMouseDown;
     static std::pair<int, int> initialMousePosition;
     static std::string splineFileName;
-    static Camera cam;
 
     static void setLightingEnviornment();
     static void setInitialObjects();
 
 public:
+    static Camera cam;
     static void initializeScene(std::string);
     static void addRenderModel(std::shared_ptr<Model>);
     static void displayCallback();

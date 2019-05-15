@@ -16,6 +16,14 @@ struct Vector4f
     float w;
 };
 
+struct Face
+{
+    Vector3f first;
+    Vector3f second;
+    Vector3f third;
+    Vector3f normal;
+};
+
 Vector3f operator * (float mul, Vector3f v);
 
 Vector3f operator * (Vector3f v, float mul);

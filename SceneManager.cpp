@@ -22,6 +22,7 @@ void SceneManager::initializeScene(std::string s)
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
+    glEnable(GL_RESCALE_NORMAL);
     setLightingEnviornment();
     glShadeModel(GL_SMOOTH);
     glDepthFunc(GL_LESS);
@@ -259,30 +260,62 @@ void SceneManager::setMaterialedSpheres()
         addRenderModel(mod);
     }
 
-    // 7
+    // Vector for cubes
+    std::vector<Vector3f> v;
     {
-        auto sp = std::static_pointer_cast<Object>(std::make_shared<SphereObject>());
-        sp->setScale({5, 5, 5});
-        Material mat;
-        mat.setDiffuse({0.8, 0.3, 0.3, 0.4});
-        sp->setMaterial(mat);
+        v.push_back({ 1,  1,  1});
+        v.push_back({ 1,  1, -1});
+        v.push_back({-1,  1, -1});
+        v.push_back({-1,  1, -1});
+        v.push_back({-1,  1,  1});
+        v.push_back({ 1,  1,  1});
 
-        auto mod = std::make_shared<Model>(sp);
-        mod->setPosition({5, 5, 5});
-        mod->opaque = false;
-        addRenderModel(mod);
+        v.push_back({ 1, -1,  1});
+        v.push_back({ 1, -1, -1});
+        v.push_back({-1, -1, -1});
+        v.push_back({-1, -1, -1});
+        v.push_back({-1, -1,  1});
+        v.push_back({ 1, -1,  1});
+
+        v.push_back({ 1,  1,  1});
+        v.push_back({ 1, -1,  1});
+        v.push_back({ 1, -1, -1});
+        v.push_back({ 1, -1, -1});
+        v.push_back({ 1,  1, -1});
+        v.push_back({ 1,  1,  1});
+
+        v.push_back({-1,  1,  1});
+        v.push_back({-1, -1,  1});
+        v.push_back({-1, -1, -1});
+        v.push_back({-1, -1, -1});
+        v.push_back({-1,  1, -1});
+        v.push_back({-1,  1,  1});
+
+        v.push_back({ 1,  1,  1});
+        v.push_back({ 1, -1,  1});
+        v.push_back({-1, -1,  1});
+        v.push_back({-1, -1,  1});
+        v.push_back({-1,  1,  1});
+        v.push_back({ 1,  1,  1});
+
+        v.push_back({ 1,  1, -1});
+        v.push_back({ 1, -1, -1});
+        v.push_back({-1, -1, -1});
+        v.push_back({-1, -1, -1});
+        v.push_back({-1,  1, -1});
+        v.push_back({ 1,  1, -1});
     }
 
-    // 8
+    // 7
     {
-        auto sp = std::static_pointer_cast<Object>(std::make_shared<SphereObject>());
+        auto sp = std::static_pointer_cast<Object>(std::make_shared<SortedObject>(v));
         sp->setScale({5, 5, 5});
         Material mat;
         mat.setDiffuse({0.3, 0.8, 0.3, 0.4});
         sp->setMaterial(mat);
 
         auto mod = std::make_shared<Model>(sp);
-        mod->setPosition({3, 5, 11});
+        mod->setPosition({10, 12, -2});
         mod->opaque = false;
         addRenderModel(mod);
     }
