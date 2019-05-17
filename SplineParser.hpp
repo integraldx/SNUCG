@@ -7,7 +7,6 @@
 #include <sstream>
 #include <vector>
 #include <functional>
-#include "SplinedObject.hpp"
 #include "Model.hpp"
 
 class SplineParser

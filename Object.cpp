@@ -28,29 +28,21 @@ void Object::draw()
         Vector3f rotationAxis = getAxis(rotation);
         glRotatef(rotationAngle, rotationAxis.x, rotationAxis.y, rotationAxis.z);
         glTranslatef(-rotationCenter.x, -rotationCenter.y, -rotationCenter.z);
-
-        if(hasColor)
-        {
-            glColor3f(color.x, color.y, color.z);
-        }
-        else
-        {
-            glColor4f(1, 1, 1, 1);
-        }
-
+        
+        m.applyMaterial();
         for(int i = 0; i < vertices.size() - 2; i += 3)
         {
             auto normal = normalize(crossProduct(vertices[i + 1] - vertices[i], vertices[i + 2] - vertices[i]));
             glNormal3f(normal.x, normal.y, normal.z);
             glBegin(GL_POLYGON);
             {
+                // m.applyMaterial();
                 glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
                 glVertex3f(vertices[i + 1].x, vertices[i + 1].y, vertices[i + 1].z);
                 glVertex3f(vertices[i + 2].x, vertices[i + 2].y, vertices[i + 2].z);
             }
             glEnd();
         }
-
         for(auto& o : childs)
         {
             o->draw();
@@ -105,4 +97,9 @@ float Object::getRotationAngle()
 Vector3f Object::getRotationAxis()
 {
     return getAxis(rotation);
+}
+
+void Object::setMaterial(Material m)
+{
+    this->m = m;
 }

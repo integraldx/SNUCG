@@ -1,10 +1,11 @@
 #pragma once
 
-#include "Vector3f.hpp"
+#include "Vectorf.hpp"
 #include "Quaternion.hpp"
 #include <memory>
 #include "Object.hpp"
 #include <GL/gl.h>
+#include "Camera.hpp"
 
 class Model
 {
@@ -22,4 +23,6 @@ public:
     void setRotation(float, Vector3f);
     void applyDeltaRotation(Quaternion q);
     void setScale(Vector3f);
+    bool opaque;
+    float getDepthOfPosition(Camera& cam);
 };

@@ -48,3 +48,12 @@ void Model::setScale(Vector3f v)
 {
     scale = v;
 }
+
+float Model::getDepthOfPosition(Camera& cam)
+{
+    Vector3f delta = position - cam.getCenter();
+    delta = cam.rotateViewplaneToVector(delta);
+
+    return -getScale(delta);
+}
+

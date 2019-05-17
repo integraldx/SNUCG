@@ -1,14 +1,14 @@
 #pragma once
 
 #include <iostream>
-#include "Vector3f.hpp"
+#include "Vectorf.hpp"
 #include "math.h"
 #include "Quaternion.hpp"
 
 class Camera
 {
 private:
-    float zoom = 5;
+    float zoom = 0;
     Quaternion orientation = {1, 0, 0, 0};
     Vector3f center = {0, 10, 100};
     std::pair<float, float> panValue = {0, 0};
